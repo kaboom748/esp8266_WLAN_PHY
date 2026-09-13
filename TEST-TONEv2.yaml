@@ -1,0 +1,1577 @@
+esphome:
+  name: wemo-test
+  friendly_name: WEMO-TEST
+
+  includes:
+    - <user_interface.h>
+
+  platformio_options:
+    board_build.f_cpu: 160000000L
+
+
+esp8266:
+  board: d1_mini
+
+
+logger:
+  baud_rate: 0
+  level: NONE
+
+
+uart:
+  id: usb_serial
+
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+
+  baud_rate: 115200
+  data_bits: 8
+  parity: NONE
+  stop_bits: 1
+
+  rx_buffer_size: 256
+
+  debug:
+    direction: RX
+    dummy_receiver: true
+
+    after:
+      timeout: 20ms
+
+    sequence:
+      - lambda: |-
+
+          static String line = "";
+
+          static uint16_t current_k = 8;
+
+          static uint8_t current_channel = 6;
+
+          static bool phy_ready = false;
+          static bool tx_active = false;
+
+
+          // ====================================================
+          // TONE REGISTERS
+          // ====================================================
+
+          constexpr uint32_t TONE1 =
+              0x600005B8u;
+
+          constexpr uint32_t TONE2 =
+              0x600005BCu;
+
+          constexpr uint32_t TONE3 =
+              0x600005C4u;
+
+
+          constexpr uint32_t K_MASK =
+              0x000003FFu;
+
+          constexpr uint32_t GATE_MASK =
+              0x00040000u;
+
+
+          // ====================================================
+          // PBUS
+          // ====================================================
+
+          constexpr uint32_t PBUS_CMD =
+              0x60000594u;
+
+          constexpr uint32_t PBUS_STATUS =
+              0x600005A0u;
+
+
+          // ====================================================
+          // DIGITAL RX
+          // ====================================================
+
+          constexpr uint32_t RX_CTRL =
+              0x60009B08u;
+
+          constexpr uint32_t RX_STOP =
+              0x08000000u;
+
+
+          // ====================================================
+          // ROM
+          // ====================================================
+
+          constexpr uint32_t ROM_SET_TXCLK_EN =
+              0x4000650Cu;
+
+
+          using SetTxClkFn =
+              void (*)(int);
+
+
+          auto set_txclk =
+              reinterpret_cast<SetTxClkFn>(
+                ROM_SET_TXCLK_EN
+              );
+
+
+          // ====================================================
+          // MMIO
+          // ====================================================
+
+          auto memw = []() {
+
+            __asm__ volatile(
+              "memw"
+              ::: "memory"
+            );
+
+          };
+
+
+          auto rd32 =
+              [](uint32_t addr) -> uint32_t {
+
+            return
+              *(volatile uint32_t *) addr;
+
+          };
+
+
+          auto wr32 =
+              [](uint32_t addr,
+                 uint32_t value) {
+
+            *(volatile uint32_t *) addr =
+                value;
+
+          };
+
+
+          // ====================================================
+          // SERIAL
+          // ====================================================
+
+          auto send =
+              [&](const char *s) {
+
+            id(usb_serial).write_str(s);
+
+            id(usb_serial).write_str(
+              "\r\n"
+            );
+
+          };
+
+
+          // ====================================================
+          // CHANNEL <-> FREQUENCY
+          //
+          // Channels 1..13:
+          //
+          // ch1  = 2412 MHz
+          // ch2  = 2417 MHz
+          // ...
+          // ch6  = 2437 MHz
+          // ...
+          // ch13 = 2472 MHz
+          // ====================================================
+
+          auto channel_to_mhz =
+              [](uint8_t ch) -> int {
+
+            if (
+              ch >= 1
+              &&
+              ch <= 13
+            ) {
+
+              return
+                2412
+                +
+                5 * (
+                  (int)ch - 1
+                );
+
+            }
+
+            return -1;
+
+          };
+
+
+          auto mhz_to_channel =
+              [](int mhz) -> int {
+
+            if (
+              mhz < 2412
+              ||
+              mhz > 2472
+            ) {
+
+              return -1;
+
+            }
+
+
+            int delta =
+                mhz - 2412;
+
+
+            if (
+              (delta % 5)
+              != 0
+            ) {
+
+              return -1;
+
+            }
+
+
+            int ch =
+                1
+                +
+                (
+                  delta / 5
+                );
+
+
+            if (
+              ch < 1
+              ||
+              ch > 13
+            ) {
+
+              return -1;
+
+            }
+
+
+            return ch;
+
+          };
+
+
+          // ====================================================
+          // TRACE
+          // ====================================================
+
+          auto trace =
+              [&](const char *tag) {
+
+            uint32_t slot =
+                rd32(TONE1);
+
+            uint32_t pcmd =
+                rd32(PBUS_CMD);
+
+            uint32_t pst =
+                rd32(PBUS_STATUS);
+
+            uint32_t rx =
+                rd32(RX_CTRL);
+
+
+            char b[190];
+
+
+            snprintf(
+              b,
+              sizeof(b),
+
+              "%s SLOT=%08X G=%u DBG=%u RXSTOP=%u BUSY=%u",
+
+              tag,
+
+              (unsigned int)slot,
+
+              (slot & GATE_MASK) ? 1 : 0,
+
+              (pcmd & 1u) ? 1 : 0,
+
+              (rx & RX_STOP) ? 1 : 0,
+
+              (pst & 0x80000000u) ? 1 : 0
+            );
+
+
+            send(b);
+
+          };
+
+
+          // ====================================================
+          // SET CHANNEL
+          // ====================================================
+
+          auto set_channel =
+              [&](uint8_t ch) -> bool {
+
+            if (
+              ch < 1
+              ||
+              ch > 13
+            ) {
+
+              send(
+                "ERR CHANNEL 1..13"
+              );
+
+              return false;
+
+            }
+
+
+            bool ok =
+                wifi_set_channel(
+                  ch
+                );
+
+
+            if (!ok) {
+
+              send(
+                "ERR wifi_set_channel"
+              );
+
+              return false;
+
+            }
+
+
+            delay(
+              100
+            );
+
+
+            current_channel =
+                wifi_get_channel();
+
+
+            int mhz =
+                channel_to_mhz(
+                  current_channel
+                );
+
+
+            char b[100];
+
+
+            snprintf(
+              b,
+              sizeof(b),
+
+              "OK CH=%u CENTER=%d MHz",
+
+              current_channel,
+
+              mhz
+            );
+
+
+            send(b);
+
+
+            return true;
+
+          };
+
+
+          // ====================================================
+          // PHY INIT
+          // ====================================================
+
+          auto phy_start =
+              [&]() {
+
+            if (phy_ready) {
+
+              send(
+                "PHY ALREADY READY"
+              );
+
+              return;
+
+            }
+
+
+            send(
+              "PHY: START"
+            );
+
+
+            wifi_station_set_auto_connect(
+              0
+            );
+
+
+            bool mode_ok =
+                wifi_set_opmode_current(
+                  STATION_MODE
+                );
+
+
+            {
+              char b[80];
+
+              snprintf(
+                b,
+                sizeof(b),
+
+                "PHY: STATION_MODE=%u",
+
+                mode_ok ? 1 : 0
+              );
+
+              send(b);
+            }
+
+
+            delay(
+              500
+            );
+
+
+            wifi_station_disconnect();
+
+
+            bool sleep_ok =
+                wifi_set_sleep_type(
+                  NONE_SLEEP_T
+                );
+
+
+            {
+              char b[80];
+
+              snprintf(
+                b,
+                sizeof(b),
+
+                "PHY: NONE_SLEEP=%u",
+
+                sleep_ok ? 1 : 0
+              );
+
+              send(b);
+            }
+
+
+            if (
+              !set_channel(
+                current_channel
+              )
+            ) {
+
+              send(
+                "PHY: CHANNEL INIT FAILED"
+              );
+
+              return;
+
+            }
+
+
+            delay(
+              100
+            );
+
+
+            phy_ready =
+                true;
+
+
+            send(
+              "PHY: READY"
+            );
+
+
+            trace(
+              "PHY AFTER INIT"
+            );
+
+          };
+
+
+          // ====================================================
+          // PBUS WRITE
+          // ====================================================
+
+          auto pbus_write =
+              [&](uint8_t selector,
+                  uint8_t bank,
+                  uint16_t value) -> bool {
+
+            uint32_t cmd =
+                rd32(
+                  PBUS_CMD
+                );
+
+
+            cmd &=
+                0xFFFF0001u;
+
+
+            cmd |=
+                (
+                  (uint32_t)(
+                    bank
+                    &
+                    3u
+                  )
+                  << 14
+                );
+
+
+            cmd |=
+                (
+                  (uint32_t)(
+                    value
+                    &
+                    0x1FFu
+                  )
+                  << 5
+                );
+
+
+            cmd |=
+                (
+                  (uint32_t)(
+                    selector
+                    &
+                    7u
+                  )
+                  << 2
+                );
+
+
+            cmd |=
+                2u;
+
+
+            memw();
+
+
+            wr32(
+              PBUS_CMD,
+              cmd
+            );
+
+
+            memw();
+
+
+            uint32_t t0 =
+                micros();
+
+
+            while (
+              rd32(PBUS_STATUS)
+              &
+              0x80000000u
+            ) {
+
+
+              if (
+                (uint32_t)(
+                  micros() - t0
+                )
+                >
+                2000u
+              ) {
+
+
+                uint32_t r =
+                    rd32(
+                      PBUS_CMD
+                    );
+
+
+                r &=
+                    ~2u;
+
+
+                wr32(
+                  PBUS_CMD,
+                  r
+                );
+
+
+                memw();
+
+
+                return false;
+
+              }
+
+            }
+
+
+            uint32_t r =
+                rd32(
+                  PBUS_CMD
+                );
+
+
+            r &=
+                ~2u;
+
+
+            memw();
+
+
+            wr32(
+              PBUS_CMD,
+              r
+            );
+
+
+            memw();
+
+
+            return true;
+
+          };
+
+
+          // ====================================================
+          // PBUS MANUAL
+          // ====================================================
+
+          auto enter_manual =
+              [&]() {
+
+            uint32_t r;
+
+
+            r =
+                rd32(
+                  RX_CTRL
+                );
+
+
+            r |=
+                RX_STOP;
+
+
+            memw();
+
+
+            wr32(
+              RX_CTRL,
+              r
+            );
+
+
+            memw();
+
+
+            r =
+                rd32(
+                  PBUS_CMD
+                );
+
+
+            r |=
+                1u;
+
+
+            memw();
+
+
+            wr32(
+              PBUS_CMD,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          auto leave_manual =
+              [&]() {
+
+            uint32_t r;
+
+
+            r =
+                rd32(
+                  PBUS_CMD
+                );
+
+
+            r &=
+                ~1u;
+
+
+            wr32(
+              PBUS_CMD,
+              r
+            );
+
+
+            memw();
+
+
+            r =
+                rd32(
+                  RX_CTRL
+                );
+
+
+            r &=
+                ~RX_STOP;
+
+
+            wr32(
+              RX_CTRL,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          // ====================================================
+          // TX PATH ON
+          // ====================================================
+
+          auto tx_path_on =
+              [&]() -> bool {
+
+
+            if (
+              !pbus_write(
+                2,
+                1,
+                1
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            if (
+              !pbus_write(
+                7,
+                1,
+                95
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            /*
+             * PBUS(0,1,x)
+             * volontairement conservé.
+             */
+
+
+            if (
+              !pbus_write(
+                1,
+                1,
+                127
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            if (
+              !pbus_write(
+                6,
+                1,
+                127
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            return true;
+
+          };
+
+
+          // ====================================================
+          // TX PATH OFF
+          // ====================================================
+
+          auto tx_path_off =
+              [&]() {
+
+            pbus_write(
+              6,
+              1,
+              0
+            );
+
+
+            pbus_write(
+              1,
+              1,
+              12
+            );
+
+
+            pbus_write(
+              2,
+              1,
+              0
+            );
+
+          };
+
+
+          // ====================================================
+          // TONE
+          // ====================================================
+
+          auto tone_program =
+              [&](uint16_t k) {
+
+
+            constexpr uint32_t SCALE =
+                0x00030400u;
+
+
+            uint32_t old =
+                rd32(
+                  TONE1
+                );
+
+
+            uint32_t slot =
+                (
+                  old
+                  &
+                  0xF0000000u
+                );
+
+
+            slot |=
+                SCALE;
+
+
+            slot |=
+                (
+                  (uint32_t)k
+                  &
+                  K_MASK
+                );
+
+
+            slot |=
+                GATE_MASK;
+
+
+            memw();
+
+
+            wr32(
+              TONE1,
+              slot
+            );
+
+
+            memw();
+
+
+            uint32_t r;
+
+
+            r =
+                rd32(
+                  TONE2
+                );
+
+
+            r &=
+                ~GATE_MASK;
+
+
+            wr32(
+              TONE2,
+              r
+            );
+
+
+            memw();
+
+
+            r =
+                rd32(
+                  TONE3
+                );
+
+
+            r &=
+                ~GATE_MASK;
+
+
+            wr32(
+              TONE3,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          // ====================================================
+          // CHANGE K
+          // ====================================================
+
+          auto tone_set_k =
+              [&](uint16_t k) {
+
+            uint32_t r =
+                rd32(
+                  TONE1
+                );
+
+
+            r &=
+                ~K_MASK;
+
+
+            r |=
+                (
+                  (uint32_t)k
+                  &
+                  K_MASK
+                );
+
+
+            memw();
+
+
+            wr32(
+              TONE1,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          // ====================================================
+          // GATE OFF
+          // ====================================================
+
+          auto gate_off =
+              [&]() {
+
+            uint32_t r =
+                rd32(
+                  TONE1
+                );
+
+
+            r &=
+                ~GATE_MASK;
+
+
+            memw();
+
+
+            wr32(
+              TONE1,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          // ====================================================
+          // UART PARSER
+          // ====================================================
+
+          for (
+            uint8_t c
+            :
+            bytes
+          ) {
+
+
+            if (
+              c >= 32
+              &&
+              c <= 126
+            ) {
+
+              id(usb_serial).write_byte(c);
+
+            }
+
+
+            if (
+              c == '\r'
+              ||
+              c == '\n'
+            ) {
+
+
+              if (
+                line.length() == 0
+              ) {
+
+                continue;
+
+              }
+
+
+              id(usb_serial).write_str(
+                "\r\n"
+              );
+
+
+              String cmd =
+                  line;
+
+
+              line =
+                  "";
+
+
+              cmd.trim();
+
+              cmd.toUpperCase();
+
+
+              // ================================================
+              // PHY
+              // ================================================
+
+              if (
+                cmd == "PHY"
+              ) {
+
+                phy_start();
+
+                continue;
+
+              }
+
+
+              // ================================================
+              // CH n
+              // ================================================
+
+              if (
+                cmd.startsWith(
+                  "CH "
+                )
+              ) {
+
+
+                if (tx_active) {
+
+                  send(
+                    "ERR: OFF FIRST BEFORE CH"
+                  );
+
+                  continue;
+
+                }
+
+
+                if (!phy_ready) {
+
+                  phy_start();
+
+                }
+
+
+                String a =
+                    cmd.substring(
+                      3
+                    );
+
+
+                a.trim();
+
+
+                long ch =
+                    a.toInt();
+
+
+                if (
+                  ch < 1
+                  ||
+                  ch > 13
+                ) {
+
+                  send(
+                    "ERR CH 1..13"
+                  );
+
+                  continue;
+
+                }
+
+
+                set_channel(
+                  (uint8_t)ch
+                );
+
+
+                continue;
+
+              }
+
+
+              // ================================================
+              // FREQ n
+              //
+              // Exemple:
+              //
+              // FREQ 2437
+              // FREQ 2462
+              // ================================================
+
+              if (
+                cmd.startsWith(
+                  "FREQ "
+                )
+              ) {
+
+
+                if (tx_active) {
+
+                  send(
+                    "ERR: OFF FIRST BEFORE FREQ"
+                  );
+
+                  continue;
+
+                }
+
+
+                if (!phy_ready) {
+
+                  phy_start();
+
+                }
+
+
+                String a =
+                    cmd.substring(
+                      5
+                    );
+
+
+                a.trim();
+
+
+                int mhz =
+                    a.toInt();
+
+
+                int ch =
+                    mhz_to_channel(
+                      mhz
+                    );
+
+
+                if (
+                  ch < 1
+                ) {
+
+
+                  send(
+                    "ERR FREQ: USE 2412..2472 MHz IN 5 MHz STEPS"
+                  );
+
+
+                  continue;
+
+                }
+
+
+                set_channel(
+                  (uint8_t)ch
+                );
+
+
+                continue;
+
+              }
+
+
+              // ================================================
+              // ON
+              // ================================================
+
+              if (
+                cmd == "ON"
+              ) {
+
+
+                if (!phy_ready) {
+
+                  phy_start();
+
+                }
+
+
+                if (tx_active) {
+
+                  send(
+                    "TX ALREADY ON"
+                  );
+
+                  continue;
+
+                }
+
+
+                enter_manual();
+
+
+                if (
+                  !tx_path_on()
+                ) {
+
+                  send(
+                    "ERR TX PATH"
+                  );
+
+
+                  leave_manual();
+
+                  continue;
+
+                }
+
+
+                set_txclk(
+                  1
+                );
+
+
+                tone_program(
+                  current_k
+                );
+
+
+                tx_active =
+                    true;
+
+
+                uint32_t slot =
+                    rd32(
+                      TONE1
+                    );
+
+
+                char b[160];
+
+
+                snprintf(
+                  b,
+                  sizeof(b),
+
+                  "RF ON CH=%u CENTER=%dMHz K=%u SLOT=%08X GATE=%u",
+
+                  current_channel,
+
+                  channel_to_mhz(
+                    current_channel
+                  ),
+
+                  current_k,
+
+                  (unsigned int)slot,
+
+                  (slot & GATE_MASK)
+                    ? 1
+                    : 0
+                );
+
+
+                send(b);
+
+
+                continue;
+
+              }
+
+
+              // ================================================
+              // OFF
+              // ================================================
+
+              if (
+                cmd == "OFF"
+              ) {
+
+
+                gate_off();
+
+
+                set_txclk(
+                  0
+                );
+
+
+                tx_path_off();
+
+
+                leave_manual();
+
+
+                tx_active =
+                    false;
+
+
+                send(
+                  "OK RF OFF"
+                );
+
+
+                continue;
+
+              }
+
+
+              // ================================================
+              // K n
+              // ================================================
+
+              if (
+                cmd.startsWith(
+                  "K "
+                )
+              ) {
+
+
+                String a =
+                    cmd.substring(
+                      2
+                    );
+
+
+                a.trim();
+
+
+                long value =
+                    a.toInt();
+
+
+                if (
+                  value < 0
+                  ||
+                  value > 1023
+                ) {
+
+                  send(
+                    "ERR K 0..1023"
+                  );
+
+                  continue;
+
+                }
+
+
+                current_k =
+                    (uint16_t)value;
+
+
+                if (tx_active) {
+
+                  tone_set_k(
+                    current_k
+                  );
+
+                }
+
+
+                char b[50];
+
+
+                snprintf(
+                  b,
+                  sizeof(b),
+
+                  "OK K=%u",
+
+                  current_k
+                );
+
+
+                send(b);
+
+
+                continue;
+
+              }
+
+
+              // ================================================
+              // STATUS
+              // ================================================
+
+              if (
+                cmd == "STATUS"
+              ) {
+
+
+                uint32_t slot =
+                    rd32(
+                      TONE1
+                    );
+
+
+                uint8_t hw_ch =
+                    wifi_get_channel();
+
+
+                int mhz =
+                    channel_to_mhz(
+                      hw_ch
+                    );
+
+
+                char b[200];
+
+
+                snprintf(
+                  b,
+                  sizeof(b),
+
+                  "PHY=%u TX=%u CH=%u CENTER=%dMHz K=%u HW_K=%u GATE=%u SLOT=%08X",
+
+                  phy_ready
+                    ? 1
+                    : 0,
+
+                  tx_active
+                    ? 1
+                    : 0,
+
+                  hw_ch,
+
+                  mhz,
+
+                  current_k,
+
+                  (unsigned int)(
+                    slot
+                    &
+                    K_MASK
+                  ),
+
+                  (slot & GATE_MASK)
+                    ? 1
+                    : 0,
+
+                  (unsigned int)slot
+                );
+
+
+                send(b);
+
+
+                continue;
+
+              }
+
+
+              // ================================================
+              // HELP
+              // ================================================
+
+              if (
+                cmd == "HELP"
+              ) {
+
+
+                send("");
+                send("ESP8266 RF CONSOLE");
+                send("------------------");
+
+                send(
+                  "PHY         initialize PHY/RF"
+                );
+
+                send(
+                  "CH n        channel 1..13"
+                );
+
+                send(
+                  "FREQ MHz    2412..2472 in 5MHz steps"
+                );
+
+                send(
+                  "K n         tone control 0..1023"
+                );
+
+                send(
+                  "ON          start tone"
+                );
+
+                send(
+                  "OFF         stop tone"
+                );
+
+                send(
+                  "STATUS"
+                );
+
+                send(
+                  "HELP"
+                );
+
+
+                continue;
+
+              }
+
+
+              send(
+                "ERR UNKNOWN"
+              );
+
+            }
+
+
+            else if (
+              c >= 32
+              &&
+              c <= 126
+            ) {
+
+
+              if (
+                line.length()
+                <
+                63
+              ) {
+
+                line +=
+                    (char)c;
+
+              }
+
+            }
+
+          }
