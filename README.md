@@ -1,11 +1,472 @@
-# esp8266_WLAN_PHY
-
--Ce projet est UNIQUEMENT dans le but de tester la radio du ESP8266 en mode OOK/ASK et FSK. 
--Veuillez respecter les puissances d'émission de votre pays.
--Utiliser une cage de Faraday pour tests. ET ne pas dépasser apwr=63 car le ESP8266 devient très chaud.
-
-
 <img width="600" height="600" alt="image" src="https://github.com/user-attachments/assets/05e28102-9b0c-4e8a-b61f-666eecc18d5f" />
 
 <img width="1024" height="619" alt="image" src="https://github.com/user-attachments/assets/ea7dcbfe-1267-413a-81f7-4e9e113d9f2b" />
 
+# ESP8266 WLAN PHY — Reverse Engineering & RF Test Bench
+
+> **Experimental research project for ESP8266 PHY/RF testing.**
+>
+> This repository explores low-level ESP8266 radio behavior for **OOK / ASK / FSK / M-FSK** and documents research around **QPSK / QAM**.
+>
+> It is **not** an official Espressif project or documentation.
+
+---
+
+## ⚠️ IMPORTANT SAFETY WARNING
+
+**Read this before flashing or transmitting.**
+
+This project directly manipulates low-level ESP8266 PHY/RF registers and ROM routines. It can keep the RF transmit chain active continuously and can make the chip run **very hot**.
+
+### Project safety rules
+
+- **Use a Faraday cage, shielded RF enclosure, or a properly attenuated conducted setup for RF testing.**
+- **Comply with the radio-frequency regulations and permitted transmit power in your country.**
+- **Do not leave the ESP8266 transmitting unattended.**
+- **If the ESP8266 becomes very hot, unstable, smells unusual, resets repeatedly, or changes color: immediately disconnect power and let it cool completely.**
+- **Do not assume that a larger numeric power value means a safe or linearly higher RF output.**
+- **`APWR` is an internal experimental control, not a calibrated dBm setting.**
+- **Project safety limit: keep `APWR <= 63` unless you are deliberately characterizing hardware on an instrumented bench and have independently established safe operating conditions.**
+- **Do not use `APWR=255` for normal testing.**
+
+### ⚠️ Critical note about `TEST-TONEv5.yaml`
+
+The current `TEST-TONEv5.yaml` in this repository initializes:
+
+```yaml
+current_apwr: 255
+ultimate_apwr: 255
+```
+
+Those defaults are **not recommended for routine use**.
+
+Before running the firmware, change them to:
+
+```yaml
+current_apwr: 63
+ultimate_apwr: 63
+```
+
+or lower.
+
+The repository owner has observed that the ESP8266 can become **very hot** above this project limit.
+
+`ULTIMATE ON` is especially demanding because it repeatedly enables TX while sweeping channels and tone-control values. Use it only for short, supervised bench measurements.
+
+---
+
+## Project goal
+
+The goal is to understand and experimentally validate parts of the ESP8266 WLAN PHY that are normally hidden behind Espressif's binary PHY implementation.
+
+The project separates three kinds of results:
+
+- **Software/static reverse-engineering:** behavior demonstrated from ROM, binaries, MMIO access, relocations, and control flow.
+- **Hardware/RF characterization:** relationships such as code-to-frequency, code-to-power, settling time, phase continuity, spectral purity, and thermal behavior that must be measured on real silicon.
+- **Open questions:** behavior that has not yet been demonstrated reliably.
+
+The project does **not** assume that an internal register code has a simple physical interpretation unless it has been measured.
+
+---
+
+## Repository contents
+
+The repository contains both living reverse-engineering notes and frozen reference documents.
+
+### Main references
+
+- [`ESP8266_PHY_MODULATIONS_REFERENCE_CONSOLIDEE_v2.0.md`](ESP8266_PHY_MODULATIONS_REFERENCE_CONSOLIDEE_v2.0.md)  
+  Consolidated French reference for OOK, ASK, FSK, M-FSK, QPSK and QAM.
+
+- [`ESP8266_PHY_MODULATIONS_CONSOLIDATED_REFERENCE_v2.0_EN.md`](ESP8266_PHY_MODULATIONS_CONSOLIDATED_REFERENCE_v2.0_EN.md)  
+  English consolidated reference.
+
+- [`ESP8266_ASK_OOK_REFERENCE_OFFICIELLE_PROJET_v1.0.md`](ESP8266_ASK_OOK_REFERENCE_OFFICIELLE_PROJET_v1.0.md)  
+  Frozen TX OOK/ASK project reference.
+
+- [`ESP8266_TX_FSK_MFSK_REFERENCE_OFFICIELLE_PROJET_v1.0.md`](ESP8266_TX_FSK_MFSK_REFERENCE_OFFICIELLE_PROJET_v1.0.md)  
+  Frozen TX FSK/M-FSK project reference.
+
+- [`ESP8266_RX_OOK_ASK_REFERENCE_OFFICIELLE_PROJET_v1.0.md`](ESP8266_RX_OOK_ASK_REFERENCE_OFFICIELLE_PROJET_v1.0.md)  
+  Frozen RX OOK/ASK project reference.
+
+- [`ESP8266_RX_FSK_MFSK_REFERENCE_OFFICIELLE_PROJET_v1.0.md`](ESP8266_RX_FSK_MFSK_REFERENCE_OFFICIELLE_PROJET_v1.0.md)  
+  Frozen RX FSK/M-FSK project reference.
+
+- `ESP8266_WIFI_PHY_REVERSE_ENGINEERING*.md`  
+  Historical/living reverse-engineering documents.
+
+### Test firmware
+
+The `TEST-TONE*.yaml` files are ESPHome-based experimental RF test firmwares.
+
+The newest version currently present is:
+
+```text
+TEST-TONEv5.yaml
+```
+
+It targets a **Wemos D1 mini / ESP8266**, runs the CPU at 160 MHz, disables the normal ESPHome logger UART, and exposes a simple **115200-baud serial console** on UART0.
+
+No normal Wi-Fi application connection is required for the test console.
+
+---
+
+## Current TX model
+
+### OOK
+
+The project identifies the normal tone gate as:
+
+```text
+Tone slot 1: 0x600005B8
+Gate: bit 18
+Mask: 0x00040000
+```
+
+Fast OOK changes only the gate while keeping the RF path and TX clock active.
+
+Conceptually:
+
+```text
+OOK 0 -> clear bit 18
+OOK 1 -> set bit 18
+```
+
+The `OFF` command is different: it shuts down the TX path rather than representing a fast OOK symbol.
+
+---
+
+## ASK / digital scale
+
+The software field used by the tone generator is:
+
+```text
+bits 17:10
+encoding = (-digital_scale) & 0xff
+canonical digital_scale range = 0..63
+```
+
+The serial command is:
+
+```text
+ASK 0..63
+```
+
+### Important
+
+`ASK` is the project's name for this **digital-scale control field**.
+
+It must **not** be interpreted as:
+
+- a calibrated RF voltage,
+- a percentage of output power,
+- a dBm value,
+- or a guaranteed monotonic amplitude control.
+
+Its physical spectral effect must be measured.
+
+---
+
+## FSK / M-FSK
+
+Fast FSK uses the low tone-control field while keeping the following fixed:
+
+```text
+RFPLL       fixed
+channel     fixed
+TX RF       active
+TX clock    active
+gate        active
+digital scale fixed
+```
+
+Only `tone_control` changes between symbols.
+
+The firmware protects the field with:
+
+```text
+K mask = 0x3ff
+K range = 0..1023
+```
+
+For 2-FSK:
+
+```text
+symbol 0 -> K0
+symbol 1 -> K1
+```
+
+For M-FSK:
+
+```text
+K0, K1, ... K(M-1)
+```
+
+### Important
+
+The project deliberately does **not** assume:
+
+```text
+K -> frequency in Hz
+```
+
+to be linear, symmetric, or constant-step.
+
+`K` is a raw hardware control code. The actual RF frequencies, wrap behavior, settling, jitter and phase behavior must be measured on the device.
+
+---
+
+## QPSK / QAM status
+
+The repository also documents the ESP8266 native QPSK / 16-QAM / 64-QAM paths.
+
+What is established:
+
+```text
+Wi-Fi-native BPSK/QPSK/16-QAM/64-QAM exists
+modulation is selected by the native PHY/rate path
+```
+
+What has **not** been demonstrated:
+
+```text
+arbitrary per-symbol QAM constellation injection
+CPU-visible raw I/Q TX FIFO
+general mapper bypass
+arbitrary constellation index API
+```
+
+Therefore the tone-test firmware should not be described as an arbitrary QAM transmitter.
+
+---
+
+## Serial console
+
+Default serial configuration:
+
+```text
+115200 baud
+8 data bits
+no parity
+1 stop bit
+```
+
+Useful commands in `TEST-TONEv5.yaml`:
+
+| Command | Purpose |
+|---|---|
+| `PHY` | Initialize/wake the PHY |
+| `CH n` | Select Wi-Fi channel 1..14 when accepted by the SDK/domain |
+| `FREQ MHz` | Select 2412..2472 MHz in 5 MHz steps, or attempt 2484 MHz |
+| `ON` | Enable the experimental TX tone path |
+| `OFF` | Stop sweep/test and shut down TX |
+| `K n` | Set raw tone-control code, 0..1023 |
+| `ASK n` | Set digital-scale field, 0..63 |
+| `APWR n` | Set experimental analog/scale control |
+| `OOK 0` / `OOK 1` | Toggle only the fast OOK gate while TX remains active |
+| `KSWEEP min max` | Configure a K sweep |
+| `KSTEP n` | Set K increment |
+| `DWELL ms` | Set sweep dwell time |
+| `SWEEP ON/OFF` | Start/stop the K sweep |
+| `USTEP n` | Set Ultimate-mode K step |
+| `UDWELL ms` | Set Ultimate-mode dwell |
+| `UPASSES n` | Set Ultimate-mode pass count |
+| `UAPWR n` | Set Ultimate-mode APWR |
+| `ULTIMATE ON/OFF` | Start/stop the multi-channel stress/sweep test |
+| `STATUS` | Show current state |
+| `HELP` | Show firmware command list |
+
+---
+
+## Recommended first test
+
+Use a shielded setup and begin conservatively.
+
+Example:
+
+```text
+PHY
+APWR 32
+ASK 63
+K 8
+ON
+STATUS
+```
+
+Observe the signal with a spectrum analyzer.
+
+Then stop TX:
+
+```text
+OFF
+```
+
+If the device temperature rises quickly, disconnect power and do not continue until the cause has been understood.
+
+---
+
+## Recommended K characterization
+
+A safer way to characterize the tone-control range is to keep one RF channel fixed and sweep `K`.
+
+Example:
+
+```text
+PHY
+CH 6
+APWR 32
+ASK 63
+ON
+KSWEEP 0 1023
+KSTEP 16
+DWELL 5
+SWEEP ON
+```
+
+Use a spectrum analyzer with suitable attenuation and, if useful, Max Hold.
+
+Stop with:
+
+```text
+SWEEP OFF
+OFF
+```
+
+After identifying interesting regions, reduce `KSTEP` for finer characterization.
+
+---
+
+## ⚠️ Ultimate mode
+
+`ULTIMATE ON` is a **stress / coverage experiment**, not a normal modulation mode.
+
+In `TEST-TONEv5.yaml`, it attempts to:
+
+- walk through channels 1..14,
+- sweep `K` across 0..1023,
+- run a phase using `ASK=63`,
+- run another phase using `ASK=0`,
+- repeat for the configured number of passes.
+
+This can create long periods of RF activity and substantial device heating.
+
+### Before using Ultimate mode
+
+Set:
+
+```text
+UAPWR 63
+```
+
+or lower.
+
+Prefer:
+
+```text
+USTEP 16
+UDWELL 1
+UPASSES 1
+```
+
+for a short first measurement.
+
+Always keep the serial stop command ready:
+
+```text
+ULTIMATE OFF
+```
+
+If the module becomes noticeably hotter than during ordinary Wi-Fi operation, stop the test and disconnect power.
+
+Do **not** use Ultimate mode as a burn-in test.
+
+---
+
+## Thermal warning
+
+The ESP8266 module and its RF output stage are not being operated here through a normal application-level Wi-Fi transmit workflow.
+
+This firmware may:
+
+- force the RF TX chain on,
+- keep the TX clock active,
+- bypass normal packet duty cycles,
+- run continuous tones,
+- repeatedly retune/sweep,
+- and modify undocumented/internal controls.
+
+Those conditions can produce much higher thermal stress than ordinary intermittent Wi-Fi traffic.
+
+**No software temperature protection is currently provided by `TEST-TONEv5.yaml`.**
+
+Treat abnormal heating as a stop condition.
+
+---
+
+## RF measurement precautions
+
+When connecting the ESP8266 directly to RF test equipment:
+
+- use appropriate attenuation,
+- verify the analyzer/input power rating,
+- avoid DC or RF conditions outside the instrument's specified limits,
+- prefer a shielded/conducted test arrangement,
+- and start at conservative settings.
+
+When testing over an antenna, use a Faraday cage or equivalent shielded environment.
+
+---
+
+## Regulatory warning
+
+This repository can generate continuous or non-standard signals in the 2.4 GHz region.
+
+The fact that the hardware can generate a signal does **not** mean that transmitting that signal over the air is permitted.
+
+Use the project only in a controlled RF environment and follow the rules applicable in your jurisdiction.
+
+---
+
+## Research status summary
+
+| Area | Project status |
+|---|---|
+| TX OOK software control | Closed at the documented software/MMIO level |
+| TX ASK digital-scale control | Closed at the software/MMIO level; physical RF law requires measurement |
+| TX FSK/M-FSK command path | Closed at the software/static level |
+| `K -> Hz` | Hardware/RF characterization required |
+| RX OOK/ASK software path | Documented in the project references; physical performance requires measurement |
+| RX FSK CFO software path | Documented; fresh CFO on arbitrary non-802.11 tones requires silicon/baseband validation |
+| Native Wi-Fi QPSK/QAM | Demonstrated through the native PHY/rate path |
+| Arbitrary QAM constellation injection | Not demonstrated |
+
+---
+
+## Terminology
+
+When the documents say **"official project reference"**, this means:
+
+> the frozen reference document used by this reverse-engineering project.
+
+It does **not** mean official Espressif documentation.
+
+---
+
+## Disclaimer
+
+This repository is experimental reverse-engineering and RF test work.
+
+No guarantee is made regarding:
+
+- hardware safety,
+- thermal limits,
+- RF output level,
+- spectral compliance,
+- frequency accuracy,
+- device-to-device repeatability,
+- or compatibility with every ESP8266 revision/SDK build.
+
+You are responsible for your test setup, instrument protection, regulatory compliance, and hardware.
+
+Start conservatively, measure, and stop immediately if the hardware behaves abnormally.
