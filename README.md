@@ -8,7 +8,7 @@
 >
 > This repository explores low-level ESP8266 radio behavior for **OOK / ASK / FSK / M-FSK** and documents research around **QPSK / QAM**.
 >
-> It is **not** an official Espressif project or documentation.
+> It is **not** an official Espressif project, product, certification, or documentation.
 
 ---
 
@@ -16,18 +16,19 @@
 
 **Read this before flashing or transmitting.**
 
-This project directly manipulates low-level ESP8266 PHY/RF registers and ROM routines. It can keep the RF transmit chain active continuously and can make the chip run **very hot**.
+This project directly manipulates low-level ESP8266 PHY/RF registers and ROM routines. It can keep the RF transmit chain active continuously, generate non-standard RF signals, and make the chip run **very hot**.
 
 ### Project safety rules
 
 - **Use a Faraday cage, shielded RF enclosure, or a properly attenuated conducted setup for RF testing.**
-- **Comply with the radio-frequency regulations and permitted transmit power in your country.**
+- **Comply with the radio-frequency regulations and permitted operating conditions in your country.**
 - **Do not leave the ESP8266 transmitting unattended.**
-- **If the ESP8266 becomes very hot, unstable, smells unusual, resets repeatedly, or changes color: immediately disconnect power and let it cool completely.**
+- **If the ESP8266 becomes very hot, unstable, smells unusual, resets repeatedly, draws abnormal current, or changes color: immediately disconnect power and let it cool completely.**
 - **Do not assume that a larger numeric power value means a safe or linearly higher RF output.**
 - **`APWR` is an internal experimental control, not a calibrated dBm setting.**
-- **Project safety limit: keep `APWR <= 63` unless you are deliberately characterizing hardware on an instrumented bench and have independently established safe operating conditions.**
+- **Project safety limit for routine tests: keep `APWR <= 63` unless you are deliberately characterizing hardware on an instrumented bench and have independently established safe operating conditions.**
 - **Do not use `APWR=255` for normal testing.**
+- **Do not use this project to intentionally interfere with, block, degrade, or deny radio communications.**
 
 ### ⚠️ Critical note about `TEST-TONEv5.yaml`
 
@@ -38,20 +39,21 @@ current_apwr: 255
 ultimate_apwr: 255
 ```
 
-Those defaults are **not recommended for routine use**.
+Those values are preserved in the repository as part of the experimental development history, but they are **not recommended as safe defaults for routine operation**.
 
-Before running the firmware, change them to:
+The repository owner has observed that the ESP8266 can become **very hot** with aggressive APWR settings and prolonged TX activity.
 
-```yaml
-current_apwr: 63
-ultimate_apwr: 63
+Before using that firmware, review the raw defaults and operate conservatively. For routine bench characterization, the project currently recommends:
+
+```text
+APWR <= 63
 ```
 
-or lower.
+This is a **project-defined conservative limit**, not an Espressif-certified maximum and not a calibrated RF power value.
 
-The repository owner has observed that the ESP8266 can become **very hot** above this project limit.
+`ULTIMATE ON` is especially demanding because it repeatedly enables TX while sweeping channels and tone-control values. Use it only for short, supervised measurements in a controlled RF test environment.
 
-`ULTIMATE ON` is especially demanding because it repeatedly enables TX while sweeping channels and tone-control values. Use it only for short, supervised bench measurements.
+There is currently **no software temperature protection** in `TEST-TONEv5.yaml`.
 
 ---
 
@@ -109,6 +111,8 @@ TEST-TONEv5.yaml
 It targets a **Wemos D1 mini / ESP8266**, runs the CPU at 160 MHz, disables the normal ESPHome logger UART, and exposes a simple **115200-baud serial console** on UART0.
 
 No normal Wi-Fi application connection is required for the test console.
+
+The `TEST-TONE*.yaml` files should be treated as **research artifacts**, not production firmware and not pre-certified radio configurations.
 
 ---
 
@@ -213,7 +217,7 @@ K -> frequency in Hz
 
 to be linear, symmetric, or constant-step.
 
-`K` is a raw hardware control code. The actual RF frequencies, wrap behavior, settling, jitter and phase behavior must be measured on the device.
+`K` is a raw hardware control code. The actual RF frequencies, wrap behavior, settling, jitter, phase behavior, occupied bandwidth, and unwanted emissions must be measured on the device.
 
 ---
 
@@ -276,6 +280,8 @@ Useful commands in `TEST-TONEv5.yaml`:
 | `ULTIMATE ON/OFF` | Start/stop the multi-channel stress/sweep test |
 | `STATUS` | Show current state |
 | `HELP` | Show firmware command list |
+
+The presence of a command in the firmware does **not** imply that every setting is lawful for over-the-air operation in every jurisdiction.
 
 ---
 
@@ -349,11 +355,11 @@ In `TEST-TONEv5.yaml`, it attempts to:
 - run another phase using `ASK=0`,
 - repeat for the configured number of passes.
 
-This can create long periods of RF activity and substantial device heating.
+This can create long periods of RF activity, substantial device heating, and uncharacterized spectral output.
 
 ### Before using Ultimate mode
 
-Set:
+For routine characterization, keep the configured analog-power control at or below the current project safety limit:
 
 ```text
 UAPWR 63
@@ -361,15 +367,13 @@ UAPWR 63
 
 or lower.
 
-Prefer:
+Prefer a short first measurement:
 
 ```text
 USTEP 16
 UDWELL 1
 UPASSES 1
 ```
-
-for a short first measurement.
 
 Always keep the serial stop command ready:
 
@@ -380,6 +384,24 @@ ULTIMATE OFF
 If the module becomes noticeably hotter than during ordinary Wi-Fi operation, stop the test and disconnect power.
 
 Do **not** use Ultimate mode as a burn-in test.
+
+Do **not** use Ultimate mode over the air to occupy spectrum, interfere with other systems, or test range against third-party networks.
+
+### Channel 14 / 2484 MHz note
+
+`TEST-TONEv5.yaml` can attempt channel 14 / 2484 MHz.
+
+That frequency must **not** be assumed to be an ordinary licence-exempt Wi-Fi operating point in your jurisdiction.
+
+For example, current Canadian RSS-247 requirements identify the relevant 2.4 GHz licence-exempt DTS/FHS band as:
+
+```text
+2400 MHz to 2483.5 MHz
+```
+
+A center frequency of 2484 MHz is therefore outside that band edge.
+
+Also remember that a center frequency being inside a permitted band is not sufficient by itself: sidebands, occupied bandwidth, out-of-band emissions, power, antenna gain, certification status, and other requirements can matter.
 
 ---
 
@@ -412,19 +434,81 @@ When connecting the ESP8266 directly to RF test equipment:
 - verify the analyzer/input power rating,
 - avoid DC or RF conditions outside the instrument's specified limits,
 - prefer a shielded/conducted test arrangement,
-- and start at conservative settings.
+- start at conservative settings,
+- and verify the complete emitted spectrum rather than only the strongest peak.
 
 When testing over an antenna, use a Faraday cage or equivalent shielded environment.
 
+A Faraday cage is a **risk-control measure**, not a guarantee that a particular radio operation is legally exempt. Leakage and the actual emitted spectrum still matter.
+
 ---
 
-## Regulatory warning
+## Regulatory and legal warning
+
+This section provides general information only and is **not legal advice**.
 
 This repository can generate continuous or non-standard signals in the 2.4 GHz region.
 
 The fact that the hardware can generate a signal does **not** mean that transmitting that signal over the air is permitted.
 
-Use the project only in a controlled RF environment and follow the rules applicable in your jurisdiction.
+### Licence-exempt does not mean unrestricted
+
+Radio rules vary by country.
+
+In Canada, RSS-247 currently covers relevant licence-exempt digital transmission/frequency-hopping systems in the **2400–2483.5 MHz** band. Equipment covered by that standard is licence-exempt only when the applicable technical and certification requirements are satisfied.
+
+In other words:
+
+> **"2.4 GHz licence-exempt" does not mean "any waveform, bandwidth, output power, firmware configuration, or frequency is permitted."**
+
+### Modified radio firmware and certification
+
+Low-level RF firmware changes can affect whether an originally certified radio remains covered by its original certification.
+
+Current Canadian RSS-Gen guidance states that a modified radio apparatus can be considered a new radio model, and specifically identifies **firmware modifications** as an example that can require reassessment under the applicable certification procedures.
+
+Therefore:
+
+> **Do not assume that the original certification of an ESP8266 module or development board automatically covers the experimental PHY/RF modes in this repository.**
+
+### Interference / jammer warning
+
+This project is intended for **controlled RF research and characterization**, not for interference.
+
+In Canada, the Radiocommunication Act prohibits the installation, use, possession, manufacture, import, distribution, leasing, offering for sale, or sale of a jammer, subject to specific legal exceptions.
+
+Do not use this project to intentionally block, disrupt, degrade, or deny radio communications.
+
+### Other jurisdictions
+
+FCC, EU/RED, UK, Japanese, Australian, and other national rules differ.
+
+Before any over-the-air use, check the current requirements of the regulator that applies to you.
+
+### Official Canadian references
+
+- ISED RSS-247:  
+  https://ised-isde.canada.ca/site/spectrum-management-telecommunications/en/devices-and-equipment/radio-equipment-standards/radio-standards-specifications-rss/rss-247-digital-transmission-systems-dtss-frequency-hopping-systems-fhss-and-licence-exempt-local
+
+- ISED RSS-Gen:  
+  https://ised-isde.canada.ca/site/spectrum-management-telecommunications/en/devices-and-equipment/radio-equipment-standards/radio-standards-specifications-rss/rss-gen-general-requirements-compliance-radio-apparatus
+
+- Radiocommunication Act:  
+  https://laws-lois.justice.gc.ca/eng/acts/R-2/
+
+Regulations and standards change. Re-check the current versions before relying on this summary.
+
+---
+
+## Repository licence status
+
+At the time of this README update, the repository does not include a root `LICENSE` file.
+
+Without an explicit licence, ordinary copyright rules apply by default. Publishing source code in a public GitHub repository does not automatically grant a general open-source licence for reuse, modification, or redistribution beyond the permissions provided by GitHub's terms.
+
+If the repository owner later wants to make the project explicitly open source, a separate licence can be added. This README does **not** itself grant a software licence.
+
+Do not add or redistribute third-party proprietary SDK archives, binary libraries, firmware, documentation, or source code unless you have the right to do so.
 
 ---
 
@@ -451,22 +535,39 @@ When the documents say **"official project reference"**, this means:
 
 It does **not** mean official Espressif documentation.
 
+"ESP8266" and "Espressif" are used only to identify the platform being studied. No affiliation, sponsorship, certification, or endorsement by Espressif is implied.
+
 ---
 
 ## Disclaimer
 
-This repository is experimental reverse-engineering and RF test work.
+This repository contains experimental reverse-engineering notes, firmware, and RF test material.
 
-No guarantee is made regarding:
+**THE MATERIAL IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.**
+
+To the maximum extent permitted by applicable law, no guarantee is made regarding:
 
 - hardware safety,
-- thermal limits,
+- thermal safety,
 - RF output level,
 - spectral compliance,
+- regulatory compliance,
 - frequency accuracy,
+- modulation accuracy,
 - device-to-device repeatability,
-- or compatibility with every ESP8266 revision/SDK build.
+- compatibility with every ESP8266 revision, SDK, board, or toolchain,
+- protection of connected RF test equipment,
+- or suitability for any particular purpose.
 
-You are responsible for your test setup, instrument protection, regulatory compliance, and hardware.
+Users are responsible for:
+
+- their own test setup,
+- protecting hardware and test equipment,
+- preventing harmful interference,
+- complying with applicable radio and equipment regulations,
+- determining whether a modified radio configuration remains covered by any certification,
+- and respecting third-party copyrights, licences, and trademarks.
+
+A disclaimer does **not** make prohibited radio operation legal and does not override mandatory law.
 
 Start conservatively, measure, and stop immediately if the hardware behaves abnormally.
