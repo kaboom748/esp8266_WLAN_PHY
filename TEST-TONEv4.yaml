@@ -1,0 +1,2444 @@
+esphome:
+  name: wemo-test
+  friendly_name: WEMO-TEST
+
+  includes:
+    - <user_interface.h>
+
+  platformio_options:
+    board_build.f_cpu: 160000000L
+
+
+esp8266:
+  board: d1_mini
+
+
+logger:
+  baud_rate: 0
+  level: NONE
+
+
+# ============================================================
+# ETAT GLOBAL
+# ============================================================
+
+globals:
+
+  - id: current_k
+    type: uint16_t
+    restore_value: no
+    initial_value: '8'
+
+  - id: current_ask
+    type: uint8_t
+    restore_value: no
+    initial_value: '63'
+
+  - id: current_apwr
+    type: uint8_t
+    restore_value: no
+    initial_value: '63'
+
+  - id: current_channel
+    type: uint8_t
+    restore_value: no
+    initial_value: '6'
+
+  - id: phy_ready
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+
+  - id: tx_active
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+
+  - id: apwr_configured
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+
+
+  # ==========================================================
+  # SWEEP
+  # ==========================================================
+
+  - id: sweep_active
+    type: bool
+    restore_value: no
+    initial_value: 'false'
+
+  - id: sweep_min
+    type: uint16_t
+    restore_value: no
+    initial_value: '0'
+
+  - id: sweep_max
+    type: uint16_t
+    restore_value: no
+    initial_value: '1023'
+
+  - id: sweep_k
+    type: uint16_t
+    restore_value: no
+    initial_value: '0'
+
+  - id: sweep_dir
+    type: int
+    restore_value: no
+    initial_value: '1'
+
+  - id: dwell_ms
+    type: uint32_t
+    restore_value: no
+    initial_value: '5'
+
+  - id: sweep_next_us
+    type: uint32_t
+    restore_value: no
+    initial_value: '0'
+
+
+# ============================================================
+# UART USB
+# ============================================================
+
+uart:
+  id: usb_serial
+
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+
+  baud_rate: 115200
+  data_bits: 8
+  parity: NONE
+  stop_bits: 1
+
+  rx_buffer_size: 256
+
+  debug:
+    direction: RX
+    dummy_receiver: true
+
+    after:
+      timeout: 20ms
+
+    sequence:
+
+      - lambda: |-
+
+          static String line = "";
+
+
+          // ====================================================
+          // REGISTRES
+          // ====================================================
+
+          constexpr uint32_t TONE1 =
+              0x600005B8u;
+
+          constexpr uint32_t TONE2 =
+              0x600005BCu;
+
+          constexpr uint32_t TONE3 =
+              0x600005C4u;
+
+
+          constexpr uint32_t K_MASK =
+              0x000003FFu;
+
+
+          constexpr uint32_t SCALE_MASK =
+              0x0003FC00u;
+
+          constexpr uint32_t SCALE_SHIFT =
+              10u;
+
+
+          constexpr uint32_t GATE_MASK =
+              0x00040000u;
+
+
+          constexpr uint32_t PBUS_CMD =
+              0x60000594u;
+
+          constexpr uint32_t PBUS_STATUS =
+              0x600005A0u;
+
+
+          constexpr uint32_t RX_CTRL =
+              0x60009B08u;
+
+          constexpr uint32_t RX_STOP =
+              0x08000000u;
+
+
+          // ====================================================
+          // ROM
+          // ====================================================
+
+          constexpr uint32_t ROM_SET_TXCLK_EN =
+              0x4000650Cu;
+
+          constexpr uint32_t ROM_SET_ANA_INF_TX_SCALE =
+              0x4000678Cu;
+
+
+          using SetTxClkFn =
+              void (*)(int);
+
+          using SetAnaScaleFn =
+              uint8_t (*)(uint8_t);
+
+
+          auto set_txclk =
+              reinterpret_cast<SetTxClkFn>(
+                ROM_SET_TXCLK_EN
+              );
+
+
+          auto set_ana_scale =
+              reinterpret_cast<SetAnaScaleFn>(
+                ROM_SET_ANA_INF_TX_SCALE
+              );
+
+
+          // ====================================================
+          // MMIO
+          // ====================================================
+
+          auto memw = []() {
+
+            __asm__ volatile(
+              "memw"
+              ::: "memory"
+            );
+
+          };
+
+
+          auto rd32 =
+              [](uint32_t addr) -> uint32_t {
+
+            return
+              *(volatile uint32_t *) addr;
+
+          };
+
+
+          auto wr32 =
+              [](uint32_t addr,
+                 uint32_t value) {
+
+            *(volatile uint32_t *) addr =
+                value;
+
+          };
+
+
+          // ====================================================
+          // SERIAL
+          // ====================================================
+
+          auto send =
+              [&](const char *s) {
+
+            id(usb_serial).write_str(s);
+            id(usb_serial).write_str("\r\n");
+
+          };
+
+
+          // ====================================================
+          // CHANNEL
+          // ====================================================
+
+          auto channel_to_mhz =
+              [](uint8_t ch) -> int {
+
+            if (
+              ch >= 1
+              &&
+              ch <= 13
+            ) {
+
+              return
+                2412
+                +
+                5 * ((int)ch - 1);
+
+            }
+
+            return -1;
+
+          };
+
+
+          auto mhz_to_channel =
+              [](int mhz) -> int {
+
+            if (
+              mhz < 2412
+              ||
+              mhz > 2472
+            ) {
+
+              return -1;
+
+            }
+
+
+            int delta =
+                mhz - 2412;
+
+
+            if (
+              (delta % 5)
+              != 0
+            ) {
+
+              return -1;
+
+            }
+
+
+            int ch =
+                1 + delta / 5;
+
+
+            if (
+              ch < 1
+              ||
+              ch > 13
+            ) {
+
+              return -1;
+
+            }
+
+
+            return ch;
+
+          };
+
+
+          // ====================================================
+          // ASK
+          // ====================================================
+
+          auto ask_code =
+              [](uint8_t scale) -> uint8_t {
+
+            return
+              (uint8_t)(
+                0u - scale
+              );
+
+          };
+
+
+          auto get_hw_ask =
+              [&](uint32_t slot) -> uint8_t {
+
+            uint8_t code =
+                (uint8_t)(
+                  (slot >> SCALE_SHIFT)
+                  &
+                  0xFFu
+                );
+
+
+            return
+              (uint8_t)(
+                0u - code
+              );
+
+          };
+
+
+          // ====================================================
+          // SET CHANNEL
+          // ====================================================
+
+          auto set_channel =
+              [&](uint8_t ch) -> bool {
+
+            if (
+              ch < 1
+              ||
+              ch > 13
+            ) {
+
+              send(
+                "ERR CHANNEL 1..13"
+              );
+
+              return false;
+
+            }
+
+
+            bool ok =
+                wifi_set_channel(
+                  ch
+                );
+
+
+            if (!ok) {
+
+              send(
+                "ERR wifi_set_channel"
+              );
+
+              return false;
+
+            }
+
+
+            delay(100);
+
+
+            id(current_channel) =
+                wifi_get_channel();
+
+
+            char b[100];
+
+
+            snprintf(
+              b,
+              sizeof(b),
+
+              "OK CH=%u CENTER=%d MHz",
+
+              id(current_channel),
+
+              channel_to_mhz(
+                id(current_channel)
+              )
+            );
+
+
+            send(b);
+
+
+            return true;
+
+          };
+
+
+          // ====================================================
+          // PHY INIT
+          // ====================================================
+
+          auto phy_start =
+              [&]() {
+
+            if (
+              id(phy_ready)
+            ) {
+
+              send(
+                "PHY ALREADY READY"
+              );
+
+              return;
+
+            }
+
+
+            send(
+              "PHY: START"
+            );
+
+
+            wifi_station_set_auto_connect(
+              0
+            );
+
+
+            bool mode_ok =
+                wifi_set_opmode_current(
+                  STATION_MODE
+                );
+
+
+            {
+              char b[80];
+
+              snprintf(
+                b,
+                sizeof(b),
+
+                "PHY: STATION_MODE=%u",
+
+                mode_ok ? 1 : 0
+              );
+
+              send(b);
+            }
+
+
+            delay(500);
+
+
+            wifi_station_disconnect();
+
+
+            bool sleep_ok =
+                wifi_set_sleep_type(
+                  NONE_SLEEP_T
+                );
+
+
+            {
+              char b[80];
+
+              snprintf(
+                b,
+                sizeof(b),
+
+                "PHY: NONE_SLEEP=%u",
+
+                sleep_ok ? 1 : 0
+              );
+
+              send(b);
+            }
+
+
+            if (
+              !set_channel(
+                id(current_channel)
+              )
+            ) {
+
+              send(
+                "PHY: CHANNEL INIT FAILED"
+              );
+
+              return;
+
+            }
+
+
+            delay(100);
+
+
+            id(phy_ready) =
+                true;
+
+
+            send(
+              "PHY: READY"
+            );
+
+          };
+
+
+          // ====================================================
+          // PBUS WRITE
+          // ====================================================
+
+          auto pbus_write =
+              [&](uint8_t selector,
+                  uint8_t bank,
+                  uint16_t value) -> bool {
+
+            uint32_t cmd =
+                rd32(
+                  PBUS_CMD
+                );
+
+
+            cmd &=
+                0xFFFF0001u;
+
+
+            cmd |=
+                (
+                  (uint32_t)(
+                    bank & 3u
+                  )
+                  << 14
+                );
+
+
+            cmd |=
+                (
+                  (uint32_t)(
+                    value & 0x1FFu
+                  )
+                  << 5
+                );
+
+
+            cmd |=
+                (
+                  (uint32_t)(
+                    selector & 7u
+                  )
+                  << 2
+                );
+
+
+            cmd |=
+                2u;
+
+
+            memw();
+
+            wr32(
+              PBUS_CMD,
+              cmd
+            );
+
+            memw();
+
+
+            uint32_t t0 =
+                micros();
+
+
+            while (
+              rd32(PBUS_STATUS)
+              &
+              0x80000000u
+            ) {
+
+
+              if (
+                (uint32_t)(
+                  micros() - t0
+                )
+                >
+                2000u
+              ) {
+
+
+                uint32_t r =
+                    rd32(
+                      PBUS_CMD
+                    );
+
+
+                r &=
+                    ~2u;
+
+
+                wr32(
+                  PBUS_CMD,
+                  r
+                );
+
+
+                memw();
+
+
+                return false;
+
+              }
+
+            }
+
+
+            uint32_t r =
+                rd32(
+                  PBUS_CMD
+                );
+
+
+            r &=
+                ~2u;
+
+
+            wr32(
+              PBUS_CMD,
+              r
+            );
+
+
+            memw();
+
+
+            return true;
+
+          };
+
+
+          // ====================================================
+          // MANUAL PBUS
+          // ====================================================
+
+          auto enter_manual =
+              [&]() {
+
+            uint32_t r;
+
+
+            r =
+                rd32(
+                  RX_CTRL
+                );
+
+
+            r |=
+                RX_STOP;
+
+
+            wr32(
+              RX_CTRL,
+              r
+            );
+
+
+            memw();
+
+
+            r =
+                rd32(
+                  PBUS_CMD
+                );
+
+
+            r |=
+                1u;
+
+
+            wr32(
+              PBUS_CMD,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          auto leave_manual =
+              [&]() {
+
+            uint32_t r;
+
+
+            r =
+                rd32(
+                  PBUS_CMD
+                );
+
+
+            r &=
+                ~1u;
+
+
+            wr32(
+              PBUS_CMD,
+              r
+            );
+
+
+            memw();
+
+
+            r =
+                rd32(
+                  RX_CTRL
+                );
+
+
+            r &=
+                ~RX_STOP;
+
+
+            wr32(
+              RX_CTRL,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          // ====================================================
+          // RF TX PATH
+          // ====================================================
+
+          auto tx_path_on =
+              [&]() -> bool {
+
+            if (
+              !pbus_write(
+                2,
+                1,
+                1
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            if (
+              !pbus_write(
+                7,
+                1,
+                95
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            /*
+             * PBUS(0,1,x)
+             * conserve volontairement.
+             */
+
+
+            if (
+              !pbus_write(
+                1,
+                1,
+                127
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            if (
+              !pbus_write(
+                6,
+                1,
+                127
+              )
+            ) {
+
+              return false;
+
+            }
+
+
+            return true;
+
+          };
+
+
+          auto tx_path_off =
+              [&]() {
+
+            pbus_write(
+              6,
+              1,
+              0
+            );
+
+
+            pbus_write(
+              1,
+              1,
+              12
+            );
+
+
+            pbus_write(
+              2,
+              1,
+              0
+            );
+
+          };
+
+
+          // ====================================================
+          // ANALOG POWER
+          // ====================================================
+
+          auto apply_apwr =
+              [&](uint8_t x) -> uint8_t {
+
+            memw();
+
+
+            uint8_t digital_return =
+                set_ana_scale(
+                  x
+                );
+
+
+            memw();
+
+
+            return
+              digital_return;
+
+          };
+
+
+          // ====================================================
+          // INITIAL TONE PROGRAM
+          // ====================================================
+
+          auto tone_program =
+              [&](uint16_t k,
+                  uint8_t scale) {
+
+            uint32_t old =
+                rd32(
+                  TONE1
+                );
+
+
+            uint32_t slot =
+                old
+                &
+                0xF0000000u;
+
+
+            slot |=
+                (
+                  (uint32_t)k
+                  &
+                  K_MASK
+                );
+
+
+            uint8_t code =
+                ask_code(
+                  scale
+                );
+
+
+            slot |=
+                (
+                  (uint32_t)code
+                  <<
+                  SCALE_SHIFT
+                );
+
+
+            slot |=
+                GATE_MASK;
+
+
+            memw();
+
+
+            wr32(
+              TONE1,
+              slot
+            );
+
+
+            memw();
+
+
+            uint32_t r;
+
+
+            r =
+                rd32(
+                  TONE2
+                );
+
+
+            r &=
+                ~GATE_MASK;
+
+
+            wr32(
+              TONE2,
+              r
+            );
+
+
+            memw();
+
+
+            r =
+                rd32(
+                  TONE3
+                );
+
+
+            r &=
+                ~GATE_MASK;
+
+
+            wr32(
+              TONE3,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          // ====================================================
+          // HOT K UPDATE
+          // ====================================================
+
+          auto tone_set_k =
+              [&](uint16_t k) {
+
+            uint32_t r =
+                rd32(
+                  TONE1
+                );
+
+
+            r &=
+                ~K_MASK;
+
+
+            r |=
+                (
+                  (uint32_t)k
+                  &
+                  K_MASK
+                );
+
+
+            memw();
+
+
+            wr32(
+              TONE1,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          // ====================================================
+          // HOT ASK UPDATE
+          // ====================================================
+
+          auto ask_set_scale =
+              [&](uint8_t scale) {
+
+            uint8_t code =
+                ask_code(
+                  scale
+                );
+
+
+            uint32_t r =
+                rd32(
+                  TONE1
+                );
+
+
+            r &=
+                ~SCALE_MASK;
+
+
+            r |=
+                (
+                  (uint32_t)code
+                  <<
+                  SCALE_SHIFT
+                );
+
+
+            memw();
+
+
+            wr32(
+              TONE1,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          // ====================================================
+          // GATE OFF
+          // ====================================================
+
+          auto gate_off =
+              [&]() {
+
+            uint32_t r =
+                rd32(
+                  TONE1
+                );
+
+
+            r &=
+                ~GATE_MASK;
+
+
+            wr32(
+              TONE1,
+              r
+            );
+
+
+            memw();
+
+          };
+
+
+          // ====================================================
+          // COMMAND PARSER
+          // ====================================================
+
+          for (
+            uint8_t c
+            :
+            bytes
+          ) {
+
+
+            if (
+              c >= 32
+              &&
+              c <= 126
+            ) {
+
+              id(usb_serial).write_byte(c);
+
+            }
+
+
+            if (
+              c == '\r'
+              ||
+              c == '\n'
+            ) {
+
+
+              if (
+                line.length() == 0
+              ) {
+
+                continue;
+
+              }
+
+
+              id(usb_serial).write_str(
+                "\r\n"
+              );
+
+
+              String cmd =
+                  line;
+
+
+              line =
+                  "";
+
+
+              cmd.trim();
+
+              cmd.toUpperCase();
+
+
+              // =================================================
+              // PHY
+              // =================================================
+
+              if (
+                cmd == "PHY"
+              ) {
+
+                phy_start();
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // CH n
+              // =================================================
+
+              if (
+                cmd.startsWith(
+                  "CH "
+                )
+              ) {
+
+
+                if (
+                  id(tx_active)
+                ) {
+
+                  send(
+                    "ERR: OFF FIRST BEFORE CH"
+                  );
+
+                  continue;
+
+                }
+
+
+                if (
+                  !id(phy_ready)
+                ) {
+
+                  phy_start();
+
+                }
+
+
+                String a =
+                    cmd.substring(
+                      3
+                    );
+
+
+                a.trim();
+
+
+                long ch =
+                    a.toInt();
+
+
+                if (
+                  ch < 1
+                  ||
+                  ch > 13
+                ) {
+
+                  send(
+                    "ERR CH 1..13"
+                  );
+
+                  continue;
+
+                }
+
+
+                set_channel(
+                  (uint8_t)ch
+                );
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // FREQ MHz
+              // =================================================
+
+              if (
+                cmd.startsWith(
+                  "FREQ "
+                )
+              ) {
+
+
+                if (
+                  id(tx_active)
+                ) {
+
+                  send(
+                    "ERR: OFF FIRST BEFORE FREQ"
+                  );
+
+                  continue;
+
+                }
+
+
+                if (
+                  !id(phy_ready)
+                ) {
+
+                  phy_start();
+
+                }
+
+
+                String a =
+                    cmd.substring(
+                      5
+                    );
+
+
+                a.trim();
+
+
+                int mhz =
+                    a.toInt();
+
+
+                int ch =
+                    mhz_to_channel(
+                      mhz
+                    );
+
+
+                if (
+                  ch < 1
+                ) {
+
+                  send(
+                    "ERR FREQ: 2412..2472 MHz STEP 5MHz"
+                  );
+
+                  continue;
+
+                }
+
+
+                set_channel(
+                  (uint8_t)ch
+                );
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // ON
+              // =================================================
+
+              if (
+                cmd == "ON"
+              ) {
+
+
+                if (
+                  !id(phy_ready)
+                ) {
+
+                  phy_start();
+
+                }
+
+
+                if (
+                  id(tx_active)
+                ) {
+
+                  send(
+                    "TX ALREADY ON"
+                  );
+
+                  continue;
+
+                }
+
+
+                id(sweep_active) =
+                    false;
+
+
+                enter_manual();
+
+
+                if (
+                  !tx_path_on()
+                ) {
+
+                  send(
+                    "ERR TX PATH"
+                  );
+
+
+                  leave_manual();
+
+                  continue;
+
+                }
+
+
+                if (
+                  id(apwr_configured)
+                ) {
+
+                  uint8_t ret =
+                      apply_apwr(
+                        id(current_apwr)
+                      );
+
+
+                  char p[100];
+
+
+                  snprintf(
+                    p,
+                    sizeof(p),
+
+                    "APWR REAPPLY x=%u ROM_DIGITAL=%u",
+
+                    id(current_apwr),
+
+                    ret
+                  );
+
+
+                  send(p);
+
+                }
+
+
+                set_txclk(
+                  1
+                );
+
+
+                tone_program(
+                  id(current_k),
+                  id(current_ask)
+                );
+
+
+                id(tx_active) =
+                    true;
+
+
+                uint32_t slot =
+                    rd32(
+                      TONE1
+                    );
+
+
+                char b[220];
+
+
+                snprintf(
+                  b,
+                  sizeof(b),
+
+                  "RF ON CH=%u CENTER=%dMHz K=%u ASK=%u APWR=%u SLOT=%08X GATE=%u",
+
+                  id(current_channel),
+
+                  channel_to_mhz(
+                    id(current_channel)
+                  ),
+
+                  id(current_k),
+
+                  id(current_ask),
+
+                  id(current_apwr),
+
+                  (unsigned int)slot,
+
+                  (slot & GATE_MASK)
+                    ? 1
+                    : 0
+                );
+
+
+                send(b);
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // OFF
+              // =================================================
+
+              if (
+                cmd == "OFF"
+              ) {
+
+
+                id(sweep_active) =
+                    false;
+
+
+                gate_off();
+
+
+                set_txclk(
+                  0
+                );
+
+
+                tx_path_off();
+
+
+                leave_manual();
+
+
+                id(tx_active) =
+                    false;
+
+
+                send(
+                  "OK RF OFF"
+                );
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // K n
+              // =================================================
+
+              if (
+                cmd.startsWith(
+                  "K "
+                )
+              ) {
+
+
+                String a =
+                    cmd.substring(
+                      2
+                    );
+
+
+                a.trim();
+
+
+                long value =
+                    a.toInt();
+
+
+                if (
+                  value < 0
+                  ||
+                  value > 1023
+                ) {
+
+                  send(
+                    "ERR K 0..1023"
+                  );
+
+                  continue;
+
+                }
+
+
+                // passage manuel => arrete le sweep
+                id(sweep_active) =
+                    false;
+
+
+                id(current_k) =
+                    (uint16_t)value;
+
+
+                if (
+                  id(tx_active)
+                ) {
+
+                  tone_set_k(
+                    id(current_k)
+                  );
+
+                }
+
+
+                char b[80];
+
+
+                snprintf(
+                  b,
+                  sizeof(b),
+
+                  "OK K=%u",
+
+                  id(current_k)
+                );
+
+
+                send(b);
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // ASK n
+              // =================================================
+
+              if (
+                cmd.startsWith(
+                  "ASK "
+                )
+              ) {
+
+
+                String a =
+                    cmd.substring(
+                      4
+                    );
+
+
+                a.trim();
+
+
+                long value =
+                    a.toInt();
+
+
+                if (
+                  value < 0
+                  ||
+                  value > 63
+                ) {
+
+                  send(
+                    "ERR ASK 0..63"
+                  );
+
+                  continue;
+
+                }
+
+
+                id(current_ask) =
+                    (uint8_t)value;
+
+
+                if (
+                  id(tx_active)
+                ) {
+
+                  ask_set_scale(
+                    id(current_ask)
+                  );
+
+                }
+
+
+                uint8_t code =
+                    ask_code(
+                      id(current_ask)
+                    );
+
+
+                char b[100];
+
+
+                snprintf(
+                  b,
+                  sizeof(b),
+
+                  "OK ASK=%u SCALE_CODE=0x%02X",
+
+                  id(current_ask),
+
+                  code
+                );
+
+
+                send(b);
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // APWR n
+              // =================================================
+
+              if (
+                cmd.startsWith(
+                  "APWR "
+                )
+              ) {
+
+
+                String a =
+                    cmd.substring(
+                      5
+                    );
+
+
+                a.trim();
+
+
+                long value =
+                    a.toInt();
+
+
+                if (
+                  value < 0
+                  ||
+                  value > 255
+                ) {
+
+                  send(
+                    "ERR APWR 0..255"
+                  );
+
+                  continue;
+
+                }
+
+
+                if (
+                  !id(phy_ready)
+                ) {
+
+                  phy_start();
+
+                }
+
+
+                id(current_apwr) =
+                    (uint8_t)value;
+
+
+                uint8_t digital_return =
+                    apply_apwr(
+                      id(current_apwr)
+                    );
+
+
+                id(apwr_configured) =
+                    true;
+
+
+                uint8_t analog_code;
+
+
+                if (
+                  id(current_apwr) < 64
+                ) {
+
+                  analog_code =
+                      0;
+
+                }
+
+                else {
+
+                  analog_code =
+                      (uint8_t)(
+                        63u
+                        -
+                        id(current_apwr)
+                      );
+
+                }
+
+
+                char b[180];
+
+
+                snprintf(
+                  b,
+                  sizeof(b),
+
+                  "OK APWR=%u ANALOG_CODE=0x%02X ROM_DIGITAL=%u ASK=%u",
+
+                  id(current_apwr),
+
+                  analog_code,
+
+                  digital_return,
+
+                  id(current_ask)
+                );
+
+
+                send(b);
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // KSWEEP min max
+              //
+              // Exemple:
+              // KSWEEP 0 1023
+              // =================================================
+
+              if (
+                cmd.startsWith(
+                  "KSWEEP "
+                )
+              ) {
+
+
+                long a = -1;
+                long b = -1;
+
+
+                int n =
+                    sscanf(
+                      cmd.c_str(),
+
+                      "KSWEEP %ld %ld",
+
+                      &a,
+                      &b
+                    );
+
+
+                if (
+                  n != 2
+                  ||
+                  a < 0
+                  ||
+                  b < 0
+                  ||
+                  a > 1023
+                  ||
+                  b > 1023
+                  ||
+                  a > b
+                ) {
+
+                  send(
+                    "ERR KSWEEP min max (0..1023)"
+                  );
+
+                  continue;
+
+                }
+
+
+                id(sweep_min) =
+                    (uint16_t)a;
+
+                id(sweep_max) =
+                    (uint16_t)b;
+
+                id(sweep_k) =
+                    id(sweep_min);
+
+                id(sweep_dir) =
+                    1;
+
+
+                char out[120];
+
+
+                snprintf(
+                  out,
+                  sizeof(out),
+
+                  "OK KSWEEP=%u..%u",
+
+                  id(sweep_min),
+
+                  id(sweep_max)
+                );
+
+
+                send(out);
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // DWELL ms
+              // =================================================
+
+              if (
+                cmd.startsWith(
+                  "DWELL "
+                )
+              ) {
+
+
+                String a =
+                    cmd.substring(
+                      6
+                    );
+
+
+                a.trim();
+
+
+                long value =
+                    a.toInt();
+
+
+                if (
+                  value < 1
+                  ||
+                  value > 60000
+                ) {
+
+                  send(
+                    "ERR DWELL 1..60000 ms"
+                  );
+
+                  continue;
+
+                }
+
+
+                id(dwell_ms) =
+                    (uint32_t)value;
+
+
+                char out[100];
+
+
+                snprintf(
+                  out,
+                  sizeof(out),
+
+                  "OK DWELL=%lu ms",
+
+                  (unsigned long)id(dwell_ms)
+                );
+
+
+                send(out);
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // SWEEP ON
+              // =================================================
+
+              if (
+                cmd == "SWEEP ON"
+              ) {
+
+
+                if (
+                  !id(tx_active)
+                ) {
+
+                  send(
+                    "ERR TX MUST BE ON"
+                  );
+
+                  continue;
+
+                }
+
+
+                id(sweep_k) =
+                    id(sweep_min);
+
+                id(sweep_dir) =
+                    1;
+
+
+                id(current_k) =
+                    id(sweep_min);
+
+
+                tone_set_k(
+                  id(current_k)
+                );
+
+
+                id(sweep_next_us) =
+                    micros()
+                    +
+                    (
+                      id(dwell_ms)
+                      *
+                      1000UL
+                    );
+
+
+                id(sweep_active) =
+                    true;
+
+
+                char out[180];
+
+
+                snprintf(
+                  out,
+                  sizeof(out),
+
+                  "OK SWEEP ON K=%u..%u DWELL=%lu ms",
+
+                  id(sweep_min),
+
+                  id(sweep_max),
+
+                  (unsigned long)id(dwell_ms)
+                );
+
+
+                send(out);
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // SWEEP OFF
+              // =================================================
+
+              if (
+                cmd == "SWEEP OFF"
+              ) {
+
+
+                id(sweep_active) =
+                    false;
+
+
+                char out[100];
+
+
+                snprintf(
+                  out,
+                  sizeof(out),
+
+                  "OK SWEEP OFF K=%u",
+
+                  id(current_k)
+                );
+
+
+                send(out);
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // STATUS
+              // =================================================
+
+              if (
+                cmd == "STATUS"
+              ) {
+
+
+                uint32_t slot =
+                    rd32(
+                      TONE1
+                    );
+
+
+                uint8_t hw_ch =
+                    wifi_get_channel();
+
+
+                int mhz =
+                    channel_to_mhz(
+                      hw_ch
+                    );
+
+
+                uint16_t hw_k =
+                    (uint16_t)(
+                      slot
+                      &
+                      K_MASK
+                    );
+
+
+                uint8_t scale_code =
+                    (uint8_t)(
+                      (slot >> SCALE_SHIFT)
+                      &
+                      0xFFu
+                    );
+
+
+                uint8_t hw_ask =
+                    get_hw_ask(
+                      slot
+                    );
+
+
+                char b[360];
+
+
+                snprintf(
+                  b,
+                  sizeof(b),
+
+                  "PHY=%u TX=%u CH=%u CENTER=%dMHz "
+                  "K=%u HW_K=%u "
+                  "ASK=%u HW_ASK=%u SCALE=0x%02X "
+                  "APWR=%u "
+                  "GATE=%u "
+                  "SWEEP=%u RANGE=%u..%u DWELL=%lums "
+                  "SLOT=%08X",
+
+                  id(phy_ready)
+                    ? 1
+                    : 0,
+
+                  id(tx_active)
+                    ? 1
+                    : 0,
+
+                  hw_ch,
+
+                  mhz,
+
+                  id(current_k),
+
+                  hw_k,
+
+                  id(current_ask),
+
+                  hw_ask,
+
+                  scale_code,
+
+                  id(current_apwr),
+
+                  (slot & GATE_MASK)
+                    ? 1
+                    : 0,
+
+                  id(sweep_active)
+                    ? 1
+                    : 0,
+
+                  id(sweep_min),
+
+                  id(sweep_max),
+
+                  (unsigned long)id(dwell_ms),
+
+                  (unsigned int)slot
+                );
+
+
+                send(b);
+
+
+                continue;
+
+              }
+
+
+              // =================================================
+              // HELP
+              // =================================================
+
+              if (
+                cmd == "HELP"
+              ) {
+
+
+                send("");
+
+                send(
+                  "ESP8266 RF / FSK LAB CONSOLE"
+                );
+
+                send(
+                  "----------------------------"
+                );
+
+                send(
+                  "PHY"
+                );
+
+                send(
+                  "CH n              channel 1..13"
+                );
+
+                send(
+                  "FREQ MHz          2412..2472 step 5MHz"
+                );
+
+                send(
+                  "K n               tone control 0..1023"
+                );
+
+                send(
+                  "ASK n             digital scale 0..63"
+                );
+
+                send(
+                  "APWR n            analog scale 0..255"
+                );
+
+                send(
+                  "KSWEEP min max    sweep K range"
+                );
+
+                send(
+                  "DWELL ms          1..60000 ms"
+                );
+
+                send(
+                  "SWEEP ON"
+                );
+
+                send(
+                  "SWEEP OFF"
+                );
+
+                send(
+                  "ON"
+                );
+
+                send(
+                  "OFF"
+                );
+
+                send(
+                  "STATUS"
+                );
+
+                send(
+                  "HELP"
+                );
+
+
+                continue;
+
+              }
+
+
+              send(
+                "ERR UNKNOWN"
+              );
+
+            }
+
+
+            else if (
+              c >= 32
+              &&
+              c <= 126
+            ) {
+
+
+              if (
+                line.length()
+                <
+                63
+              ) {
+
+                line +=
+                    (char)c;
+
+              }
+
+            }
+
+          }
+
+
+# ============================================================
+# NON-BLOCKING K SWEEP
+#
+# 1 ms scheduler.
+#
+# Le timing du sweep sert à la caractérisation spectrale.
+# Ce n'est PAS encore un symbole FSK hard-real-time.
+# ============================================================
+
+interval:
+
+  - interval: 1ms
+
+    then:
+
+      - lambda: |-
+
+          if (
+            !id(sweep_active)
+            ||
+            !id(tx_active)
+          ) {
+
+            return;
+
+          }
+
+
+          constexpr uint32_t TONE1 =
+              0x600005B8u;
+
+          constexpr uint32_t K_MASK =
+              0x000003FFu;
+
+
+          uint32_t now =
+              micros();
+
+
+          /*
+           * Comparaison signed pour accepter le wrap micros().
+           */
+
+          if (
+            (int32_t)(
+              now
+              -
+              id(sweep_next_us)
+            )
+            <
+            0
+          ) {
+
+            return;
+
+          }
+
+
+          uint16_t k =
+              id(sweep_k);
+
+
+          // ====================================================
+          // HOT UPDATE K ONLY
+          // ====================================================
+
+          uint32_t r =
+              *(volatile uint32_t *)TONE1;
+
+
+          r &=
+              ~K_MASK;
+
+
+          r |=
+              (
+                (uint32_t)k
+                &
+                K_MASK
+              );
+
+
+          __asm__ volatile(
+            "memw"
+            ::: "memory"
+          );
+
+
+          *(volatile uint32_t *)TONE1 =
+              r;
+
+
+          __asm__ volatile(
+            "memw"
+            ::: "memory"
+          );
+
+
+          id(current_k) =
+              k;
+
+
+          // ====================================================
+          // TRIANGLE SWEEP
+          //
+          // min -> max -> min -> max ...
+          // ====================================================
+
+          uint16_t mn =
+              id(sweep_min);
+
+          uint16_t mx =
+              id(sweep_max);
+
+
+          if (
+            mn == mx
+          ) {
+
+            id(sweep_k) =
+                mn;
+
+          }
+
+          else if (
+            id(sweep_dir) > 0
+          ) {
+
+
+            if (
+              k >= mx
+            ) {
+
+              id(sweep_dir) =
+                  -1;
+
+              id(sweep_k) =
+                  mx - 1;
+
+            }
+
+            else {
+
+              id(sweep_k) =
+                  k + 1;
+
+            }
+
+          }
+
+          else {
+
+
+            if (
+              k <= mn
+            ) {
+
+              id(sweep_dir) =
+                  1;
+
+              id(sweep_k) =
+                  mn + 1;
+
+            }
+
+            else {
+
+              id(sweep_k) =
+                  k - 1;
+
+            }
+
+          }
+
+
+          id(sweep_next_us) =
+              now
+              +
+              (
+                id(dwell_ms)
+                *
+                1000UL
+              );
