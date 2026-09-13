@@ -32,24 +32,54 @@ This project directly manipulates low-level ESP8266 PHY/RF registers and ROM rou
 
 ### ⚠️ Critical note about `TEST-TONEv5.yaml`
 
-The current `TEST-TONEv5.yaml` in this repository initializes:
+`TEST-TONEv5.yaml` intentionally preserves the experimental raw defaults used during development, including:
 
 ```yaml
 current_apwr: 255
 ultimate_apwr: 255
 ```
 
-Those values are preserved in the repository as part of the experimental development history, but they are **not recommended as safe defaults for routine operation**.
+These values are kept as part of the research history.
+
+**Do not interpret those defaults as recommended operating values.**
 
 The repository owner has observed that the ESP8266 can become **very hot** with aggressive APWR settings and prolonged TX activity.
 
-Before using that firmware, review the raw defaults and operate conservatively. For routine bench characterization, the project currently recommends:
+For routine bench characterization, the current project recommendation is:
 
 ```text
 APWR <= 63
 ```
 
 This is a **project-defined conservative limit**, not an Espressif-certified maximum and not a calibrated RF power value.
+
+Before using normal TX, explicitly set a conservative value first:
+
+```text
+PHY
+APWR 32
+ASK 63
+K 8
+ON
+```
+
+or, if you intentionally want to use the project ceiling for routine testing:
+
+```text
+PHY
+APWR 63
+ASK 63
+K 8
+ON
+```
+
+Before using Ultimate mode, explicitly set its power control first:
+
+```text
+UAPWR 63
+```
+
+or lower.
 
 `ULTIMATE ON` is especially demanding because it repeatedly enables TX while sweeping channels and tone-control values. Use it only for short, supervised measurements in a controlled RF test environment.
 
@@ -359,13 +389,17 @@ This can create long periods of RF activity, substantial device heating, and unc
 
 ### Before using Ultimate mode
 
-For routine characterization, keep the configured analog-power control at or below the current project safety limit:
+For routine characterization, explicitly set:
 
 ```text
 UAPWR 63
 ```
 
-or lower.
+or lower **before**:
+
+```text
+ULTIMATE ON
+```
 
 Prefer a short first measurement:
 
@@ -373,6 +407,8 @@ Prefer a short first measurement:
 USTEP 16
 UDWELL 1
 UPASSES 1
+UAPWR 63
+ULTIMATE ON
 ```
 
 Always keep the serial stop command ready:
@@ -391,7 +427,7 @@ Do **not** use Ultimate mode over the air to occupy spectrum, interfere with oth
 
 `TEST-TONEv5.yaml` can attempt channel 14 / 2484 MHz.
 
-That frequency must **not** be assumed to be an ordinary licence-exempt Wi-Fi operating point in your jurisdiction.
+Treat that function as **laboratory-only** unless you have independently established that your use is permitted.
 
 For example, current Canadian RSS-247 requirements identify the relevant 2.4 GHz licence-exempt DTS/FHS band as:
 
@@ -439,7 +475,7 @@ When connecting the ESP8266 directly to RF test equipment:
 
 When testing over an antenna, use a Faraday cage or equivalent shielded environment.
 
-A Faraday cage is a **risk-control measure**, not a guarantee that a particular radio operation is legally exempt. Leakage and the actual emitted spectrum still matter.
+A Faraday cage is a **risk-control measure**, not a blanket legal exemption. Leakage and the actual emitted spectrum still matter.
 
 ---
 
@@ -455,7 +491,9 @@ The fact that the hardware can generate a signal does **not** mean that transmit
 
 Radio rules vary by country.
 
-In Canada, RSS-247 currently covers relevant licence-exempt digital transmission/frequency-hopping systems in the **2400–2483.5 MHz** band. Equipment covered by that standard is licence-exempt only when the applicable technical and certification requirements are satisfied.
+In Canada, RSS-247 currently covers relevant licence-exempt digital transmission/frequency-hopping systems in the **2400–2483.5 MHz** band.
+
+Licence-exempt operation is still subject to the applicable technical, certification, emission, power, and equipment requirements.
 
 In other words:
 
@@ -465,7 +503,7 @@ In other words:
 
 Low-level RF firmware changes can affect whether an originally certified radio remains covered by its original certification.
 
-Current Canadian RSS-Gen guidance states that a modified radio apparatus can be considered a new radio model, and specifically identifies **firmware modifications** as an example that can require reassessment under the applicable certification procedures.
+Current Canadian RSS-Gen guidance recognizes firmware changes that affect RF characteristics as potentially relevant to certification and model status.
 
 Therefore:
 
@@ -475,9 +513,9 @@ Therefore:
 
 This project is intended for **controlled RF research and characterization**, not for interference.
 
-In Canada, the Radiocommunication Act prohibits the installation, use, possession, manufacture, import, distribution, leasing, offering for sale, or sale of a jammer, subject to specific legal exceptions.
-
 Do not use this project to intentionally block, disrupt, degrade, or deny radio communications.
+
+In Canada, the Radiocommunication Act contains specific prohibitions concerning jammers and harmful/interfering radio operation.
 
 ### Other jurisdictions
 
@@ -500,15 +538,27 @@ Regulations and standards change. Re-check the current versions before relying o
 
 ---
 
+## Reverse-engineering / third-party material notice
+
+This repository primarily contains original experimental firmware, factual observations, and reverse-engineering notes about ESP8266 behavior.
+
+Do not add or redistribute proprietary SDK archives, binary libraries, firmware images, source code, documentation, or other third-party material unless you have the right to do so.
+
+Reverse-engineering, interoperability, security-research, copyright, anti-circumvention, and redistribution rules vary by jurisdiction and can depend on the specific facts.
+
+This README does **not** claim that every possible reverse-engineering activity or redistribution is automatically lawful.
+
+---
+
 ## Repository licence status
 
 At the time of this README update, the repository does not include a root `LICENSE` file.
 
 Without an explicit licence, ordinary copyright rules apply by default. Publishing source code in a public GitHub repository does not automatically grant a general open-source licence for reuse, modification, or redistribution beyond the permissions provided by GitHub's terms.
 
-If the repository owner later wants to make the project explicitly open source, a separate licence can be added. This README does **not** itself grant a software licence.
+If the repository owner later wants to make the project explicitly open source, a separate licence can be added.
 
-Do not add or redistribute third-party proprietary SDK archives, binary libraries, firmware, documentation, or source code unless you have the right to do so.
+This README does **not** itself grant a software licence.
 
 ---
 
@@ -535,7 +585,9 @@ When the documents say **"official project reference"**, this means:
 
 It does **not** mean official Espressif documentation.
 
-"ESP8266" and "Espressif" are used only to identify the platform being studied. No affiliation, sponsorship, certification, or endorsement by Espressif is implied.
+"ESP8266" and "Espressif" are used only to identify the platform being studied.
+
+No affiliation, sponsorship, certification, or endorsement by Espressif is implied.
 
 ---
 
