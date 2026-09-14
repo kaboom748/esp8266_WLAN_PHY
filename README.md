@@ -423,6 +423,190 @@ Do **not** use Ultimate mode as a burn-in test.
 
 Do **not** use Ultimate mode over the air to occupy spectrum, interfere with other systems, or test range against third-party networks.
 
+
+## OOK Reception Test
+
+The `TEST-RX-OOK-SPEED-v3.yaml` file can be used to directly test OOK reception using the ESP8266 PHY `IQ_EST` block.
+
+The test flow is:
+
+1. enable the RX PHY;
+2. start an `IQ_EST` measurement;
+3. wait for the `DONE` bit;
+4. read the RX metric from register `0x600005E4`;
+5. calibrate a known `OFF` state and a known `ON` state;
+6. automatically compute an OOK decision threshold.
+
+### Initialization
+
+After flashing:
+
+```text
+PHY
+```
+
+Example:
+
+```text
+RX PHY: START
+RX PHY: STATION_MODE=1
+RX PHY: NONE_SLEEP=1
+RX PHY: CH=6 CENTER=2437MHz SET_OK=1
+RX PHY: READY (RX RF ON + RX CLOCK ON)
+```
+
+### Check the RX Registers
+
+```text
+REGS
+```
+
+Example:
+
+```text
+REGS CTRL_DONE=80041003 DONE=1 CTRL_AFTER_DISABLE=00001000 E4=00004BD7(19415)
+IQRES 580=00000000 584=00000000 588=00000000 58C=00000000 5DC=FFFDC400 5E0=FFFD85C0 5E4=00004BD7
+```
+
+The important field is:
+
+```text
+DONE=1
+```
+
+This indicates that the `IQ_EST` measurement completed successfully.
+
+A single measurement can also be triggered with:
+
+```text
+SAMPLE
+```
+
+Example:
+
+```text
+SAMPLE CH=6 E4=29233 CTRL_DONE=0x80041003 DONE=1 OOK=? TH=0 MIN=29233 MAX=29233 SPAN=0
+```
+
+### OOK Calibration
+
+With the transmitter in a known **OFF** state:
+
+```text
+CAL OFF
+```
+
+Then, with a known **ON** carrier:
+
+```text
+CAL ON
+```
+
+The firmware then automatically computes a threshold between the two measured levels.
+
+It does not assume that `E4` must increase when the carrier is present. The decision direction is determined automatically from the two calibration results.
+
+### Continuous Reception
+
+```text
+RATE 50
+STREAM ON
+```
+
+Example:
+
+```text
+RX t=12345 CH=6 E4=26921 CTRL=80041003 DONE=1 OOK=1 TH=110787 MIN=17420 MAX=207399 SPAN=189979
+RX t=12395 CH=6 E4=160769 CTRL=80041003 DONE=1 OOK=0 TH=110787 MIN=17420 MAX=207399 SPAN=189979
+```
+
+Stop streaming with:
+
+```text
+STREAM OFF
+```
+
+The output:
+
+```text
+OOK=0
+```
+
+or:
+
+```text
+OOK=1
+```
+
+is the decision made from the `E4` metric and the threshold obtained during calibration.
+
+### Test RX Measurement Speed
+
+The YAML can also benchmark the maximum measurement rate of the `IQ_EST` engine.
+
+Run:
+
+```text
+BENCH 1000
+```
+
+Example measured with `N=1024`:
+
+```text
+BENCH N=1024 COUNT=1000 TOTAL_US=28488 AVG_US=27 MIN_US=27 MAX_US=40 SPS=35102 1SAMPLE_BIT_CEIL=37037 DONE=1000/1000 E4MIN=7177 E4MAX=1274862
+```
+
+This corresponds to roughly:
+
+```text
+35,000 RX measurements per second
+```
+
+An automatic sweep can be run with:
+
+```text
+BENCHSWEEP
+```
+
+Measured results on the tested hardware:
+
+| N | Measurements/s |
+|---:|---:|
+| 16 | 305810 |
+| 32 | 292397 |
+| 64 | 235294 |
+| 128 | 169491 |
+| 256 | 110375 |
+| 512 | 64977 |
+| 1024 | 35323 |
+| 2048 | 18556 |
+| 4096 | 9515 |
+
+The integration window can be changed with:
+
+```text
+IQN 16
+```
+
+or, for example:
+
+```text
+IQN 256
+```
+
+After changing `IQN`, recalibration is recommended:
+
+```text
+CAL OFF
+CAL ON
+```
+
+because the `E4` distribution may change with the integration window.
+
+> Important: the number of measurements per second is **not** the same as the maximum reliable OOK bit rate.
+> To determine the real maximum OOK data rate, transmit a known bit pattern at increasing bit rates and measure detection errors.
+
+
 ### Channel 14 / 2484 MHz note
 
 `TEST-TONEv5.yaml` can attempt channel 14 / 2484 MHz.
