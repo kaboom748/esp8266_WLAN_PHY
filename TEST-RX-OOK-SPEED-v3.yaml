@@ -1,0 +1,455 @@
+# ESP8266 / Wemos D1 mini - OOK RX diagnostic + speed benchmark
+# Based on kaboom748/esp8266_WLAN_PHY RX OOK/ASK reference.
+# RX-only: does NOT start a TX tone.
+#
+# Serial console: 115200 8N1 on UART0 (GPIO1 TX / GPIO3 RX)
+# Commands:
+#   HELP
+#   PHY
+#   CH 1..14
+#   SAMPLE
+#   REGS
+#   CAL OFF
+#   CAL ON
+#   STREAM ON
+#   STREAM OFF
+#   RATE 10..5000
+#   IQN 1..32767
+#   BENCH count
+#   BENCHSWEEP
+#   RESETMINMAX
+#   STATUS
+#
+# Recommended test sequence:
+#   PHY
+#   CH 6
+#   SAMPLE
+#   REGS
+#   (OOK source OFF) CAL OFF
+#   (OOK source ON)  CAL ON
+#   STREAM ON
+#
+# Notes:
+# - This validates the IQ_EST control/result path and whether E4 reacts to RF energy.
+# - It is intentionally a diagnostic first step, not the complete fixed-gain/PBUS-debug
+#   autonomous receiver from the frozen project reference.
+
+esphome:
+  name: wemo-rx-speed-test
+  friendly_name: WEMO-RX-SPEED-TEST
+  includes:
+    - <user_interface.h>
+  platformio_options:
+    board_build.f_cpu: 160000000L
+
+esp8266:
+  board: d1_mini
+
+logger:
+  baud_rate: 0
+  level: NONE
+
+globals:
+  - { id: rx_ready, type: bool, restore_value: no, initial_value: 'false' }
+  - { id: current_channel, type: uint8_t, restore_value: no, initial_value: '6' }
+  - { id: iq_n, type: uint16_t, restore_value: no, initial_value: '1024' }
+
+  - { id: cal_off_valid, type: bool, restore_value: no, initial_value: 'false' }
+  - { id: cal_on_valid, type: bool, restore_value: no, initial_value: 'false' }
+  - { id: cal_off_e4, type: uint32_t, restore_value: no, initial_value: '0' }
+  - { id: cal_on_e4, type: uint32_t, restore_value: no, initial_value: '0' }
+  - { id: threshold_e4, type: uint32_t, restore_value: no, initial_value: '0' }
+  - { id: on_is_high, type: bool, restore_value: no, initial_value: 'true' }
+
+  - { id: stream_active, type: bool, restore_value: no, initial_value: 'false' }
+  - { id: stream_period_ms, type: uint32_t, restore_value: no, initial_value: '50' }
+  - { id: stream_next_ms, type: uint32_t, restore_value: no, initial_value: '0' }
+
+  - { id: min_valid, type: bool, restore_value: no, initial_value: 'false' }
+  - { id: min_e4, type: uint32_t, restore_value: no, initial_value: '0' }
+  - { id: max_e4, type: uint32_t, restore_value: no, initial_value: '0' }
+
+uart:
+  id: usb_serial
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 115200
+  data_bits: 8
+  parity: NONE
+  stop_bits: 1
+  rx_buffer_size: 256
+  debug:
+    direction: RX
+    dummy_receiver: true
+    after:
+      timeout: 20ms
+    sequence:
+      - lambda: |-
+          static String line = "";
+
+          constexpr uint32_t IQ_EST_CTRL = 0x6000057Cu;
+          constexpr uint32_t IQ_R0       = 0x60000580u;
+          constexpr uint32_t IQ_R1       = 0x60000584u;
+          constexpr uint32_t IQ_R2       = 0x60000588u;
+          constexpr uint32_t IQ_R3       = 0x6000058Cu;
+          constexpr uint32_t IQ_R4       = 0x600005DCu;
+          constexpr uint32_t IQ_R5       = 0x600005E0u;
+          constexpr uint32_t IQ_POWER_E4 = 0x600005E4u;
+
+          constexpr uint32_t ROM_IQ_EST_DISABLE = 0x40006400u;
+          constexpr uint32_t ROM_IQ_EST_ENABLE  = 0x40006430u;
+          constexpr uint32_t ROM_SET_RXCLK_EN   = 0x40006550u;
+          constexpr uint32_t ROM_PBUS_XPD_RX_ON = 0x400076CCu;
+
+          using IqEnableFn = void (*)(uint32_t, uint32_t);
+          using IqDisableFn = void (*)(void);
+          using SetRxClkFn = void (*)(int);
+          using RxOnFn = void (*)(void);
+
+          auto iq_enable = reinterpret_cast<IqEnableFn>(ROM_IQ_EST_ENABLE);
+          auto iq_disable = reinterpret_cast<IqDisableFn>(ROM_IQ_EST_DISABLE);
+          auto set_rxclk = reinterpret_cast<SetRxClkFn>(ROM_SET_RXCLK_EN);
+          auto rx_on = reinterpret_cast<RxOnFn>(ROM_PBUS_XPD_RX_ON);
+
+          auto memw=[](){ __asm__ volatile("memw" ::: "memory"); };
+          auto rd32=[](uint32_t a)->uint32_t{ return *(volatile uint32_t*)a; };
+          auto send=[&](const char *s){ id(usb_serial).write_str(s); id(usb_serial).write_str("\r\n"); };
+          auto ch2mhz=[](uint8_t ch)->int{
+            if(ch>=1 && ch<=13) return 2412 + 5*((int)ch-1);
+            if(ch==14) return 2484;
+            return -1;
+          };
+
+          auto update_threshold=[&](){
+            if(id(cal_off_valid) && id(cal_on_valid)){
+              uint64_t sum = (uint64_t)id(cal_off_e4) + (uint64_t)id(cal_on_e4);
+              id(threshold_e4) = (uint32_t)(sum / 2u);
+              id(on_is_high) = id(cal_on_e4) > id(cal_off_e4);
+            }
+          };
+
+          auto phy_start=[&](){
+            if(id(rx_ready)){ send("RX PHY ALREADY READY"); return; }
+            send("RX PHY: START");
+            wifi_station_set_auto_connect(0);
+            bool mode_ok = wifi_set_opmode_current(STATION_MODE);
+            { char b[72]; snprintf(b,sizeof(b),"RX PHY: STATION_MODE=%u",mode_ok?1:0); send(b); }
+            delay(300);
+            wifi_station_disconnect();
+            bool sleep_ok = wifi_set_sleep_type(NONE_SLEEP_T);
+            { char b[72]; snprintf(b,sizeof(b),"RX PHY: NONE_SLEEP=%u",sleep_ok?1:0); send(b); }
+
+            bool ch_ok = wifi_set_channel(id(current_channel));
+            delay(100);
+            id(current_channel)=wifi_get_channel();
+            { char b[96]; snprintf(b,sizeof(b),"RX PHY: CH=%u CENTER=%dMHz SET_OK=%u",id(current_channel),ch2mhz(id(current_channel)),ch_ok?1:0); send(b); }
+
+            // Project canonical normal RX primitives.
+            memw(); rx_on(); memw();
+            memw(); set_rxclk(1); memw();
+            delay(10);
+
+            id(rx_ready)=true;
+            send("RX PHY: READY (RX RF ON + RX CLOCK ON)");
+          };
+
+          auto measure_n=[&](uint32_t n, uint32_t *ctrl_done)->uint32_t{
+            memw();
+            iq_enable(1u, n);       // ROM returns only after hardware DONE.
+            memw();
+            uint32_t c = rd32(IQ_EST_CTRL);
+            uint32_t e = rd32(IQ_POWER_E4);
+            if(ctrl_done) *ctrl_done = c;
+            memw();
+            iq_disable();           // full re-arm sequence.
+            memw();
+            return e;
+          };
+
+          auto measure=[&](uint32_t *ctrl_done)->uint32_t{
+            return measure_n((uint32_t)id(iq_n), ctrl_done);
+          };
+
+          auto update_minmax=[&](uint32_t e){
+            if(!id(min_valid)){
+              id(min_e4)=e; id(max_e4)=e; id(min_valid)=true;
+            } else {
+              if(e<id(min_e4)) id(min_e4)=e;
+              if(e>id(max_e4)) id(max_e4)=e;
+            }
+          };
+
+          auto calibrate=[&](bool is_on){
+            if(!id(rx_ready)) phy_start();
+            const uint32_t N=32;
+            uint64_t sum=0;
+            uint32_t mn=0, mx=0;
+            for(uint32_t i=0;i<N;i++){
+              uint32_t ctrl=0;
+              uint32_t e=measure(&ctrl);
+              if(i==0){ mn=e; mx=e; }
+              if(e<mn) mn=e;
+              if(e>mx) mx=e;
+              sum += e;
+              delay(2);
+              yield();
+            }
+            uint32_t avg=(uint32_t)(sum/N);
+            if(is_on){ id(cal_on_e4)=avg; id(cal_on_valid)=true; }
+            else     { id(cal_off_e4)=avg; id(cal_off_valid)=true; }
+            update_threshold();
+            char b[220];
+            snprintf(b,sizeof(b),"CAL %s AVG=%u MIN=%u MAX=%u VALID_OFF=%u VALID_ON=%u TH=%u ON_IS_%s",
+                     is_on?"ON":"OFF",avg,mn,mx,id(cal_off_valid)?1:0,id(cal_on_valid)?1:0,
+                     id(threshold_e4),id(on_is_high)?"HIGH":"LOW");
+            send(b);
+          };
+
+          for(uint8_t c:bytes){
+            if(c>=32 && c<=126) id(usb_serial).write_byte(c);
+            if(c=='\r' || c=='\n'){
+              if(line.length()==0) continue;
+              id(usb_serial).write_str("\r\n");
+              String cmd=line; line=""; cmd.trim(); cmd.toUpperCase();
+
+              if(cmd=="PHY"){
+                phy_start();
+                continue;
+              }
+
+              if(cmd.startsWith("CH ")){
+                if(!id(rx_ready)) phy_start();
+                long ch=cmd.substring(3).toInt();
+                if(ch<1 || ch>14){ send("ERR CH 1..14"); continue; }
+                bool ok=wifi_set_channel((uint8_t)ch);
+                delay(100);
+                id(current_channel)=wifi_get_channel();
+                char b[100]; snprintf(b,sizeof(b),"OK CH=%u CENTER=%dMHz SET_OK=%u",id(current_channel),ch2mhz(id(current_channel)),ok?1:0); send(b);
+                continue;
+              }
+
+              if(cmd=="SAMPLE"){
+                if(!id(rx_ready)) phy_start();
+                uint32_t ctrl=0;
+                uint32_t e=measure(&ctrl);
+                update_minmax(e);
+                bool done=(ctrl & 0x80000000u)!=0;
+                char ook='?';
+                if(id(cal_off_valid)&&id(cal_on_valid)){
+                  bool on=id(on_is_high)?(e>id(threshold_e4)):(e<id(threshold_e4));
+                  ook=on?'1':'0';
+                }
+                char b[240];
+                snprintf(b,sizeof(b),"SAMPLE CH=%u E4=%u CTRL_DONE=0x%08X DONE=%u OOK=%c TH=%u MIN=%u MAX=%u SPAN=%u",
+                         id(current_channel),e,(unsigned int)ctrl,done?1:0,ook,id(threshold_e4),id(min_e4),id(max_e4),id(max_e4)-id(min_e4));
+                send(b);
+                continue;
+              }
+
+              if(cmd=="REGS"){
+                if(!id(rx_ready)) phy_start();
+                memw(); iq_enable(1u,(uint32_t)id(iq_n)); memw();
+                uint32_t c_on=rd32(IQ_EST_CTRL);
+                uint32_t r0=rd32(IQ_R0), r1=rd32(IQ_R1), r2=rd32(IQ_R2), r3=rd32(IQ_R3);
+                uint32_t r4=rd32(IQ_R4), r5=rd32(IQ_R5), e4=rd32(IQ_POWER_E4);
+                memw(); iq_disable(); memw();
+                uint32_t c_off=rd32(IQ_EST_CTRL);
+                char b1[260];
+                snprintf(b1,sizeof(b1),"REGS CTRL_DONE=%08X DONE=%u CTRL_AFTER_DISABLE=%08X E4=%08X(%u)",
+                         (unsigned int)c_on,(c_on&0x80000000u)?1:0,(unsigned int)c_off,(unsigned int)e4,e4);
+                send(b1);
+                char b2[300];
+                snprintf(b2,sizeof(b2),"IQRES 580=%08X 584=%08X 588=%08X 58C=%08X 5DC=%08X 5E0=%08X 5E4=%08X",
+                         (unsigned int)r0,(unsigned int)r1,(unsigned int)r2,(unsigned int)r3,(unsigned int)r4,(unsigned int)r5,(unsigned int)e4);
+                send(b2);
+                continue;
+              }
+
+              if(cmd=="CAL OFF"){ calibrate(false); continue; }
+              if(cmd=="CAL ON"){ calibrate(true); continue; }
+
+              if(cmd=="STREAM ON"){
+                if(!id(rx_ready)) phy_start();
+                id(stream_next_ms)=millis();
+                id(stream_active)=true;
+                send("OK STREAM ON");
+                continue;
+              }
+              if(cmd=="STREAM OFF"){
+                id(stream_active)=false;
+                send("OK STREAM OFF");
+                continue;
+              }
+
+              if(cmd.startsWith("RATE ")){
+                long v=cmd.substring(5).toInt();
+                if(v<10 || v>5000){ send("ERR RATE 10..5000 ms"); continue; }
+                id(stream_period_ms)=(uint32_t)v;
+                char b[64]; snprintf(b,sizeof(b),"OK RATE=%lu ms",(unsigned long)id(stream_period_ms)); send(b);
+                continue;
+              }
+
+              if(cmd.startsWith("IQN ")){
+                long v=cmd.substring(4).toInt();
+                if(v<1 || v>32767){ send("ERR IQN 1..32767"); continue; }
+                id(iq_n)=(uint16_t)v;
+                // E4 scale/timing may change with N; force a fresh calibration.
+                id(cal_off_valid)=false; id(cal_on_valid)=false; id(threshold_e4)=0;
+                id(min_valid)=false; id(min_e4)=0; id(max_e4)=0;
+                char b[100]; snprintf(b,sizeof(b),"OK IQN=%u CALIBRATION CLEARED",id(iq_n)); send(b);
+                continue;
+              }
+
+              if(cmd.startsWith("BENCH ")){
+                long count=cmd.substring(6).toInt();
+                if(count<10 || count>10000){ send("ERR BENCH 10..10000"); continue; }
+                if(!id(rx_ready)) phy_start();
+                id(stream_active)=false;
+                uint64_t sum_us=0;
+                uint32_t min_us=0xFFFFFFFFu, max_us=0, done_ok=0;
+                uint32_t e_min=0, e_max=0; bool e_valid=false;
+                uint32_t total_t0=micros();
+                for(long i=0;i<count;i++){
+                  uint32_t ctrl=0;
+                  uint32_t t0=micros();
+                  uint32_t e=measure(&ctrl);
+                  uint32_t dt=(uint32_t)(micros()-t0);
+                  sum_us += dt;
+                  if(dt<min_us) min_us=dt;
+                  if(dt>max_us) max_us=dt;
+                  if(ctrl&0x80000000u) done_ok++;
+                  if(!e_valid){ e_min=e_max=e; e_valid=true; }
+                  else { if(e<e_min)e_min=e; if(e>e_max)e_max=e; }
+                  if((i&31)==31) yield();
+                }
+                uint32_t total_us=(uint32_t)(micros()-total_t0);
+                uint32_t avg_us=(uint32_t)(sum_us/(uint64_t)count);
+                uint32_t sps = total_us ? (uint32_t)(((uint64_t)count*1000000ULL)/total_us) : 0;
+                uint32_t one_sample_bps = avg_us ? (1000000u/avg_us) : 0;
+                char b[320];
+                snprintf(b,sizeof(b),
+                         "BENCH N=%u COUNT=%ld TOTAL_US=%u AVG_US=%u MIN_US=%u MAX_US=%u SPS=%u 1SAMPLE_BIT_CEIL=%u DONE=%u/%ld E4MIN=%u E4MAX=%u",
+                         id(iq_n),count,total_us,avg_us,min_us,max_us,sps,one_sample_bps,done_ok,count,e_min,e_max);
+                send(b);
+                continue;
+              }
+
+              if(cmd=="BENCHSWEEP"){
+                if(!id(rx_ready)) phy_start();
+                id(stream_active)=false;
+                const uint16_t ns[]={16,32,64,128,256,512,1024,2048,4096};
+                const uint32_t reps=100;
+                send("BENCHSWEEP: timing only; UART output excluded from inner loop");
+                for(uint32_t j=0;j<sizeof(ns)/sizeof(ns[0]);j++){
+                  uint16_t n=ns[j];
+                  uint64_t sum_us=0; uint32_t mn=0xFFFFFFFFu,mx=0,done_ok=0;
+                  uint32_t tt0=micros();
+                  for(uint32_t i=0;i<reps;i++){
+                    uint32_t ctrl=0; uint32_t t0=micros();
+                    (void)measure_n(n,&ctrl);
+                    uint32_t dt=(uint32_t)(micros()-t0);
+                    sum_us+=dt; if(dt<mn)mn=dt; if(dt>mx)mx=dt; if(ctrl&0x80000000u)done_ok++;
+                    if((i&31u)==31u) yield();
+                  }
+                  uint32_t total=(uint32_t)(micros()-tt0);
+                  uint32_t avg=(uint32_t)(sum_us/reps);
+                  uint32_t sps=total?(uint32_t)(((uint64_t)reps*1000000ULL)/total):0;
+                  char b[220]; snprintf(b,sizeof(b),"SWEEP N=%u AVG_US=%u MIN_US=%u MAX_US=%u SPS=%u DONE=%u/%u",n,avg,mn,mx,sps,done_ok,reps); send(b);
+                  yield();
+                }
+                send("BENCHSWEEP DONE");
+                continue;
+              }
+
+              if(cmd=="RESETMINMAX"){
+                id(min_valid)=false; id(min_e4)=0; id(max_e4)=0;
+                send("OK MIN/MAX RESET");
+                continue;
+              }
+
+              if(cmd=="STATUS"){
+                update_threshold();
+                char b[340];
+                snprintf(b,sizeof(b),"RX_READY=%u CH=%u CENTER=%dMHz IQN=%u STREAM=%u RATE=%lums CAL_OFF=%u:%u CAL_ON=%u:%u TH=%u ON_IS_%s MIN=%u MAX=%u",
+                         id(rx_ready)?1:0,id(current_channel),ch2mhz(id(current_channel)),id(iq_n),id(stream_active)?1:0,
+                         (unsigned long)id(stream_period_ms),id(cal_off_valid)?1:0,id(cal_off_e4),id(cal_on_valid)?1:0,id(cal_on_e4),
+                         id(threshold_e4),id(on_is_high)?"HIGH":"LOW",id(min_e4),id(max_e4));
+                send(b);
+                continue;
+              }
+
+              if(cmd=="HELP"){
+                send("");
+                send("ESP8266 OOK RX DIAGNOSTIC");
+                send("PHY                init RX RF + RX clock");
+                send("CH n               channel 1..14");
+                send("SAMPLE             one IQ_EST/E4 measurement");
+                send("REGS               dump IQ_EST/result registers");
+                send("CAL OFF            average 32 known-OFF samples");
+                send("CAL ON             average 32 known-ON samples");
+                send("STREAM ON/OFF      continuous E4 + OOK output");
+                send("RATE ms            10..5000 (display stream only)");
+                send("IQN n              IQ_EST N=1..32767; default 1024");
+                send("BENCH count         measure true IQ_EST loop speed, 10..10000");
+                send("BENCHSWEEP          benchmark N=16..4096");
+                send("RESETMINMAX         clear observed min/max");
+                send("STATUS / HELP");
+                continue;
+              }
+
+              send("ERR UNKNOWN");
+            } else if(c>=32 && c<=126){
+              if(line.length()<80) line+=(char)c;
+            }
+          }
+
+interval:
+  - interval: 10ms
+    then:
+      - lambda: |-
+          if(!id(stream_active) || !id(rx_ready)) return;
+          uint32_t now=millis();
+          if((int32_t)(now-id(stream_next_ms))<0) return;
+          id(stream_next_ms)=now+id(stream_period_ms);
+
+          constexpr uint32_t IQ_EST_CTRL = 0x6000057Cu;
+          constexpr uint32_t IQ_POWER_E4 = 0x600005E4u;
+          constexpr uint32_t ROM_IQ_EST_DISABLE = 0x40006400u;
+          constexpr uint32_t ROM_IQ_EST_ENABLE  = 0x40006430u;
+
+          using IqEnableFn = void (*)(uint32_t, uint32_t);
+          using IqDisableFn = void (*)(void);
+          auto iq_enable = reinterpret_cast<IqEnableFn>(ROM_IQ_EST_ENABLE);
+          auto iq_disable = reinterpret_cast<IqDisableFn>(ROM_IQ_EST_DISABLE);
+
+          auto memw=[](){ __asm__ volatile("memw" ::: "memory"); };
+          auto rd32=[](uint32_t a)->uint32_t{ return *(volatile uint32_t*)a; };
+          auto send=[&](const char *s){ id(usb_serial).write_str(s); id(usb_serial).write_str("\r\n"); };
+
+          memw();
+          iq_enable(1u,(uint32_t)id(iq_n));
+          memw();
+          uint32_t ctrl=rd32(IQ_EST_CTRL);
+          uint32_t e=rd32(IQ_POWER_E4);
+          memw();
+          iq_disable();
+          memw();
+
+          if(!id(min_valid)){
+            id(min_e4)=e; id(max_e4)=e; id(min_valid)=true;
+          } else {
+            if(e<id(min_e4)) id(min_e4)=e;
+            if(e>id(max_e4)) id(max_e4)=e;
+          }
+
+          char ook='?';
+          if(id(cal_off_valid) && id(cal_on_valid)){
+            bool on=id(on_is_high)?(e>id(threshold_e4)):(e<id(threshold_e4));
+            ook=on?'1':'0';
+          }
+
+          char b[260];
+          snprintf(b,sizeof(b),"RX t=%lu CH=%u N=%u E4=%u CTRL=%08X DONE=%u OOK=%c TH=%u MIN=%u MAX=%u SPAN=%u",
+                   (unsigned long)now,id(current_channel),id(iq_n),e,(unsigned int)ctrl,(ctrl&0x80000000u)?1:0,
+                   ook,id(threshold_e4),id(min_e4),id(max_e4),id(max_e4)-id(min_e4));
+          send(b);
