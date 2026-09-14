@@ -1,0 +1,288 @@
+# ESP8266 2.4 GHz RF OCCUPANCY SCANNER - WEBSERIAL EDITION
+# ---------------------------------------------------------
+# Based on kaboom748/esp8266_WLAN_PHY occupancy scanner.
+# RF measurement logic is intentionally kept equivalent to the GitHub version.
+#
+# Serial output is dedicated to the companion standalone HTML dashboard:
+#   - UART0 TX only (GPIO1)
+#   - 921600 baud, 8N1
+#   - ESPHome logger disabled on UART
+#   - no ANSI / VT100 / PuTTY UI
+#
+# Output protocol (ASCII lines):
+#   SCAN,b1,b2,...,b13
+#   CH,1,busy,avg_e4
+#   CH,2,busy,avg_e4
+#   ...
+#   CH,13,busy,avg_e4
+#
+# The existing HTML dashboard understands SCAN and CH lines directly.
+# BUSY is an RF-occupancy estimate from IQ_EST/E4; AVG_E4 is a raw PHY metric,
+# not calibrated dBm and not decoded 802.11 airtime.
+
+esphome:
+  name: wemo-rf-occupancy-webserial
+  friendly_name: WEMO-RF-OCCUPANCY-WEBSERIAL
+  includes:
+    - <user_interface.h>
+  platformio_options:
+    board_build.f_cpu: 160000000L
+
+esp8266:
+  board: d1_mini
+
+# Absolutely no ESPHome log text on UART0: the browser owns this stream.
+logger:
+  baud_rate: 0
+  level: NONE
+
+# UART0 -> onboard USB/serial adapter on most D1 mini boards.
+# RX is intentionally omitted: this firmware is a streaming sensor only.
+uart:
+  id: usb_serial
+  tx_pin: GPIO1
+  baud_rate: 921600
+  data_bits: 8
+  parity: NONE
+  stop_bits: 1
+
+# Same RF scan cadence as the original GitHub scanner.
+interval:
+  - interval: 20ms
+    then:
+      - lambda: |-
+          constexpr uint8_t FIRST_CH = 1;
+          constexpr uint8_t LAST_CH  = 13;
+          constexpr uint8_t NCH      = 13;
+
+          constexpr uint32_t IQ_N = 16;
+          constexpr uint16_t SAMPLES_PER_CH = 256;
+          constexpr uint8_t DISCARD_AFTER_HOP = 4;
+
+          // Keep the same 200 ms integration/output window as the GitHub YAML.
+          // The HTML therefore receives 5 complete channel frames per second.
+          constexpr uint32_t STREAM_PERIOD_MS = 200;
+
+          constexpr uint32_t IQ_EST_CTRL = 0x6000057Cu;
+          constexpr uint32_t IQ_POWER_E4 = 0x600005E4u;
+          constexpr uint32_t ROM_IQ_EST_DISABLE = 0x40006400u;
+          constexpr uint32_t ROM_IQ_EST_ENABLE  = 0x40006430u;
+          constexpr uint32_t ROM_SET_RXCLK_EN   = 0x40006550u;
+          constexpr uint32_t ROM_PBUS_XPD_RX_ON = 0x400076CCu;
+
+          using IqEnableFn  = void (*)(uint32_t, uint32_t);
+          using IqDisableFn = void (*)(void);
+          using SetRxClkFn  = void (*)(int);
+          using RxOnFn      = void (*)(void);
+
+          auto iq_enable  = reinterpret_cast<IqEnableFn>(ROM_IQ_EST_ENABLE);
+          auto iq_disable = reinterpret_cast<IqDisableFn>(ROM_IQ_EST_DISABLE);
+          auto set_rxclk  = reinterpret_cast<SetRxClkFn>(ROM_SET_RXCLK_EN);
+          auto rx_on      = reinterpret_cast<RxOnFn>(ROM_PBUS_XPD_RX_ON);
+
+          auto memw=[](){ __asm__ volatile("memw" ::: "memory"); };
+
+          auto rd32=[](uint32_t a)->uint32_t{
+            return *(volatile uint32_t*)a;
+          };
+
+          auto put=[&](const char *s){
+            id(usb_serial).write_str(s);
+          };
+
+          // Persistent scanner state.
+          static bool initialized = false;
+          static bool have_floor = false;
+
+          static uint64_t busy_acc[NCH] = {};
+          static uint64_t sample_acc[NCH] = {};
+          static uint64_t e4_sum_acc[NCH] = {};
+          static uint32_t e4_peak_acc[NCH] = {};
+
+          static uint32_t floor_e4 = 0;
+          static uint32_t threshold_e4 = 0;
+          static uint32_t frame_start_ms = 0;
+          static uint32_t scans_in_frame = 0;
+          static uint32_t hop_errors_frame = 0;
+          static uint32_t done_errors_frame = 0;
+
+          if(!initialized){
+            // Own the ESP8266 radio as an RX-only PHY.
+            wifi_station_set_auto_connect(0);
+            wifi_set_opmode_current(STATION_MODE);
+            delay(300);
+
+            wifi_station_disconnect();
+            wifi_set_sleep_type(NONE_SLEEP_T);
+            wifi_set_channel(FIRST_CH);
+            delay(50);
+
+            memw();
+            rx_on();
+            memw();
+
+            memw();
+            set_rxclk(1);
+            memw();
+
+            delay(10);
+
+            // No startup banner: UART must contain only machine-readable data.
+            frame_start_ms = millis();
+            initialized = true;
+            return;
+          }
+
+          // Use the PREVIOUS noise floor during this scan.
+          const bool threshold_valid = have_floor;
+          const uint32_t threshold_this_scan = threshold_e4;
+          uint32_t scan_lowest_channel_avg = 0xFFFFFFFFu;
+
+          for(uint8_t ch=FIRST_CH; ch<=LAST_CH; ch++){
+            const uint8_t idx = ch - FIRST_CH;
+
+            bool set_ok = wifi_set_channel(ch);
+            if(!set_ok || wifi_get_channel()!=ch){
+              hop_errors_frame++;
+              continue;
+            }
+
+            // Ignore the first few samples immediately after a channel hop.
+            for(uint8_t d=0; d<DISCARD_AFTER_HOP; d++){
+              memw();
+              iq_enable(1u, IQ_N);
+              memw();
+              (void)rd32(IQ_POWER_E4);
+              memw();
+              iq_disable();
+              memw();
+            }
+
+            uint64_t sum = 0;
+            uint32_t peak = 0;
+            uint32_t busy = 0;
+
+            for(uint16_t i=0; i<SAMPLES_PER_CH; i++){
+              memw();
+              iq_enable(1u, IQ_N);
+              memw();
+
+              uint32_t ctrl = rd32(IQ_EST_CTRL);
+              uint32_t e = rd32(IQ_POWER_E4);
+
+              memw();
+              iq_disable();
+              memw();
+
+              if((ctrl & 0x80000000u)==0u)
+                done_errors_frame++;
+
+              sum += e;
+              if(e > peak) peak = e;
+
+              if(threshold_valid && e > threshold_this_scan)
+                busy++;
+            }
+
+            uint32_t avg = (uint32_t)(sum / SAMPLES_PER_CH);
+            if(avg < scan_lowest_channel_avg)
+              scan_lowest_channel_avg = avg;
+
+            // The first complete scan establishes the floor and is not counted.
+            if(threshold_valid){
+              busy_acc[idx] += busy;
+              sample_acc[idx] += SAMPLES_PER_CH;
+              e4_sum_acc[idx] += sum;
+              if(peak > e4_peak_acc[idx])
+                e4_peak_acc[idx] = peak;
+            }
+
+            yield();
+          }
+
+          scans_in_frame++;
+
+          // Same adaptive-floor algorithm as the source scanner.
+          if(scan_lowest_channel_avg != 0xFFFFFFFFu){
+            if(!have_floor){
+              floor_e4 = scan_lowest_channel_avg ? scan_lowest_channel_avg : 1u;
+              have_floor = true;
+            } else if(scan_lowest_channel_avg < floor_e4){
+              floor_e4 = (7u * floor_e4 + scan_lowest_channel_avg) / 8u;
+              if(floor_e4 == 0u) floor_e4 = 1u;
+            }
+
+            threshold_e4 = floor_e4 * 3u + 64u;
+          }
+
+          uint32_t now = millis();
+          uint32_t elapsed_ms = now - frame_start_ms;
+          if(elapsed_ms < STREAM_PERIOD_MS)
+            return;
+
+          uint32_t pct[NCH] = {};
+          uint32_t avg_e4[NCH] = {};
+
+          for(uint8_t i=0; i<NCH; i++){
+            if(sample_acc[i]){
+              pct[i] = (uint32_t)((busy_acc[i] * 100ULL + sample_acc[i]/2ULL) /
+                                  sample_acc[i]);
+              if(pct[i] > 100u) pct[i] = 100u;
+
+              avg_e4[i] = (uint32_t)(e4_sum_acc[i] / sample_acc[i]);
+            }
+          }
+
+          // ---------------------------------------------------------------
+          // WEBSERIAL PROTOCOL
+          // ---------------------------------------------------------------
+          // First line gives the browser an atomic 13-channel snapshot for
+          // bars + waterfall. Example:
+          // SCAN,4,3,7,12,20,41,18,9,6,4,2,3,1
+          char b[256];
+          int n = snprintf(b, sizeof(b),
+                           "SCAN,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu,%lu\r\n",
+                           (unsigned long)pct[0],
+                           (unsigned long)pct[1],
+                           (unsigned long)pct[2],
+                           (unsigned long)pct[3],
+                           (unsigned long)pct[4],
+                           (unsigned long)pct[5],
+                           (unsigned long)pct[6],
+                           (unsigned long)pct[7],
+                           (unsigned long)pct[8],
+                           (unsigned long)pct[9],
+                           (unsigned long)pct[10],
+                           (unsigned long)pct[11],
+                           (unsigned long)pct[12]);
+          if(n > 0)
+            put(b);
+
+          // Then provide raw AVG_E4 for each channel. The current HTML already
+          // understands CH,<channel>,<busy>,<energy/raw> lines and uses them for
+          // the selected-channel graph/statistics.
+          for(uint8_t ch=FIRST_CH; ch<=LAST_CH; ch++){
+            uint8_t idx = ch - FIRST_CH;
+            n = snprintf(b, sizeof(b),
+                         "CH,%u,%lu,%lu\r\n",
+                         (unsigned)ch,
+                         (unsigned long)pct[idx],
+                         (unsigned long)avg_e4[idx]);
+            if(n > 0)
+              put(b);
+          }
+
+          // No other UART text is emitted.
+
+          // Start a fresh integration window.
+          for(uint8_t i=0; i<NCH; i++){
+            busy_acc[i] = 0;
+            sample_acc[i] = 0;
+            e4_sum_acc[i] = 0;
+            e4_peak_acc[i] = 0;
+          }
+
+          scans_in_frame = 0;
+          hop_errors_frame = 0;
+          done_errors_frame = 0;
+          frame_start_ms = now;
