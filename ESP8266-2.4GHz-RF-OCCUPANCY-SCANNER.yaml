@@ -1,0 +1,366 @@
+# ESP8266 2.4 GHz RF OCCUPANCY SCANNER
+# --------------------------------------
+# Standalone scanner: no serial commands.
+# Automatically initializes the RX PHY and continuously scans Wi-Fi channels 1..13.
+#
+# Terminal: PuTTY / VT100-compatible terminal, 115200 8N1.
+# The screen is refreshed in place with ANSI escape sequences (no scrolling).
+#
+# Measurement:
+#   - IQ_EST N=16
+#   - 256 measurements per channel per visit
+#   - channels 1..13
+#   - adaptive raw-E4 noise floor
+#   - BUSY% = fraction of sampled E4 values above the adaptive threshold
+#
+# IMPORTANT:
+#   BUSY% is an RF-occupancy estimate from the internal IQ_EST/E4 metric.
+#   It is NOT calibrated dBm and is NOT the same thing as decoded 802.11 airtime.
+#
+# Based on the RX path explored in kaboom748/esp8266_WLAN_PHY.
+
+esphome:
+  name: wemo-rf-occupancy
+  friendly_name: WEMO-RF-OCCUPANCY
+  includes:
+    - <user_interface.h>
+  platformio_options:
+    board_build.f_cpu: 160000000L
+
+esp8266:
+  board: d1_mini
+
+# Disable normal ESPHome serial logging so UART0 belongs entirely to the scanner UI.
+logger:
+  baud_rate: 0
+  level: NONE
+
+uart:
+  id: usb_serial
+  tx_pin: GPIO1
+  baud_rate: 115200
+  data_bits: 8
+  parity: NONE
+  stop_bits: 1
+
+# One complete RF scan is attempted every 20 ms.
+# The actual scan itself is intentionally fairly heavy: this is a dedicated scanner.
+interval:
+  - interval: 20ms
+    then:
+      - lambda: |-
+          constexpr uint8_t FIRST_CH = 1;
+          constexpr uint8_t LAST_CH  = 13;
+          constexpr uint8_t NCH      = 13;
+
+          constexpr uint32_t IQ_N = 16;
+          constexpr uint16_t SAMPLES_PER_CH = 256;
+          constexpr uint8_t DISCARD_AFTER_HOP = 4;
+
+          // Redraw the PuTTY screen at 5 Hz while RF scanning continues faster.
+          constexpr uint32_t DISPLAY_PERIOD_MS = 200;
+          constexpr uint8_t BAR_WIDTH = 28;
+
+          constexpr uint32_t IQ_EST_CTRL = 0x6000057Cu;
+          constexpr uint32_t IQ_POWER_E4 = 0x600005E4u;
+
+          constexpr uint32_t ROM_IQ_EST_DISABLE = 0x40006400u;
+          constexpr uint32_t ROM_IQ_EST_ENABLE  = 0x40006430u;
+          constexpr uint32_t ROM_SET_RXCLK_EN   = 0x40006550u;
+          constexpr uint32_t ROM_PBUS_XPD_RX_ON = 0x400076CCu;
+
+          using IqEnableFn  = void (*)(uint32_t, uint32_t);
+          using IqDisableFn = void (*)(void);
+          using SetRxClkFn  = void (*)(int);
+          using RxOnFn      = void (*)(void);
+
+          auto iq_enable  = reinterpret_cast<IqEnableFn>(ROM_IQ_EST_ENABLE);
+          auto iq_disable = reinterpret_cast<IqDisableFn>(ROM_IQ_EST_DISABLE);
+          auto set_rxclk  = reinterpret_cast<SetRxClkFn>(ROM_SET_RXCLK_EN);
+          auto rx_on      = reinterpret_cast<RxOnFn>(ROM_PBUS_XPD_RX_ON);
+
+          auto memw=[](){ __asm__ volatile("memw" ::: "memory"); };
+          auto rd32=[](uint32_t a)->uint32_t{
+            return *(volatile uint32_t*)a;
+          };
+
+          auto put=[&](const char *s){
+            id(usb_serial).write_str(s);
+          };
+
+          auto line=[&](const char *s){
+            // Clear current terminal line, print text, go to next line.
+            put("\x1b[2K");
+            put(s);
+            put("\r\n");
+          };
+
+          auto ch2mhz=[](uint8_t ch)->int{
+            return 2412 + 5 * ((int)ch - 1);
+          };
+
+          auto measure=[](IqEnableFn iq_en, IqDisableFn iq_dis,
+                          uint32_t (*rd)(uint32_t),
+                          void (*barrier)())->uint32_t{
+            barrier();
+            iq_en(1u, IQ_N);
+            barrier();
+            uint32_t e = rd(IQ_POWER_E4);
+            barrier();
+            iq_dis();
+            barrier();
+            return e;
+          };
+
+          // Persistent scanner state.
+          static bool initialized = false;
+          static bool have_floor = false;
+
+          static uint64_t busy_acc[NCH] = {};
+          static uint64_t sample_acc[NCH] = {};
+          static uint64_t e4_sum_acc[NCH] = {};
+          static uint32_t e4_peak_acc[NCH] = {};
+
+          static uint32_t floor_e4 = 0;
+          static uint32_t threshold_e4 = 0;
+
+          static uint32_t frame_start_ms = 0;
+          static uint32_t scans_in_frame = 0;
+          static uint32_t hop_errors_frame = 0;
+          static uint32_t done_errors_frame = 0;
+
+          if(!initialized){
+            // Own the ESP8266 radio as an RX-only PHY.
+            wifi_station_set_auto_connect(0);
+            wifi_set_opmode_current(STATION_MODE);
+            delay(300);
+
+            wifi_station_disconnect();
+            wifi_set_sleep_type(NONE_SLEEP_T);
+
+            wifi_set_channel(FIRST_CH);
+            delay(50);
+
+            memw();
+            rx_on();
+            memw();
+
+            memw();
+            set_rxclk(1);
+            memw();
+
+            delay(10);
+
+            // PuTTY/VT100:
+            //   2J      = clear screen
+            //   H       = cursor home
+            //   ?25l    = hide cursor
+            put("\x1b[2J\x1b[H\x1b[?25l");
+
+            line("ESP8266 2.4 GHz RF OCCUPANCY SCANNER");
+            line("Initializing adaptive RF noise floor...");
+
+            frame_start_ms = millis();
+            initialized = true;
+            return;
+          }
+
+          // Use the PREVIOUS noise floor during this scan.
+          // This avoids changing the threshold in the middle of a channel visit.
+          const bool threshold_valid = have_floor;
+          const uint32_t threshold_this_scan = threshold_e4;
+
+          uint32_t scan_lowest_channel_avg = 0xFFFFFFFFu;
+
+          for(uint8_t ch=FIRST_CH; ch<=LAST_CH; ch++){
+            const uint8_t idx = ch - FIRST_CH;
+
+            bool set_ok = wifi_set_channel(ch);
+            if(!set_ok || wifi_get_channel()!=ch){
+              hop_errors_frame++;
+              continue;
+            }
+
+            // A few uncounted measurements immediately after the hop.
+            // They cost only a few microseconds at IQ_N=16 and reduce sensitivity
+            // to any first-sample transient.
+            for(uint8_t d=0; d<DISCARD_AFTER_HOP; d++){
+              memw();
+              iq_enable(1u, IQ_N);
+              memw();
+              (void)rd32(IQ_POWER_E4);
+              memw();
+              iq_disable();
+              memw();
+            }
+
+            uint64_t sum = 0;
+            uint32_t peak = 0;
+            uint32_t busy = 0;
+
+            for(uint16_t i=0; i<SAMPLES_PER_CH; i++){
+              memw();
+              iq_enable(1u, IQ_N);
+              memw();
+
+              uint32_t ctrl = rd32(IQ_EST_CTRL);
+              uint32_t e = rd32(IQ_POWER_E4);
+
+              memw();
+              iq_disable();
+              memw();
+
+              if((ctrl & 0x80000000u)==0u)
+                done_errors_frame++;
+
+              sum += e;
+              if(e > peak) peak = e;
+
+              if(threshold_valid && e > threshold_this_scan)
+                busy++;
+            }
+
+            uint32_t avg = (uint32_t)(sum / SAMPLES_PER_CH);
+            if(avg < scan_lowest_channel_avg)
+              scan_lowest_channel_avg = avg;
+
+            // Do not use the first scan for BUSY%, because it establishes the floor.
+            if(threshold_valid){
+              busy_acc[idx] += busy;
+              sample_acc[idx] += SAMPLES_PER_CH;
+              e4_sum_acc[idx] += sum;
+              if(peak > e4_peak_acc[idx])
+                e4_peak_acc[idx] = peak;
+            }
+
+            // Keep the watchdog/network scheduler alive even though this firmware
+            // intentionally spends most of its time scanning RF.
+            yield();
+          }
+
+          scans_in_frame++;
+
+          // Adaptive floor:
+          // use the quietest CHANNEL AVERAGE from the whole 2.4 GHz pass.
+          // Once established, allow the floor to move downward, but do not chase
+          // temporary whole-band activity upward.
+          if(scan_lowest_channel_avg != 0xFFFFFFFFu){
+            if(!have_floor){
+              floor_e4 = scan_lowest_channel_avg ? scan_lowest_channel_avg : 1u;
+              have_floor = true;
+            } else if(scan_lowest_channel_avg < floor_e4){
+              floor_e4 = (7u * floor_e4 + scan_lowest_channel_avg) / 8u;
+              if(floor_e4 == 0u) floor_e4 = 1u;
+            }
+
+            // Empirical raw-E4 activity discriminator for IQ_N=16.
+            // It is deliberately conservative relative to the quiet floor.
+            threshold_e4 = floor_e4 * 3u + 64u;
+          }
+
+          uint32_t now = millis();
+          uint32_t elapsed_ms = now - frame_start_ms;
+          if(elapsed_ms < DISPLAY_PERIOD_MS)
+            return;
+
+          uint32_t pct[NCH] = {};
+          uint32_t avg_e4[NCH] = {};
+
+          for(uint8_t i=0; i<NCH; i++){
+            if(sample_acc[i]){
+              pct[i] = (uint32_t)((busy_acc[i] * 100ULL + sample_acc[i]/2ULL) /
+                                  sample_acc[i]);
+              if(pct[i] > 100u) pct[i] = 100u;
+
+              avg_e4[i] = (uint32_t)(e4_sum_acc[i] / sample_acc[i]);
+            }
+          }
+
+          // Best conventional non-overlapping 20 MHz Wi-Fi choice: 1 / 6 / 11.
+          uint8_t best_ch = 1;
+          uint32_t best_pct = pct[0];
+
+          const uint8_t candidates[3] = {1, 6, 11};
+          for(uint8_t k=0; k<3; k++){
+            uint8_t c = candidates[k];
+            uint32_t p = pct[c-1];
+            if(k==0 || p < best_pct){
+              best_pct = p;
+              best_ch = c;
+            }
+          }
+
+          uint32_t scans_per_s =
+              elapsed_ms ? (uint32_t)(((uint64_t)scans_in_frame * 1000ULL) /
+                                      elapsed_ms) : 0u;
+
+          // Return to row 1. No terminal scrolling.
+          put("\x1b[H");
+
+          char b[160];
+
+          line("ESP8266 2.4 GHz RF OCCUPANCY SCANNER  |  IQ_EST raw PHY metric");
+
+          snprintf(b,sizeof(b),
+                   "IQ_N=%u  SAMPLES/CH=%u  SCANS=%lu/s  FLOOR=%lu  BUSY_TH=%lu",
+                   (unsigned)IQ_N,
+                   (unsigned)SAMPLES_PER_CH,
+                   (unsigned long)scans_per_s,
+                   (unsigned long)floor_e4,
+                   (unsigned long)threshold_e4);
+          line(b);
+
+          snprintf(b,sizeof(b),
+                   "RF BUSY %% over last %lums | hop_err=%lu done_err=%lu | not calibrated dBm",
+                   (unsigned long)elapsed_ms,
+                   (unsigned long)hop_errors_frame,
+                   (unsigned long)done_errors_frame);
+          line(b);
+
+          line("CH   MHz   BUSY   RF OCCUPANCY                    AVG_E4     PEAK");
+
+          for(uint8_t ch=FIRST_CH; ch<=LAST_CH; ch++){
+            uint8_t idx = ch - FIRST_CH;
+
+            uint32_t filled = (pct[idx] * BAR_WIDTH + 50u) / 100u;
+            if(filled > BAR_WIDTH) filled = BAR_WIDTH;
+
+            char bar[BAR_WIDTH + 1];
+            for(uint8_t j=0; j<BAR_WIDTH; j++)
+              bar[j] = (j < filled) ? '#' : '.';
+            bar[BAR_WIDTH] = '\0';
+
+            snprintf(b,sizeof(b),
+                     "%2u  %4d   %3lu%%  |%s|  %8lu  %8lu%s",
+                     ch,
+                     ch2mhz(ch),
+                     (unsigned long)pct[idx],
+                     bar,
+                     (unsigned long)avg_e4[idx],
+                     (unsigned long)e4_peak_acc[idx],
+                     (ch==best_ch) ? "  < BEST 1/6/11" : "");
+            line(b);
+          }
+
+          snprintf(b,sizeof(b),
+                   "Recommended among CH1/6/11 right now: CH%u (%lu%% sampled RF busy)",
+                   best_ch,(unsigned long)best_pct);
+          line(b);
+
+          line("Note: adjacent Wi-Fi channels overlap; BUSY% is RF occupancy, not decoded Wi-Fi airtime.");
+
+          // Clear anything left below the current frame.
+          put("\x1b[J");
+
+          // Start a fresh display integration window.
+          for(uint8_t i=0; i<NCH; i++){
+            busy_acc[i] = 0;
+            sample_acc[i] = 0;
+            e4_sum_acc[i] = 0;
+            e4_peak_acc[i] = 0;
+          }
+
+          scans_in_frame = 0;
+          hop_errors_frame = 0;
+          done_errors_frame = 0;
+          frame_start_ms = now;
