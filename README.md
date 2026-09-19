@@ -5,12 +5,13 @@
 <img width="1673" height="880" alt="image" src="https://github.com/user-attachments/assets/c271bf3e-1638-4704-9397-704bcc973b19" />
 <img width="1448" height="1086" alt="image" src="https://github.com/user-attachments/assets/d81f689d-792c-4961-b7f0-a5ff5eb51982" />
 
-
 # ESP8266 WLAN PHY — Reverse Engineering & RF Test Bench
+
+> **README updated for consolidated reference v2.1 and the latest OOK/ASK/M-ASK reverse-engineering results.**
 
 > **Experimental research project for ESP8266 PHY/RF testing.**
 >
-> This repository explores low-level ESP8266 radio behavior for **OOK / ASK / FSK / M-FSK** and documents research around **QPSK / QAM**.
+> This repository explores low-level ESP8266 radio behavior for **OOK / 2-ASK / M-ASK / FSK / M-FSK** and documents research around **QPSK / QAM**.
 >
 > It is **not** an official Espressif project, product, certification, or documentation.
 
@@ -29,63 +30,26 @@ This project directly manipulates low-level ESP8266 PHY/RF registers and ROM rou
 - **Do not leave the ESP8266 transmitting unattended.**
 - **If the ESP8266 becomes very hot, unstable, smells unusual, resets repeatedly, draws abnormal current, or changes color: immediately disconnect power and let it cool completely.**
 - **Do not assume that a larger numeric power value means a safe or linearly higher RF output.**
-- **`APWR` is an internal experimental control, not a calibrated dBm setting.**
-- **Project safety limit for routine tests: keep `APWR <= 63` unless you are deliberately characterizing hardware on an instrumented bench and have independently established safe operating conditions.**
-- **Do not use `APWR=255` for normal testing.**
+- **`APWR` is a legacy/raw experimental control, not a calibrated dBm setting and not a pure analog-power knob.**
+- Reverse-engineering of `rom_set_ana_inf_tx_scale()` shows that its argument is split between an analog code and a returned digital-scale value; existing historical test firmware may ignore that returned digital value.
+- **For routine tests, prefer conservative short-duration settings and do not use `APWR=255` as a default.**
+- Treat any long continuous-TX test as a thermal stress test: stop immediately if the module becomes unusually hot.
 - **Do not use this project to intentionally interfere with, block, degrade, or deny radio communications.**
 
 ### ⚠️ Critical note about `TEST-TONEv5.yaml`
 
-`TEST-TONEv5.yaml` intentionally preserves the experimental raw defaults used during development, including:
+`TEST-TONEv5.yaml` intentionally preserves historical/raw experimental defaults, including `APWR=255`.
 
-```yaml
-current_apwr: 255
-ultimate_apwr: 255
-```
+Reverse-engineering has now clarified that `rom_set_ana_inf_tx_scale(x)` is **not** a simple linear analog-power setter. Functionally, the routine separates the argument into an analog control value and a digital-scale return value. Historical firmware often applies the analog side effect but does not automatically apply the returned digital value to the tone slot.
 
-These values are kept as part of the research history.
+Therefore:
 
-**Do not interpret those defaults as recommended operating values.**
+- `APWR` must not be read as a dBm value, percentage, or monotonic power scale;
+- `APWR=255` is a historical/raw experiment value, not a recommended operating point;
+- `ASK 0..63` is the preferred fast symbol-by-symbol amplitude control;
+- the analog path should normally be configured once per TX session, not toggled on every symbol.
 
-The repository owner has observed that the ESP8266 can become **very hot** with aggressive APWR settings and prolonged TX activity.
-
-For routine bench characterization, the current project recommendation is:
-
-```text
-APWR <= 63
-```
-
-This is a **project-defined conservative limit**, not an Espressif-certified maximum and not a calibrated RF power value.
-
-Before using normal TX, explicitly set a conservative value first:
-
-```text
-PHY
-APWR 32
-ASK 63
-K 8
-ON
-```
-
-or, if you intentionally want to use the project ceiling for routine testing:
-
-```text
-PHY
-APWR 63
-ASK 63
-K 8
-ON
-```
-
-Before using Ultimate mode, explicitly set its power control first:
-
-```text
-UAPWR 63
-```
-
-or lower.
-
-`ULTIMATE ON` is especially demanding because it repeatedly enables TX while sweeping channels and tone-control values. Use it only for short, supervised measurements in a controlled RF test environment.
+For routine bench work, start conservatively, use short TX bursts, and verify the emitted level with RF instrumentation.
 
 There is currently **no software temperature protection** in `TEST-TONEv5.yaml`.
 
@@ -93,7 +57,7 @@ There is currently **no software temperature protection** in `TEST-TONEv5.yaml`.
 
 ## Project goal
 
-The goal is to understand and experimentally validate parts of the ESP8266 WLAN PHY that are normally hidden behind Espressif's binary PHY implementation.
+The goal is to understand and experimentally validate parts of the ESP8266 WLAN PHY that are normally hidden behind Espressif's binary PHY implementation, and to use those findings to build reproducible low-level OOK/ASK/M-ASK research modems.
 
 The project separates three kinds of results:
 
@@ -111,10 +75,10 @@ The repository contains both living reverse-engineering notes and frozen referen
 
 ### Main references
 
-- [`ESP8266_PHY_MODULATIONS_REFERENCE_CONSOLIDEE_v2.0.md`](ESP8266_PHY_MODULATIONS_REFERENCE_CONSOLIDEE_v2.0.md)  
+- [`ESP8266_PHY_MODULATIONS_REFERENCE_CONSOLIDEE_v2.1.md`](ESP8266_PHY_MODULATIONS_REFERENCE_CONSOLIDEE_v2.1.md)  
   Consolidated French reference for OOK, ASK, FSK, M-FSK, QPSK and QAM.
 
-- [`ESP8266_PHY_MODULATIONS_CONSOLIDATED_REFERENCE_v2.0_EN.md`](ESP8266_PHY_MODULATIONS_CONSOLIDATED_REFERENCE_v2.0_EN.md)  
+- [`ESP8266_PHY_MODULATIONS_CONSOLIDATED_REFERENCE_v2.1_EN.md`](ESP8266_PHY_MODULATIONS_CONSOLIDATED_REFERENCE_v2.1_EN.md)  
   English consolidated reference.
 
 - [`ESP8266_ASK_OOK_REFERENCE_OFFICIELLE_PROJET_v1.0.md`](ESP8266_ASK_OOK_REFERENCE_OFFICIELLE_PROJET_v1.0.md)  
@@ -162,7 +126,7 @@ Gate: bit 18
 Mask: 0x00040000
 ```
 
-Fast OOK changes only the gate while keeping the RF path and TX clock active.
+Fast OOK changes only the gate while keeping the RF path, analog configuration, digital scale, tone-control value, and TX clock stable.
 
 Conceptually:
 
@@ -170,6 +134,8 @@ Conceptually:
 OOK 0 -> clear bit 18
 OOK 1 -> set bit 18
 ```
+
+The analog TX scale must **not** be switched on every OOK bit. Calling `rom_set_ana_inf_tx_scale()` per symbol adds internal I²C activity, settling, timing asymmetry, and unnecessary thermal/RF transients.
 
 The `OFF` command is different: it shuts down the TX path rather than representing a fast OOK symbol.
 
@@ -204,11 +170,189 @@ It must **not** be interpreted as:
 
 Its physical spectral effect must be measured.
 
+### Bench validation: digital 2-ASK works
+
+On the tested ESP8266, a continuous tone was kept active while only the `digital_scale` field was alternated between two values. A tinySA showed **two distinct RF amplitude levels** while the same tone configuration remained active.
+
+This is an important practical validation:
+
+```text
+TX clock       = ON
+RF path        = ON
+tone gate      = ON
+tone_control   = constant
+
+digital_scale A
+      ↓
+RF amplitude A
+
+digital_scale B
+      ↓
+RF amplitude B
+```
+
+This validates the practical **2-ASK amplitude-switching mechanism** on the tested hardware. It does **not** establish a calibrated or linear `digital_scale -> dBm` law.
+
+---
+
+## M-ASK modem architecture
+
+The project now has all software-visible building blocks required to implement a fixed-gain M-ASK modem.
+
+### TX architecture
+
+For M-ASK, keep the RF/tone state constant and change only `digital_scale`:
+
+```text
+A0 -> digital_scale code 0
+A1 -> digital_scale code 1
+A2 -> digital_scale code 2
+A3 -> digital_scale code 3
+...
+```
+
+For 4-ASK, a Gray mapping is a useful starting point:
+
+```text
+lowest RF level   A0 -> 00
+                  A1 -> 01
+                  A2 -> 11
+highest RF level  A3 -> 10
+```
+
+The numeric `digital_scale` values must be selected experimentally. Do not assume that equally spaced control codes produce equally spaced RF powers.
+
+### RX architecture
+
+The canonical RX path is:
+
+```text
+RX RF ON
+   ↓
+RX clock ON
+   ↓
+PBUS debug / packet path isolated
+   ↓
+deterministic RX gain via PBUS
+   ↓
+IQ_EST
+   ↓
+E4 / correlation / DC metrics
+   ↓
+dynamic level calibration
+   ↓
+M-ASK slicer
+```
+
+The wrappers named `phy_enable_agc()` / `phy_disable_agc()` dispatch to CCA-related ROM functions and manipulate `0x60009B00[28]`. This software path does **not** prove that the bit alone freezes analog gain. For M-ASK, use an explicitly programmed PBUS gain.
+
+### Dynamic per-packet calibration
+
+Absolute received amplitude is not a reliable symbol reference because path loss changes with distance.
+
+A packet should therefore begin with known amplitude symbols, for example:
+
+```text
+A0 A1 A0 A1 A0 A1 ...              for 2-ASK
+A0 A1 A2 A3 A0 A1 A2 A3 ...        for 4-ASK
+```
+
+The receiver estimates:
+
+```text
+mu0, mu1                    for 2-ASK
+mu0, mu1, mu2, mu3          for 4-ASK
+```
+
+For 2-ASK:
+
+```text
+threshold = (mu0 + mu1) / 2
+```
+
+and the receiver decides relative to the **current packet's measured levels**, not an absolute E4 or dBm value.
+
+For 4-ASK:
+
+```text
+T01 = (mu0 + mu1) / 2
+T12 = (mu1 + mu2) / 2
+T23 = (mu2 + mu3) / 2
+```
+
+This naturally tracks distance and path-loss changes as long as the levels remain separable.
+
+A useful normalized separation metric is:
+
+```text
+D(i,j) = |mu_i - mu_j| / sqrt(sigma_i^2 + sigma_j^2)
+Dmin   = min(D01, D12, D23)
+```
+
+The best TX level set and RX gain are those that maximize `Dmin` without saturating the receiver.
+
+### New RX observables available
+
+The reverse-engineered PHY exposes more than E4:
+
+```text
+0x600005E4            energy / power metric
+rom_get_corr_power()  normalized E, |Corr|^2, |DC|^2
+
+0x60009824[11:0]      raw hardware noise-floor
+0x60009B64[31:20]     processed noise-floor
+```
+
+`E4` remains the simplest and fastest symbol metric. `|Corr|^2`, `|DC|^2`, and the noise-floor paths are especially useful for:
+
+- preamble/calibration validation;
+- saturation detection;
+- rejecting poor calibration conditions;
+- adaptive gain experiments;
+- comparing candidate 4-ASK level sets.
+
+Do not directly subtract the noise-floor register value from E4: they are not proven to share the same numeric scale.
+
+### RX gain is composite, not linear
+
+The RX gain code is a 15-bit composite control distributed through PBUS. It must not be swept as if the numeric code were a linear dB value.
+
+The PHY v6 builds a 127-entry gain table from 16 gain-step values derived from `phy_init_data`. The same code can be reduced to a baseband-gain index `0..29`.
+
+For systematic M-ASK experiments, sweep **valid PHY gain-table entries or known PBUS configurations**, not arbitrary numeric 15-bit increments.
+
+### 3500-symbol/s migration path
+
+The existing 3500-baud OOK modem can be adapted to 2-ASK with minimal structural changes:
+
+```text
+existing:
+bit 0 -> gate OFF
+bit 1 -> gate ON
+
+2-ASK:
+bit 0 -> digital_scale A0
+bit 1 -> digital_scale A1
+```
+
+The symbol scheduler, 8x IQ_EST oversampling, framing, 4b6b coding, and CRC can remain unchanged.
+
+For 2-ASK, the main RX change is to learn `A0/A1` from a known preamble before decoding payload data. For 4-ASK, extend this to four calibrated levels and three thresholds.
+
+At 3500 symbols/s:
+
+```text
+OOK / 2-ASK  -> 1 bit/symbol  -> 3500 raw bit/s
+4-ASK        -> 2 bit/symbols -> 7000 raw bit/s theoretical before framing/FEC
+```
+
+The 4-ASK figure is a software/symbol-rate consequence, not a demonstrated RF throughput. Real performance depends on measured level separation and BER.
+
 ---
 
 ## FSK / M-FSK
 
-Fast FSK uses the low tone-control field while keeping the following fixed:
+The software can hot-update the low tone-control field while keeping the following fixed:
 
 ```text
 RFPLL       fixed
@@ -219,7 +363,7 @@ gate        active
 digital scale fixed
 ```
 
-Only `tone_control` changes between symbols.
+Only `tone_control` changes between symbols in the proposed fast-FSK software path.
 
 The firmware protects the field with:
 
@@ -251,7 +395,7 @@ K -> frequency in Hz
 
 to be linear, symmetric, or constant-step.
 
-`K` is a raw hardware control code. The actual RF frequencies, wrap behavior, settling, jitter, phase behavior, occupied bandwidth, and unwanted emissions must be measured on the device.
+`K` is a raw hardware control code. The actual RF frequencies, wrap behavior, settling, jitter, phase behavior, occupied bandwidth, and unwanted emissions must be measured on the device. Project bench tests have not yet established a reliable usable FSK modem from this path, so FSK remains a software-path hypothesis requiring RF validation rather than a demonstrated modem.
 
 ---
 
@@ -301,7 +445,7 @@ Useful commands in `TEST-TONEv5.yaml`:
 | `OFF` | Stop sweep/test and shut down TX |
 | `K n` | Set raw tone-control code, 0..1023 |
 | `ASK n` | Set digital-scale field, 0..63 |
-| `APWR n` | Set experimental analog/scale control |
+| `APWR n` | Set legacy/raw ROM analog/scale control; not linear power and not a pure analog-only knob |
 | `OOK 0` / `OOK 1` | Toggle only the fast OOK gate while TX remains active |
 | `KSWEEP min max` | Configure a K sweep |
 | `KSTEP n` | Set K increment |
@@ -343,6 +487,24 @@ OFF
 ```
 
 If the device temperature rises quickly, disconnect power and do not continue until the cause has been understood.
+
+### Recommended 2-ASK amplitude check
+
+A simple laboratory validation is to keep a tone active and alternate two `ASK` values while leaving the gate continuously enabled.
+
+Example concept:
+
+```text
+ASK level A for 500 ms
+ASK level B for 500 ms
+repeat
+```
+
+On a spectrum analyzer or tinySA zero-span display, the expected result is one tone whose amplitude alternates between two plateaus.
+
+This verifies amplitude switching only. It does not calibrate either level in dBm.
+
+Do **not** leave this test running unattended. A continuously enabled TX chain can heat the ESP8266 substantially more than normal packet Wi-Fi.
 
 ---
 
@@ -430,7 +592,7 @@ Do **not** use Ultimate mode over the air to occupy spectrum, interfere with oth
 
 ## OOK Reception Test
 
-The `TEST-RX-OOK-SPEED-v3.yaml` file can be used to directly test OOK reception using the ESP8266 PHY `IQ_EST` block.
+The `TEST-RX-OOK-SPEED-v3.yaml` file can be used to directly test OOK reception using the ESP8266 PHY `IQ_EST` block. The same measurement engine is also the canonical starting point for 2-ASK and M-ASK reception when used with deterministic PBUS gain and per-packet amplitude calibration.
 
 The test flow is:
 
@@ -607,6 +769,10 @@ CAL ON
 
 because the `E4` distribution may change with the integration window.
 
+The same rule applies after changing RF channel or deterministic RX gain: any amplitude threshold learned under the old condition should be considered stale and recalibrated.
+
+For M-ASK, do not reuse absolute `E4` thresholds across arbitrary distance, channel, or gain changes. Learn the current packet's amplitude levels from a known preamble.
+
 > Important: the number of measurements per second is **not** the same as the maximum reliable OOK bit rate.
 > To determine the real maximum OOK data rate, transmit a known bit pattern at increasing bit rates and measure detection errors.
 
@@ -643,6 +809,20 @@ This firmware may:
 - and modify undocumented/internal controls.
 
 Those conditions can produce much higher thermal stress than ordinary intermittent Wi-Fi traffic.
+
+A continuous ASK test can be especially demanding because the tone gate may remain enabled at **100% RF duty cycle** while only the digital amplitude field changes. This is not equivalent to normal packet Wi-Fi and can make the chip become very hot.
+
+For modulation development, prefer:
+
+```text
+short supervised TX bursts
+    ↓
+TX OFF / RX interval
+    ↓
+next burst
+```
+
+rather than leaving a continuous tone active for long periods.
 
 **No software temperature protection is currently provided by `TEST-TONEv5.yaml`.**
 
@@ -754,11 +934,14 @@ This README does **not** itself grant a software licence.
 
 | Area | Project status |
 |---|---|
-| TX OOK software control | Closed at the documented software/MMIO level |
-| TX ASK digital-scale control | Closed at the software/MMIO level; physical RF law requires measurement |
-| TX FSK/M-FSK command path | Closed at the software/static level |
+| TX OOK software control | Closed at the documented software/MMIO level; gate-only modulation is canonical |
+| TX 2-ASK digital-scale control | Closed in software and bench-observed as two distinct RF amplitudes on the tested unit |
+| TX M-ASK digital-scale control | Software mechanism closed; code-to-dBm spacing and usable level count require measurement |
+| RX OOK/2-ASK/M-ASK software path | Fixed-gain IQ_EST path closed; dynamic per-packet level calibration recommended |
+| RX gain / PBUS path | Composite 15-bit mapping and BB gain structure documented; code-to-dB remains physical |
+| RX noise-floor / Corr / DC metrics | Software-visible paths documented; useful for calibration/quality diagnostics |
+| TX FSK/M-FSK command path | Software field-update path understood; reliable RF modem not yet demonstrated in project bench tests |
 | `K -> Hz` | Hardware/RF characterization required |
-| RX OOK/ASK software path | Documented in the project references; physical performance requires measurement |
 | RX FSK CFO software path | Documented; fresh CFO on arbitrary non-802.11 tones requires silicon/baseband validation |
 | Native Wi-Fi QPSK/QAM | Demonstrated through the native PHY/rate path |
 | Arbitrary QAM constellation injection | Not demonstrated |
