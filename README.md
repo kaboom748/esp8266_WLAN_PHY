@@ -3,7 +3,8 @@
 
 <img width="1024" height="619" alt="image" src="https://github.com/user-attachments/assets/ea7dcbfe-1267-413a-81f7-4e9e113d9f2b" />
 <img width="1673" height="880" alt="image" src="https://github.com/user-attachments/assets/c271bf3e-1638-4704-9397-704bcc973b19" />
-<img width="1448" height="1086" alt="image" src="https://github.com/user-attachments/assets/d81f689d-792c-4961-b7f0-a5ff5eb51982" />
+<img width="1447" height="1087" alt="Image Codex 19 sept  2026, 08_49_32" src="https://github.com/user-attachments/assets/c3f8db60-cfed-4e92-b117-19e23d1dee22" />
+
 
 # ESP8266 WLAN PHY — Reverse Engineering & RF Test Bench
 
