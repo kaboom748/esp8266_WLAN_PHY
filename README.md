@@ -3,7 +3,7 @@
 
 <img width="1024" height="619" alt="image" src="https://github.com/user-attachments/assets/ea7dcbfe-1267-413a-81f7-4e9e113d9f2b" />
 <img width="1673" height="880" alt="image" src="https://github.com/user-attachments/assets/c271bf3e-1638-4704-9397-704bcc973b19" />
-<img width="1447" height="1087" alt="Image Codex 19 sept  2026, 08_49_32" src="https://github.com/user-attachments/assets/c3f8db60-cfed-4e92-b117-19e23d1dee22" />
+<img width="1447" height="1087" alt="Image Codex 22 sept  2026, 17_35_08" src="https://github.com/user-attachments/assets/ee76bba4-eafc-4315-ba57-ce1c1e315063" />
 <img width="1448" height="1086" alt="Image Codex 19 sept  2026, 20_36_04" src="https://github.com/user-attachments/assets/91c7605d-3b9d-4ed6-b458-a250892ce8e3" />
 
 
