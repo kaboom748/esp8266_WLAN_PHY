@@ -1,10 +1,10 @@
 <img width="600" height="600" alt="image" src="https://github.com/user-attachments/assets/05e28102-9b0c-4e8a-b61f-666eecc18d5f" />
 <img width="652" height="412" alt="image" src="https://github.com/user-attachments/assets/7b87339e-abc0-40c9-b453-c0279f67dcd0" />
-
 <img width="1024" height="619" alt="image" src="https://github.com/user-attachments/assets/ea7dcbfe-1267-413a-81f7-4e9e113d9f2b" />
 <img width="1673" height="880" alt="image" src="https://github.com/user-attachments/assets/c271bf3e-1638-4704-9397-704bcc973b19" />
 <img width="1447" height="1087" alt="Image Codex 22 sept  2026, 17_35_08" src="https://github.com/user-attachments/assets/ee76bba4-eafc-4315-ba57-ce1c1e315063" />
 <img width="1448" height="1086" alt="Image Codex 19 sept  2026, 20_36_04" src="https://github.com/user-attachments/assets/91c7605d-3b9d-4ed6-b458-a250892ce8e3" />
+<img width="1448" height="1086" alt="Image ChatGPT 27 sept  2026, 18_11_25" src="https://github.com/user-attachments/assets/a4316535-e17d-470a-9278-5ea6be1bc19c" />
 
 
 # ESP8266 WLAN PHY — Reverse Engineering & RF Test Bench
