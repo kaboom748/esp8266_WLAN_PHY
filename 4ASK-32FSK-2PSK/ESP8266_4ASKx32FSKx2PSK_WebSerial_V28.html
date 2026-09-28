@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ESP8266 4-ASK × 32-FSK × 2-PSK — V28</title>
+<style>
+:root{color-scheme:dark}body{margin:0;background:#0d1218;color:#edf4ff;font:15px system-ui,Segoe UI,Arial}
+header,main{max-width:1420px;margin:auto;padding:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:#151c24;border:1px solid #303945;border-radius:12px;padding:16px;margin-bottom:14px}
+button{padding:9px 13px;border:0;border-radius:7px;background:#26313d;color:white;font-weight:700;margin-right:7px}
+.good{color:#45d565}.bad{color:#ff6868}.muted{color:#94a8be}
+table{width:100%;border-collapse:collapse}th,td{padding:7px;border-bottom:1px solid #303945;text-align:right}
+th:first-child,td:first-child{text-align:left}.pass{color:#45d565;font-weight:800}.lim{color:#ffd166;font-weight:800}.fail{color:#ff6868;font-weight:800}
+pre{height:260px;overflow:auto;background:#0b1015;padding:10px;border-radius:8px;font-size:12px}.scroller{overflow:auto;max-height:620px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+</style></head><body>
+<header><h2>ESP8266 — 4-ASK × 32-FSK × 2-PSK = 256 états = 8 bits/symbole — V28</h2>
+<div class="muted">CPU TX/RX 160 MHz · ASK 70, 102, 114, 127 · mêmes 32 FSK que V27 · PSK auto-référencé dans chaque symbole · pilote 3,5–11,5 ms · inversion éventuelle à 13 ms · donnée 15,5–23,5 ms · 30 ms/symbole → 266,7 bit/s brut.</div></header>
+<main>
+
+<div class="grid">
+<div class="card"><h3>TX</h3><button id="ctx">Connecter TX</button><button id="dtx">Déconnecter</button><p>État: <b id="stx">déconnecté</b></p><p>Mode: <b>256 états / 8 bits par symbole</b></p></div>
+<div class="card"><h3>RX</h3><button id="crx">Connecter RX</button><button id="drx">Déconnecter</button><p>État: <b id="srx">déconnecté</b></p><p>RF: <b id="rxstate">—</b></p><p>Calibration: <b id="cal">—</b></p></div>
+</div>
+
+<div class="card"><h3>Résultat global</h3>
+<table><thead><tr><th>États</th><th>bits/sym</th><th>ms/sym</th><th>bit/s brut</th><th>envoyés</th><th>décisions</th><th>corrects</th><th>couverture</th><th>exactitude</th><th>sync</th><th>samples/fenêtre</th><th>verdict</th></tr></thead><tbody id="global"></tbody></table>
+</div>
+
+<div class="grid">
+<div class="card"><h3>ASK — amplitude seule</h3><table><thead><tr><th>idx</th><th>ASK</th><th>envoyés</th><th>corrects</th><th>exactitude</th></tr></thead><tbody id="ask"></tbody></table></div>
+<div class="card"><h3>PSK — phase seule</h3><table><thead><tr><th>bit</th><th>phase</th><th>envoyés</th><th>corrects</th><th>exactitude</th></tr></thead><tbody id="psk"></tbody></table></div>
+</div>
+
+<div class="card"><h3>Résumé FSK</h3><p>Fréquences: <b>32</b> · exactitude moyenne: <b id="favg">—</b> · pire: <b id="fworst">—</b> · meilleure: <b id="fbest">—</b></p></div>
+
+<div class="card"><h3>FSK — fréquence seule</h3><div class="scroller"><table><thead><tr><th>idx</th><th>Hz</th><th>envoyés</th><th>corrects</th><th>exactitude</th></tr></thead><tbody id="freq"></tbody></table></div></div>
+
+<div class="card"><h3>Centres ASK calibrés par fréquence</h3><div class="scroller"><table><thead><tr><th>idx</th><th>Hz</th><th>ASK70</th><th>ASK102</th><th>ASK114</th><th>ASK127</th></tr></thead><tbody id="calrows"></tbody></table></div></div>
+
+<div class="card"><h3>Journal</h3><button id="csv">Exporter CSV</button><button id="clear">Effacer</button><pre id="log"></pre></div>
+</main>
+<script>
+const HZ=[1000, 1182, 1362, 1543, 1724, 1908, 2092, 2273, 2463, 2646, 2841, 3030, 3226, 3425, 3623, 3817, 4000, 4202, 4386, 4587, 4808, 5000, 5208, 5435, 5618, 5814, 6024, 6250, 6494, 6757, 6944, 7937], ASK=[70, 102, 114, 127];
+let txPort=null,rxPort=null,logs=[],globalResult=null;
+let freqStats=Array(32).fill(null),askStats=Array(4).fill(null),pskStats=Array(2).fill(null),calRows=Array(32).fill(null);
+const $=id=>document.getElementById(id);
+
+function setConn(w,on){const e=$(w==="tx"?"stx":"srx");e.textContent=on?"connecté":"déconnecté";e.className=on?"good":"bad"}
+function log(s){logs.push(s);if(logs.length>800)logs.shift();$("log").textContent=logs.join("\n");$("log").scrollTop=$("log").scrollHeight}
+
+function render(){
+ let g="";
+ if(globalResult){
+   const x=globalResult;
+   let v=x.acc>=95&&x.cov>=95?"PASS":x.acc>=80&&x.cov>=80?"LIMITE":"FAIL";
+   let cl=v==="PASS"?"pass":v==="LIMITE"?"lim":"fail";
+   g=`<tr><td>256</td><td>8</td><td>30</td><td>266,7</td><td>${x.sent}</td><td>${x.dec}</td><td>${x.ok}</td><td>${x.cov.toFixed(1)}%</td><td>${x.acc.toFixed(1)}%</td><td>${x.sync.toFixed(1)}%</td><td>${x.savg} [${x.smin}–${x.smax}]</td><td class="${cl}">${v}</td></tr>`;
+ } else g=`<tr><td colspan="12">—</td></tr>`;
+ $("global").innerHTML=g;
+
+ let f="",vals=[];
+ for(let i=0;i<32;i++){
+   const x=freqStats[i];
+   const pct=x&&x.sent?100*x.ok/x.sent:null;
+   if(pct!==null)vals.push([pct,i]);
+   f+=`<tr><td>${i.toString(2).padStart(5,"0")}</td><td>${HZ[i]}</td><td>${x?x.sent:"—"}</td><td>${x?x.ok:"—"}</td><td>${pct!==null?pct.toFixed(1)+"%":"—"}</td></tr>`;
+ }
+ $("freq").innerHTML=f;
+ if(vals.length){
+   const avg=vals.reduce((s,v)=>s+v[0],0)/vals.length;
+   vals.sort((a,b)=>a[0]-b[0]);
+   $("favg").textContent=avg.toFixed(1)+"%";
+   $("fworst").textContent=`${HZ[vals[0][1]]} Hz · ${vals[0][0].toFixed(1)}%`;
+   $("fbest").textContent=`${HZ[vals.at(-1)[1]]} Hz · ${vals.at(-1)[0].toFixed(1)}%`;
+ } else {
+   $("favg").textContent=$("fworst").textContent=$("fbest").textContent="—";
+ }
+
+ let a="";
+ for(let i=0;i<4;i++){
+   const x=askStats[i];
+   const pct=x&&x.sent?100*x.ok/x.sent:null;
+   a+=`<tr><td>${i.toString(2).padStart(2,"0")}</td><td>${ASK[i]}</td><td>${x?x.sent:"—"}</td><td>${x?x.ok:"—"}</td><td>${pct!==null?pct.toFixed(1)+"%":"—"}</td></tr>`;
+ }
+ $("ask").innerHTML=a;
+
+ let p="";
+ for(let i=0;i<2;i++){
+   const x=pskStats[i];
+   const pct=x&&x.sent?100*x.ok/x.sent:null;
+   p+=`<tr><td>${i}</td><td>${i===0?"0° / pas d’inversion":"180° / inversion"}</td><td>${x?x.sent:"—"}</td><td>${x?x.ok:"—"}</td><td>${pct!==null?pct.toFixed(1)+"%":"—"}</td></tr>`;
+ }
+ $("psk").innerHTML=p;
+
+ let c="";
+ for(let i=0;i<32;i++){
+   const x=calRows[i];
+   c+=`<tr><td>${i}</td><td>${HZ[i]}</td>${Array.from({length:4},(_,j)=>`<td>${x?x[j].toLocaleString():"—"}</td>`).join("")}</tr>`;
+ }
+ $("calrows").innerHTML=c;
+}
+
+async function lines(p,cb){
+ const d=new TextDecoder();let b="";
+ while(p.readable){
+   const rd=p.readable.getReader();
+   try{
+     for(;;){
+       const {value,done}=await rd.read();
+       if(done)break;
+       b+=d.decode(value,{stream:true});
+       const a=b.split(/\r?\n/);b=a.pop();
+       a.forEach(x=>cb(x.trim()));
+     }
+   }finally{rd.releaseLock()}
+ }
+}
+
+async function connect(w){
+ try{
+   const p=await navigator.serial.requestPort();
+   await p.open({baudRate:115200});
+   if(w==="tx"){txPort=p;setConn("tx",true);lines(p,onTX).catch(e=>log("TX reader "+e))}
+   else{rxPort=p;setConn("rx",true);lines(p,onRX).catch(e=>log("RX reader "+e))}
+ }catch(e){log(w.toUpperCase()+" "+e)}
+}
+
+async function disc(p,w){if(!p)return;try{await p.close()}catch(e){}setConn(w,false)}
+function onTX(s){if(!s)return;setConn("tx",true);log("TX "+s)}
+
+function onRX(s){
+ if(!s)return;
+ setConn("rx",true);
+ log("RX "+s);
+
+ let m=s.match(/RX_STATUS state=(\d+) max=(\d+) thr=(\d+) cal=(\d+) samples=(\d+)/);
+ if(m){
+   $("rxstate").textContent=`state=${m[1]} · max=${Number(m[2]).toLocaleString()} · samples=${m[5]}`;
+   $("cal").textContent=m[4]==="1"?"OK":"en cours";
+   return;
+ }
+
+ if(s==="COMBO4322_CAL_OK"){
+   $("cal").textContent="OK";
+   $("cal").className="good";
+   return;
+ }
+
+ m=s.match(/CAL4322_ROW fi=(\d+) hz=(\d+) c0=(\d+) c1=(\d+) c2=(\d+) c3=(\d+)/);
+ if(m){calRows[+m[1]]=m.slice(3,7).map(Number);render();return}
+
+ m=s.match(/COMBO4322_FREQ fi=(\d+) hz=(\d+) sent=(\d+) correct=(\d+)/);
+ if(m){freqStats[+m[1]]={sent:+m[3],ok:+m[4]};render();return}
+
+ m=s.match(/COMBO4322_ASK ai=(\d+) ask=(\d+) sent=(\d+) correct=(\d+)/);
+ if(m){askStats[+m[1]]={sent:+m[3],ok:+m[4]};render();return}
+
+ m=s.match(/COMBO4322_PSK pi=(\d+) sent=(\d+) correct=(\d+)/);
+ if(m){pskStats[+m[1]]={sent:+m[2],ok:+m[3]};render();return}
+
+ m=s.match(/COMBO4322_RESULT .*sent=(\d+) decisions=(\d+) correct=(\d+) coverage_x100=(\d+) accuracy_x100=(\d+) sync_x1000=(\d+) samples_avg=(\d+) samples_min=(\d+) samples_max=(\d+)/);
+ if(m){
+   globalResult={
+     sent:+m[1],dec:+m[2],ok:+m[3],
+     cov:+m[4]/100,acc:+m[5]/100,sync:+m[6]/10,
+     savg:+m[7],smin:+m[8],smax:+m[9]
+   };
+   render();
+   return;
+ }
+}
+
+$("ctx").onclick=()=>connect("tx");
+$("crx").onclick=()=>connect("rx");
+$("dtx").onclick=()=>disc(txPort,"tx");
+$("drx").onclick=()=>disc(rxPort,"rx");
+
+$("clear").onclick=()=>{
+ logs=[];globalResult=null;
+ freqStats=Array(32).fill(null);
+ askStats=Array(4).fill(null);
+ pskStats=Array(2).fill(null);
+ calRows=Array(32).fill(null);
+ $("log").textContent="";
+ $("cal").textContent="—";
+ render();
+};
+
+$("csv").onclick=()=>{
+ let s="section,index,value,sent,correct,accuracy_pct\n";
+ if(globalResult)s+=`global,0,256states,${globalResult.sent},${globalResult.ok},${globalResult.acc.toFixed(3)}\n`;
+ for(let i=0;i<32;i++){const x=freqStats[i];if(x)s+=`frequency,${i},${HZ[i]},${x.sent},${x.ok},${(100*x.ok/x.sent).toFixed(3)}\n`}
+ for(let i=0;i<4;i++){const x=askStats[i];if(x)s+=`ask,${i},${ASK[i]},${x.sent},${x.ok},${(100*x.ok/x.sent).toFixed(3)}\n`}
+ for(let i=0;i<2;i++){const x=pskStats[i];if(x)s+=`psk,${i},${i?"180deg":"0deg"},${x.sent},${x.ok},${(100*x.ok/x.sent).toFixed(3)}\n`}
+ const b=new Blob([s],{type:"text/csv"}),a=document.createElement("a");
+ a.href=URL.createObjectURL(b);
+ a.download="esp8266_4ask_x_32fsk_x_2psk_v28.csv";
+ a.click();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+};
+
+setConn("tx",false);setConn("rx",false);render();
+</script></body></html>
