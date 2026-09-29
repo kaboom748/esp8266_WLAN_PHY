@@ -4,7 +4,7 @@
 <img width="1673" height="880" alt="image" src="https://github.com/user-attachments/assets/c271bf3e-1638-4704-9397-704bcc973b19" />
 <img width="1447" height="1087" alt="Image Codex 22 sept  2026, 17_35_08" src="https://github.com/user-attachments/assets/ee76bba4-eafc-4315-ba57-ce1c1e315063" />
 <img width="1448" height="1086" alt="Image Codex 19 sept  2026, 20_36_04" src="https://github.com/user-attachments/assets/91c7605d-3b9d-4ed6-b458-a250892ce8e3" />
-<img width="1448" height="1086" alt="Image ChatGPT 27 sept  2026, 18_11_25" src="https://github.com/user-attachments/assets/a4316535-e17d-470a-9278-5ea6be1bc19c" />
+<img width="1448" height="1086" alt="Image ChatGPT 28 sept  2026, 21_12_11" src="https://github.com/user-attachments/assets/911bdc9f-b729-43e0-8258-2f0311a798fa" />
 <img width="1448" height="1086" alt="Image ChatGPT 28 sept  2026, 20_49_59" src="https://github.com/user-attachments/assets/b5c509c2-9122-4d5e-a505-bcedd446ec57" />
 
 
