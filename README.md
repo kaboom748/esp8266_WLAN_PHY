@@ -6,6 +6,7 @@
 <img width="1448" height="1086" alt="Image Codex 19 sept  2026, 20_36_04" src="https://github.com/user-attachments/assets/91c7605d-3b9d-4ed6-b458-a250892ce8e3" />
 <img width="1448" height="1086" alt="Image ChatGPT 28 sept  2026, 21_12_11" src="https://github.com/user-attachments/assets/911bdc9f-b729-43e0-8258-2f0311a798fa" />
 <img width="1448" height="1086" alt="Image ChatGPT 28 sept  2026, 20_49_59" src="https://github.com/user-attachments/assets/b5c509c2-9122-4d5e-a505-bcedd446ec57" />
+<img width="1122" height="1402" alt="fa24f0b5-52aa-444b-8844-6fa6916e4698" src="https://github.com/user-attachments/assets/e8d00082-645e-4b99-af67-d5411306573b" />
 
 
 # ESP8266 WLAN PHY — Reverse Engineering & RF Test Bench
