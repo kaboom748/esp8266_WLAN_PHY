@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2-FSK faible signal · V12</title>
+<style>
+:root{color-scheme:dark;--bg:#09121d;--panel:#111f30;--line:#26394d;--muted:#9badc1;--cyan:#58d8ed;--gold:#ffcf72;--green:#70d9a5;--red:#ff898b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#edf3fc;font:15px system-ui,sans-serif}main{max-width:1240px;margin:auto;padding:26px}h1{margin:0;font-size:27px}h2{font-size:16px;margin:0 0 14px}.sub,.muted{color:var(--muted)}.sub{margin:10px 0 18px;line-height:1.55}.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:22px}button,.file{border:1px solid var(--line);border-radius:8px;background:#172b41;color:inherit;padding:10px 14px;cursor:pointer;font:inherit}button:hover,.file:hover{background:#23425e}button:disabled{opacity:.45;cursor:default}button.primary{background:#1a5261;border-color:#378999}.file input{display:none}.badge{font:13px ui-monospace,monospace;padding:7px 12px;background:var(--panel);border:1px solid var(--line);border-radius:30px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.card,.panel{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:18px}.card .label{color:var(--muted);font-size:13px}.value{font-size:27px;font-weight:650;margin:9px 0}.help{font-size:12px;color:var(--muted);line-height:1.5}.split{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:13px}.wide{margin-top:13px}.row{display:flex;justify-content:space-between;gap:15px}.progress{background:#26394d;height:9px;border-radius:10px;overflow:hidden;margin:14px 0}.progress div{height:100%;background:var(--cyan);width:0}.tones{display:grid;grid-template-columns:1fr 1fr;gap:12px}.tone{padding:12px;background:#0c1826;border-radius:8px}.tone b{font-size:24px}.tone.zero{border-left:3px solid var(--cyan)}.tone.one{border-left:3px solid var(--gold)}canvas{width:100%;height:185px;display:block;margin-top:12px}table{width:100%;border-collapse:collapse;white-space:nowrap;font:13px ui-monospace,monospace}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:500}.scroll{overflow:auto;max-height:310px}tbody tr{cursor:pointer}tbody tr:hover{background:#1b324a}.ok{color:var(--green)}.bad{color:var(--red)}pre{margin:0;white-space:pre-wrap;overflow:auto;max-height:255px;font:12px/1.55 ui-monospace,monospace}#notice{padding:12px 15px;border-radius:8px;background:#152c42;margin-bottom:15px;line-height:1.5}#notice.bad{background:#36232a}details{margin-top:15px}summary{cursor:pointer;color:var(--muted)}.legend{font-size:12px;color:var(--muted)}.legend span{margin-right:15px}.cy{color:var(--cyan)}.gd{color:var(--gold)}footer{margin-top:18px;color:var(--muted);font-size:12px;line-height:1.6}@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}.split{grid-template-columns:1fr}}@media(max-width:480px){main{padding:14px}.value{font-size:21px}h1{font-size:23px}.card,.panel{padding:13px}.tones{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<div class="row"><h1>2-FSK · Faible signal</h1><span class="badge">V12</span></div>
+<p class="sub">Réception lente avec détection I/Q accumulée et correction d’erreurs. 1 symbole/s · 32 bits utiles en environ 2 min 43 s · 0,000196 kbit/s utiles au maximum.</p>
+<div class="toolbar">
+ <button id="connect" class="primary">Connecter le RX · 230400</button>
+ <button id="disconnect" disabled>Déconnecter</button>
+ <button id="query" disabled>Diagnostic ?</button>
+ <label class="file">Importer un log<input id="import" type="file" accept=".txt,.json,.log"></label>
+ <button id="export">Exporter les logs</button><button id="clear">Effacer l’affichage</button>
+ <span id="connection" class="badge">Hors connexion</span>
+</div>
+<div id="notice">Flasher les deux sketches WEAK V12. Le CPU passe automatiquement à 160 MHz. Série 230400 bauds. Un état SEARCH doit apparaître chaque seconde, même sans TX.</div>
+<div class="grid">
+ <div class="card"><div class="label">État du RX</div><div id="state" class="value">En attente</div><div id="age" class="help">Aucune ligne reçue</div></div>
+ <div class="card"><div class="label">Trames CRC valides / reçues</div><div id="frames" class="value">0 / 0</div><div id="fer" class="help">Pas encore de trame complète</div></div>
+ <div class="card"><div class="label">BER brut · mot test connu</div><div id="ber" class="value">—</div><div id="errors" class="help">Bits codés observés, effacements exclus</div></div>
+ <div class="card"><div class="label">Décalage des quartz</div><div id="cfo" class="value">—</div><div id="acquisition" class="help">Recherche dans ±60 kHz</div></div>
+</div>
+<div class="split">
+ <section class="panel"><div class="row"><h2>Deux tons après filtrage</h2><span class="legend">Indice ton / bruit local</span></div>
+  <div class="tones"><div class="tone zero"><div class="muted">Bit 0 · K = −3</div><b id="p0">—</b><div class="help">+78,125 kHz autour du LO RX, avant correction quartz</div></div><div class="tone one"><div class="muted">Bit 1 · K = −5</div><b id="p1">—</b><div class="help">−78,125 kHz autour du LO RX, avant correction quartz</div></div></div>
+  <canvas id="toneChart" aria-label="Historique des deux indices de détection"></canvas>
+  <div class="legend"><span class="cy">● Bit 0</span><span class="gd">● Bit 1</span>Rapports de filtres, pas un SNR référencé à 2,5 kHz.</div>
+ </section>
+ <section class="panel"><h2>Synchronisation et progression</h2><div class="row"><span id="progressText">Recherche du signal</span><span id="corr">Corrélation : —</span></div><div class="progress"><div id="progressBar"></div></div>
+  <canvas id="softChart" aria-label="Historique des décisions souples"></canvas>
+  <div class="help">Décision souple : valeur négative → bit 0, positive → bit 1. Une valeur proche de zéro indique une ambiguïté. Le décodeur conserve cette incertitude.</div>
+ </section>
+</div>
+<section class="panel wide"><h2>Mesures de réception</h2><div class="grid" style="gap:10px">
+ <div><div class="label muted">Énergie E4 brute</div><div id="energy" class="value">—</div><div id="adc" class="help">Fenêtre ADC : —</div></div>
+ <div><div class="label muted">Rafale cohérente</div><div id="capture" class="value">—</div><div id="bandwidth" class="help">Largeur indicative : 1 / durée de rafale</div></div>
+ <div><div class="label muted">Timeouts IQ / dépassements DSP</div><div id="timeouts" class="value">—</div><div id="cpu" class="help">Durée maximale capture + calcul : —</div></div>
+ <div><div class="label muted">Effacements / décisions modifiées</div><div id="fec" class="value">—</div><div class="help">Modifications après Viterbi, vérifiées par CRC si valide</div></div>
+</div></section>
+<section class="panel wide"><div class="row"><h2>Trames reçues · cliquer pour voir le détail</h2><span id="word" class="badge">Mot : —</span></div>
+<div class="scroll"><table><thead><tr><th>Heure</th><th>N° RX</th><th>CRC</th><th>Mot reçu</th><th>Erreurs brutes / observés</th><th>Effacements</th><th>Modifiés</th></tr></thead><tbody id="frameRows"></tbody></table></div>
+<details id="frameDetails"><summary>Détail de la trame et métriques des 108 bits codés</summary><pre id="detail">Aucune trame sélectionnée</pre></details></section>
+<section class="panel wide"><div class="row"><h2>Port série · toutes les lignes</h2><span id="lineCount" class="badge">0 lignes</span></div><pre id="rawLog"></pre></section>
+<footer>Prototype inspiré de WSPR, protocole propre au projet. La séparation des tons TX reste 156,25 kHz ; la combinaison de puissances porte sur des blocs courts, pas une intégration cohérente de 1 seconde. Aucun seuil −31 dB n’est validé. E4 change avec la fenêtre ADC (32 en recherche, 128 après acquisition) : comparer à fenêtre identique. Les logs contiennent aussi les trames CRC rejetées et leurs métriques ; conservation locale de 20 000 lignes, sans transmission réseau.</footer>
+</main>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const state = {lines:[],frames:[],samples:[],lastAt:0,lastFrame:null,valid:0,total:0,rawErrors:0,observed:0,erasures:0,unknown:0};
+let port=null,reader=null,readPromise=null,pending='',connected=false;
+function fieldMap(line){const m={};for(const token of line.trim().split(/\s+/)){const i=token.indexOf('=');if(i>0)m[token.slice(0,i)]=token.slice(i+1);}return m;}
+function number(m,k){if(!(k in m))return null;const n=Number(m[k]);return Number.isFinite(n)?n:null;}
+function crcOfHex(word){let crc=65535,w=parseInt(word,16)>>>0;for(let b=0;b<4;b++){crc^=((w>>>(24-8*b))&255)<<8;for(let k=0;k<8;k++)crc=((crc&32768)?(crc<<1)^0x1021:crc<<1)&65535;}return crc;}
+function frameIssues(m){const issues=[];for(const key of ['N','OK','MATCH','RAW_ERR','OBS','ERA','CHANGED'])if(!Number.isInteger(number(m,key)))issues.push(`Champ ${key} absent/invalide`);if(!/^[0-9a-f]{8}$/i.test(m.WORD||''))issues.push('WORD invalide');for(const k of ['CRC_RX','CRC_CALC'])if(!/^[0-9a-f]{4}$/i.test(m[k]||''))issues.push(`${k} invalide`);if(!issues.length){if(Number(m.N)<1||!['0','1'].includes(m.OK)||!['0','1'].includes(m.MATCH)||Number(m.OBS)<0||Number(m.OBS)>108||Number(m.RAW_ERR)<0||Number(m.RAW_ERR)>Number(m.OBS)||Number(m.ERA)<0||Number(m.OBS)+Number(m.ERA)!==108||Number(m.CHANGED)<0||Number(m.CHANGED)>Number(m.OBS))issues.push('Compteurs incohérents');if(parseInt(m.CRC_CALC,16)!==crcOfHex(m.WORD))issues.push('CRC_CALC incohérent avec WORD');if(m.OK==='1'&&parseInt(m.CRC_RX,16)!==parseInt(m.CRC_CALC,16))issues.push('OK=1 avec CRC différent');if(m.MATCH==='1'&&(m.OK!=='1'||m.WORD.toUpperCase()!=='D3A5C69B'))issues.push('MATCH incohérent');}return issues;}
+function show(id,value){$(id).textContent=value;}
+function notice(message,bad=false){show('notice',message);$('notice').className=bad?'bad':'';}
+function db(value){return 10*Math.log10(Math.max(value,0.001));}
+function updateStats(){show('frames',`${state.valid} / ${state.total}`);show('fer',state.total?`${(100*(state.total-state.valid)/state.total).toFixed(1)} % de trames rejetées (CRC ou télémétrie)`:'Pas encore de trame complète');show('ber',state.observed?`${(100*state.rawErrors/state.observed).toFixed(2)} %`:'—');show('errors',`${state.rawErrors} erreurs / ${state.observed} bits codés observés · ${state.erasures} effacements`);}
+function draw(canvasId,series,colors,min,max){const c=$(canvasId),r=c.getBoundingClientRect(),w=Math.max(300,Math.floor(r.width||500)),h=185,d=window.devicePixelRatio||1;c.width=w*d;c.height=h*d;const ctx=c.getContext('2d');if(!ctx)return;ctx.scale(d,d);ctx.clearRect(0,0,w,h);ctx.font='11px system-ui';ctx.fillStyle='#9badc1';ctx.strokeStyle='#26394d';for(let k=0;k<=4;k++){const y=14+(h-35)*k/4;ctx.beginPath();ctx.moveTo(43,y);ctx.lineTo(w-8,y);ctx.stroke();ctx.fillText((max-(max-min)*k/4).toFixed(0),4,y+4);}series.forEach((data,n)=>{ctx.strokeStyle=colors[n];ctx.lineWidth=1.6;ctx.beginPath();let active=false;data.forEach((v,i)=>{if(!Number.isFinite(v)){active=false;return;}const x=43+(w-52)*i/Math.max(1,data.length-1),y=14+(h-35)*(1-(Math.max(min,Math.min(max,v))-min)/(max-min));if(!active){ctx.moveTo(x,y);active=true;}else ctx.lineTo(x,y);});ctx.stroke();});}
+function drawCharts(){draw('toneChart',[state.samples.map(s=>db(s.p0)),state.samples.map(s=>db(s.p1))],['#58d8ed','#ffcf72'],-12,30);draw('softChart',[state.samples.map(s=>s.soft)],['#70d9a5'],-8,8);}
+function showDetails(f){show('detail',JSON.stringify({frame:f.fields,telemetry_issues:f.issues,soft_by_coded_index:f.soft,raw:f.raw},null,2));$('frameDetails').open=true;}
+function renderFrames(){const body=$('frameRows');body.replaceChildren();for(const f of state.frames.slice(-100).reverse()){const tr=document.createElement('tr');const m=f.fields;for(const value of [new Date(f.at).toLocaleTimeString(),m.N,f.issues.length?'SÉRIE':f.accepted?'VALIDE':'REJETÉ',m.WORD,`${m.RAW_ERR} / ${m.OBS}`,m.ERA,m.CHANGED]){const td=document.createElement('td');td.textContent=value??'—';tr.appendChild(td);}tr.children[2].className=f.accepted?'ok':'bad';tr.addEventListener('click',()=>showDetails(f));body.appendChild(tr);}}
+function appendRaw(line,at){state.lines.push({at,line});if(state.lines.length>20000)state.lines.shift();show('lineCount',`${state.lines.length} lignes`);show('rawLog',state.lines.slice(-80).map(r=>`${new Date(r.at).toLocaleTimeString()}  ${r.line}`).join('\n'));$('rawLog').scrollTop=$('rawLog').scrollHeight;}
+function processLine(line,at=Date.now()){
+ line=String(line).replace(/\r/g,'').trim();if(!line)return;state.lastAt=Date.now();appendRaw(line,at);const m=fieldMap(line);
+ if(line.startsWith('BOOT ')){show('state','Démarrage');notice('RX en cours de démarrage. Les étapes INIT et les diagnostics restent visibles ci-dessous.');return;}
+ if(line.startsWith('ERR ')){show('state','Erreur INIT');const help=line.includes('CPU_160_FAILED')?'La sélection automatique à 160 MHz a échoué. Relancer avec RESET.':line.includes('CPU_160_REQUIRED')?'Ce firmware ancien exige 160 MHz. Flasher le RX V12 pour la sélection automatique.':'Relancer avec RESET et consulter le journal.';notice(`Le RX signale : ${line}. ${help}`,true);return;}
+ if(line.startsWith('INIT ')){show('state','Initialisation');return;}
+ if(line.startsWith('READY ')){if(!/WEAK_RX_V(?:11|12)\b/.test(line)){notice('Firmware différent du RX WEAK V11/V12. Les lignes restent visibles dans le journal.',true);return;}show('state','Recherche');notice('RX prêt. Acquisition du décalage des quartz, puis recherche de la séquence longue. Une trame complète peut prendre plusieurs minutes.');return;}
+ if(!line.startsWith('WS ')){state.unknown++;return;}
+ if(m.TYPE==='TX'){notice('Ce port appartient au TX. Connecter le port USB du RX pour les mesures.',true);return;}
+ if(m.TYPE==='SEARCH'){show('state','Recherche');show('progressText','Acquisition du signal');$('progressBar').style.width='0%';show('cfo',number(m,'CFO')===null?'—':`${(Number(m.CFO)/1000).toFixed(2)} kHz ?`);show('acquisition',`Z=${((number(m,'Z100')||0)/100).toFixed(2)} · ${m.N??0} rafales · ${m.FAIL??0} non utilisables · Fs=${m.FS_HZ??'—'} Hz · ${m.WHY??'NONE'}`);if(m.WHY&&m.WHY!=='NONE')notice(`Acquisition : ${m.WHY}. Fs=${m.FS_HZ??'—'} Hz, irrégularité=${m.JIT_NS??'—'} ns. Voir le journal.`,true);}
+ if(m.TYPE==='LOCK'){show('state','Synchronisation');show('cfo',`${(Number(m.CFO)/1000).toFixed(2)} kHz`);show('acquisition','Fréquence acquise · attente de la séquence connue');}
+ if(m.TYPE==='SYNC'){show('state','Données');show('corr',`Corrélation : ${(Number(m.CORR1000)/1000).toFixed(3)}`);show('progressText','Séquence reconnue · réception des 108 bits codés');}
+ if(m.TYPE==='RESET'){show('state','Recherche');notice(`Nouvelle recherche : ${m.REASON??'perte de synchronisation'}. Les logs précédents sont conservés.`);}
+ if(m.TYPE==='MET'){
+  show('state',m.ST==='DATA'?'Données':'Synchronisation');show('progressText',m.ST==='DATA'?`${m.POS} / ${m.TOTAL} symboles codés`:'Recherche de la séquence connue');$('progressBar').style.width=m.ST==='DATA'?`${100*Number(m.POS)/Number(m.TOTAL)}%`:'0%';
+  const pol=m.POL==='-1'?-1:1;
+  const p0=(number(m,pol===1?'P0100':'P1100')||0)/100,p1=(number(m,pol===1?'P1100':'P0100')||0)/100,soft=pol*(number(m,'SOFT100')||0)/100;
+  show('p0',`${db(p0).toFixed(1)} dB`);show('p1',`${db(p1).toFixed(1)} dB`);show('cfo',`${(pol*Number(m.CFO)/1000).toFixed(2)} kHz`);show('acquisition',`Correction numérique des quartz · polarité IQ ${pol}`);show('corr',`Corrélation : ${(Number(m.CORR1000)/1000).toFixed(3)}`);
+  state.samples.push({p0,p1,soft});if(state.samples.length>200)state.samples.shift();drawCharts();show('cpu',`${m.PROC_US??'—'} µs max. capture + DSP`);
+ }
+ if('E4' in m)show('energy',Number(m.E4).toLocaleString('fr'));
+ if('ADC' in m)show('adc',`Fenêtre ADC : ${m.ADC} échantillons à 40 MS/s`);
+ if('CAP_US' in m){show('capture',`${m.CAP_US} µs`);show('bandwidth',Number(m.CAP_US)>0?`1 / durée ≈ ${(1000000/Number(m.CAP_US)).toFixed(0)} Hz · pas la bande RF totale`:'Durée non disponible');}
+ if('TO' in m)show('timeouts',`${m.TO} / ${m.OVER??'—'}`);
+ if(m.TYPE==='FRAME'){
+  const issues=frameIssues(m),f={at,fields:m,raw:[line],soft:Array(108).fill(null),issues,accepted:m.OK==='1'&&!issues.length};state.frames.push(f);if(state.frames.length>2000)state.frames.shift();state.lastFrame=f;state.total++;if(f.accepted)state.valid++;
+  if(!issues.length){state.rawErrors+=number(m,'RAW_ERR')||0;state.observed+=number(m,'OBS')||0;state.erasures+=number(m,'ERA')||0;}updateStats();show('fec',`${m.ERA??'—'} / ${m.CHANGED??'—'}`);show('word',`Mot : ${m.WORD??'—'}${m.MATCH==='1'?' · attendu':''}`);renderFrames();show('state','Trame terminée');notice(issues.length?`Télémétrie incohérente : ${issues.join(', ')}. Ligne conservée dans les logs.`:f.accepted?`CRC valide · mot ${m.WORD}${m.MATCH==='1'?' conforme au mot test':' différent du mot test'}.`:`Trame rejetée · mot reçu ${m.WORD}. La trame et ses décisions souples sont conservées.`,!f.accepted);
+ }
+ if(m.TYPE==='SOFT'){const f=[...state.frames].reverse().find(f=>f.fields.N===m.N);const base=number(m,'BASE'),values=(m.VALUES||'').split(',').map(Number);if(f&&[0,54].includes(base)&&values.length===54&&values.every(v=>Number.isInteger(v)&&Math.abs(v)<=255)){values.forEach((v,i)=>f.soft[base+i]=v);f.raw.push(line);}}
+}
+function ingest(text){pending+=text;if(pending.length>65536&&!pending.includes('\n')){appendRaw(pending.slice(0,2048)+' [ligne tronquée]',Date.now());pending='';return;}let p;while((p=pending.indexOf('\n'))>=0){processLine(pending.slice(0,p));pending=pending.slice(p+1);}}
+function setConnected(value){connected=value;$('connect').disabled=value;$('disconnect').disabled=!value;$('query').disabled=!value;show('connection',value?'Connecté · 230400':'Hors connexion');}
+async function sendQuery(){if(!port||!port.writable)return;const w=port.writable.getWriter();try{await w.write(new TextEncoder().encode('?\n'));}finally{w.releaseLock();}}
+async function readLoop(){const decoder=new TextDecoder();try{reader=port.readable.getReader();while(connected){const {value,done}=await reader.read();if(done)break;if(value)ingest(decoder.decode(value,{stream:true}));}ingest(decoder.decode());if(pending.trim()){processLine(pending);pending='';}}catch(e){notice(`Lecture série interrompue : ${e.message}`,true);}finally{if(reader){reader.releaseLock();reader=null;}setConnected(false);}}
+async function connect(){try{if(!navigator.serial)throw new Error('WebSerial indisponible dans ce navigateur/contexte. Utiliser un navigateur compatible ou importer un log.');if(port){await port.close();port=null;}port=await navigator.serial.requestPort();await port.open({baudRate:230400,dataBits:8,stopBits:1,parity:'none',flowControl:'none'});pending='';setConnected(true);notice('Port ouvert. Le RX doit envoyer un diagnostic chaque seconde, même sans signal.');readPromise=readLoop();setTimeout(()=>{if(connected)sendQuery().catch(e=>notice(e.message,true));},750);}catch(e){setConnected(false);notice(e.message,true);if(port){try{await port.close();}catch(_){}port=null;}}}
+async function disconnect(){setConnected(false);try{if(reader)await reader.cancel();if(readPromise)await readPromise;if(port)await port.close();}catch(e){notice(e.message,true);}finally{port=null;reader=null;readPromise=null;}}
+function resetDisplay(){Object.assign(state,{lines:[],frames:[],samples:[],lastAt:0,lastFrame:null,valid:0,total:0,rawErrors:0,observed:0,erasures:0,unknown:0});pending='';for(const id of ['energy','capture','cfo','fec','p0','p1','timeouts'])show(id,'—');show('rawLog','');show('lineCount','0 lignes');show('state','En attente');show('age','Aucune ligne reçue');show('adc','Fenêtre ADC : —');show('cpu','Durée maximale capture + calcul : —');show('acquisition','Recherche dans ±60 kHz');show('bandwidth','Largeur indicative : 1 / durée de rafale');show('detail','Aucune trame sélectionnée');show('word','Mot : —');show('progressText','Recherche du signal');show('corr','Corrélation : —');$('progressBar').style.width='0%';updateStats();renderFrames();drawCharts();}
+async function importLog(file){if(!file)return;try{const text=await file.text();let parsed;try{parsed=JSON.parse(text);}catch(_){}const lines=Array.isArray(parsed)?parsed:parsed&&Array.isArray(parsed.lines)?parsed.lines:null;if(lines){for(const row of lines){if(typeof row==='string')processLine(row);else if(row&&typeof (row.line||row.raw||row.text)==='string')processLine(row.line||row.raw||row.text,row.at||Date.now());else if(row)processLine(JSON.stringify(row));}}else{for(const line of text.split(/\r?\n/))processLine(line);}if(state.unknown)notice('Log importé. Les lignes non reconnues restent visibles ; le tableau attend la télémétrie WS du RX WEAK V12.');}catch(e){notice(`Import impossible : ${e.message}`,true);}}
+function exportLog(){const blob=new Blob([JSON.stringify({version:12,baud:230400,exportedAt:new Date().toISOString(),lines:state.lines,frames:state.frames},null,2)],{type:'application/json'});const a=document.createElement('a'),url=URL.createObjectURL(blob);a.href=url;a.download=`ESP8266_2FSK_WEAK_V12_${new Date().toISOString().replace(/[:.]/g,'-')}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+$('connect').addEventListener('click',connect);$('disconnect').addEventListener('click',disconnect);$('query').addEventListener('click',()=>sendQuery().catch(e=>notice(e.message,true)));$('export').addEventListener('click',exportLog);$('clear').addEventListener('click',resetDisplay);$('import').addEventListener('change',e=>importLog(e.target.files[0]));window.addEventListener('resize',drawCharts);
+setInterval(()=>{if(!state.lastAt){show('age','Aucune ligne reçue');return;}const secs=Math.floor((Date.now()-state.lastAt)/1000);show('age',`Dernière ligne il y a ${secs} s`);if(connected&&secs>5)notice('Aucune ligne depuis plus de 5 secondes. Fermer les autres moniteurs série, vérifier 230400 bauds puis appuyer sur RESET du RX.',true);},1000);
+drawCharts();
+</script></body></html>
