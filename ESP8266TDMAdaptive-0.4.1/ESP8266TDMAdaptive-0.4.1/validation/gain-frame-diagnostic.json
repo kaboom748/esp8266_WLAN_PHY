@@ -1,0 +1,1243 @@
+{
+  "passed": false,
+  "utc": "2026-10-07T00:11:29.219746+00:00",
+  "parameters": {
+    "ports": [
+      "/dev/ttyUSB1",
+      "/dev/ttyUSB0"
+    ],
+    "settings": [
+      "2 2"
+    ],
+    "seconds": 24.0,
+    "modes": [
+      0
+    ],
+    "one_way": false,
+    "output": "/home/kaboom/lab_tdm_adaptive_041/gain-frame-diagnostic.json"
+  },
+  "elapsed": 25.716,
+  "phases": [
+    {
+      "name": "both_booted",
+      "passed": true,
+      "t": 0.466,
+      "status": [
+        {
+          "role": 1,
+          "state": "SEARCH",
+          "cycle": 0,
+          "tx": 0,
+          "rx": 0,
+          "miss": 0,
+          "txFail": 0,
+          "ack": 0,
+          "delivered": 0,
+          "retry": 0,
+          "dup": 0,
+          "queue": 1,
+          "resync": 0,
+          "f0": 0,
+          "f1": 0,
+          "corr": 0,
+          "peerCorr": 0,
+          "heap": 48360,
+          "t": 409,
+          "rate": 0,
+          "bitUs": 3000,
+          "limit": 5,
+          "up": 0,
+          "down": 0,
+          "recovery": 0
+        },
+        {}
+      ]
+    },
+    {
+      "name": "fresh_paused_readbacks",
+      "passed": true,
+      "t": 0.528,
+      "status": [
+        {
+          "role": 1,
+          "state": "SEARCH",
+          "cycle": 0,
+          "tx": 0,
+          "rx": 0,
+          "miss": 0,
+          "txFail": 0,
+          "ack": 0,
+          "delivered": 0,
+          "retry": 0,
+          "dup": 0,
+          "queue": 1,
+          "resync": 0,
+          "f0": 0,
+          "f1": 0,
+          "corr": 0,
+          "peerCorr": 0,
+          "heap": 48360,
+          "t": 459,
+          "rate": 0,
+          "bitUs": 3000,
+          "limit": 5,
+          "up": 0,
+          "down": 0,
+          "recovery": 1
+        },
+        {
+          "role": 2,
+          "state": "SEARCH",
+          "cycle": 0,
+          "tx": 0,
+          "rx": 0,
+          "miss": 0,
+          "txFail": 0,
+          "ack": 0,
+          "delivered": 0,
+          "retry": 0,
+          "dup": 0,
+          "queue": 1,
+          "resync": 0,
+          "f0": 0,
+          "f1": 0,
+          "corr": 0,
+          "peerCorr": 0,
+          "heap": 48360,
+          "t": 425,
+          "rate": 0,
+          "bitUs": 3000,
+          "limit": 5,
+          "up": 0,
+          "down": 0,
+          "recovery": 1
+        }
+      ]
+    },
+    {
+      "name": "gain_verified_2_2",
+      "passed": true,
+      "t": 0.639,
+      "status": [
+        {
+          "role": 1,
+          "state": "SEARCH",
+          "cycle": 0,
+          "tx": 0,
+          "rx": 0,
+          "miss": 0,
+          "txFail": 0,
+          "ack": 0,
+          "delivered": 0,
+          "retry": 0,
+          "dup": 0,
+          "queue": 1,
+          "resync": 0,
+          "f0": 0,
+          "f1": 0,
+          "corr": 0,
+          "peerCorr": 0,
+          "heap": 48360,
+          "t": 520,
+          "rate": 0,
+          "bitUs": 3000,
+          "limit": 0,
+          "up": 0,
+          "down": 0,
+          "recovery": 1
+        },
+        {
+          "role": 2,
+          "state": "SEARCH",
+          "cycle": 0,
+          "tx": 0,
+          "rx": 0,
+          "miss": 0,
+          "txFail": 0,
+          "ack": 0,
+          "delivered": 0,
+          "retry": 0,
+          "dup": 0,
+          "queue": 1,
+          "resync": 0,
+          "f0": 0,
+          "f1": 0,
+          "corr": 0,
+          "peerCorr": 0,
+          "heap": 48360,
+          "t": 525,
+          "rate": 0,
+          "bitUs": 3000,
+          "limit": 0,
+          "up": 0,
+          "down": 0,
+          "recovery": 1
+        }
+      ]
+    },
+    {
+      "name": "fresh_paused_readbacks",
+      "passed": true,
+      "t": 25.415,
+      "status": [
+        {
+          "role": 1,
+          "state": "SEARCH",
+          "cycle": 4,
+          "tx": 4,
+          "rx": 0,
+          "miss": 3,
+          "txFail": 0,
+          "ack": 0,
+          "delivered": 0,
+          "retry": 3,
+          "dup": 0,
+          "queue": 1,
+          "resync": 1,
+          "f0": 0,
+          "f1": 0,
+          "corr": 0,
+          "peerCorr": 0,
+          "heap": 48360,
+          "t": 25341,
+          "rate": 0,
+          "bitUs": 3000,
+          "limit": 0,
+          "up": 0,
+          "down": 0,
+          "recovery": 4
+        },
+        {
+          "role": 2,
+          "state": "SEARCH",
+          "cycle": 0,
+          "tx": 0,
+          "rx": 0,
+          "miss": 0,
+          "txFail": 0,
+          "ack": 0,
+          "delivered": 0,
+          "retry": 0,
+          "dup": 0,
+          "queue": 1,
+          "resync": 0,
+          "f0": "-57986",
+          "f1": 52481,
+          "corr": 9,
+          "peerCorr": 0,
+          "heap": 48360,
+          "t": 24645,
+          "rate": 0,
+          "bitUs": 3000,
+          "limit": 0,
+          "up": 0,
+          "down": 0,
+          "recovery": 3
+        }
+      ]
+    },
+    {
+      "name": "gain_comparison",
+      "diagnostic": true,
+      "setting": "2 2",
+      "iq_mode": 0,
+      "one_way": false,
+      "started": 0.639,
+      "ended": 25.415,
+      "baseline": {
+        "status": [
+          {
+            "role": 1,
+            "state": "SEARCH",
+            "cycle": 0,
+            "tx": 0,
+            "rx": 0,
+            "miss": 0,
+            "txFail": 0,
+            "ack": 0,
+            "delivered": 0,
+            "retry": 0,
+            "dup": 0,
+            "queue": 1,
+            "resync": 0,
+            "f0": 0,
+            "f1": 0,
+            "corr": 0,
+            "peerCorr": 0,
+            "heap": 48360,
+            "t": 520,
+            "rate": 0,
+            "bitUs": 3000,
+            "limit": 0,
+            "up": 0,
+            "down": 0,
+            "recovery": 1
+          },
+          {
+            "role": 2,
+            "state": "SEARCH",
+            "cycle": 0,
+            "tx": 0,
+            "rx": 0,
+            "miss": 0,
+            "txFail": 0,
+            "ack": 0,
+            "delivered": 0,
+            "retry": 0,
+            "dup": 0,
+            "queue": 1,
+            "resync": 0,
+            "f0": 0,
+            "f1": 0,
+            "corr": 0,
+            "peerCorr": 0,
+            "heap": 48360,
+            "t": 525,
+            "rate": 0,
+            "bitUs": 3000,
+            "limit": 0,
+            "up": 0,
+            "down": 0,
+            "recovery": 1
+          }
+        ],
+        "phy": [
+          {
+            "role": 1,
+            "sync": 0,
+            "crc": 0,
+            "reject": 0,
+            "slow": 0,
+            "abort": 0,
+            "late": 0,
+            "calAge": 0,
+            "invalid": 0,
+            "full": 0,
+            "workUs": 1804,
+            "samples": 9,
+            "maxPoll": 404
+          },
+          {
+            "role": 2,
+            "sync": 0,
+            "crc": 0,
+            "reject": 0,
+            "slow": 0,
+            "abort": 0,
+            "late": 0,
+            "calAge": 0,
+            "invalid": 0,
+            "full": 0,
+            "workUs": 2955,
+            "samples": 13,
+            "maxPoll": 384
+          }
+        ],
+        "rf": [
+          {
+            "role": 1,
+            "manual": 1,
+            "rxStop": 1,
+            "path": "1fe",
+            "rfWord": 60,
+            "bbWord": 16,
+            "vga": 2,
+            "apwr": 0,
+            "ask": 0,
+            "txAskField": 0
+          },
+          {
+            "role": 2,
+            "manual": 1,
+            "rxStop": 1,
+            "path": "1fe",
+            "rfWord": 60,
+            "bbWord": 16,
+            "vga": 2,
+            "apwr": 0,
+            "ask": 0,
+            "txAskField": 0
+          }
+        ]
+      },
+      "result": {
+        "status": [
+          {
+            "role": 1,
+            "state": "SEARCH",
+            "cycle": 4,
+            "tx": 4,
+            "rx": 0,
+            "miss": 3,
+            "txFail": 0,
+            "ack": 0,
+            "delivered": 0,
+            "retry": 3,
+            "dup": 0,
+            "queue": 1,
+            "resync": 1,
+            "f0": 0,
+            "f1": 0,
+            "corr": 0,
+            "peerCorr": 0,
+            "heap": 48360,
+            "t": 25341,
+            "rate": 0,
+            "bitUs": 3000,
+            "limit": 0,
+            "up": 0,
+            "down": 0,
+            "recovery": 4
+          },
+          {
+            "role": 2,
+            "state": "SEARCH",
+            "cycle": 0,
+            "tx": 0,
+            "rx": 0,
+            "miss": 0,
+            "txFail": 0,
+            "ack": 0,
+            "delivered": 0,
+            "retry": 0,
+            "dup": 0,
+            "queue": 1,
+            "resync": 0,
+            "f0": "-57986",
+            "f1": 52481,
+            "corr": 9,
+            "peerCorr": 0,
+            "heap": 48360,
+            "t": 24645,
+            "rate": 0,
+            "bitUs": 3000,
+            "limit": 0,
+            "up": 0,
+            "down": 0,
+            "recovery": 3
+          }
+        ],
+        "phy": [
+          {
+            "role": 1,
+            "sync": 0,
+            "crc": 0,
+            "reject": 0,
+            "slow": 0,
+            "abort": 0,
+            "late": 26,
+            "calAge": 0,
+            "invalid": 0,
+            "full": 0,
+            "workUs": 1953976,
+            "samples": 7949,
+            "maxPoll": 404
+          },
+          {
+            "role": 2,
+            "sync": 30,
+            "crc": 0,
+            "reject": 0,
+            "slow": 0,
+            "abort": 0,
+            "late": 0,
+            "calAge": 0,
+            "invalid": 0,
+            "full": 0,
+            "workUs": 6197530,
+            "samples": 40736,
+            "maxPoll": 384
+          }
+        ],
+        "rf": [
+          {
+            "role": 1,
+            "manual": 1,
+            "rxStop": 1,
+            "path": "1fe",
+            "rfWord": 60,
+            "bbWord": 16,
+            "vga": 2,
+            "apwr": 0,
+            "ask": 0,
+            "txAskField": 0
+          },
+          {
+            "role": 2,
+            "manual": 1,
+            "rxStop": 1,
+            "path": "1fe",
+            "rfWord": 60,
+            "bbWord": 16,
+            "vga": 2,
+            "apwr": 0,
+            "ask": 0,
+            "txAskField": 0
+          }
+        ],
+        "frame": [
+          {
+            "role": 1,
+            "crcOk": 0,
+            "addressReject": 0,
+            "to": 0,
+            "from": 0,
+            "len": 0,
+            "good": 0,
+            "candidates": 0,
+            "drops": 0
+          },
+          {
+            "role": 2,
+            "crcOk": 0,
+            "addressReject": 0,
+            "to": 0,
+            "from": 0,
+            "len": 0,
+            "good": 0,
+            "candidates": 13,
+            "drops": 3
+          }
+        ],
+        "iq": [
+          {
+            "role": 1,
+            "hz": "-44344",
+            "e": 1006,
+            "dtNs": 3025,
+            "jitterNs": 6,
+            "mode": 0
+          },
+          {
+            "role": 2,
+            "hz": "-55693",
+            "e": 15137,
+            "dtNs": 3025,
+            "jitterNs": 6,
+            "mode": 0
+          }
+        ]
+      },
+      "delta": [
+        {
+          "rx": 0,
+          "tx": 4,
+          "ack": 0,
+          "miss": 3,
+          "delivered": 0,
+          "txFail": 0
+        },
+        {
+          "rx": 0,
+          "tx": 0,
+          "ack": 0,
+          "miss": 0,
+          "delivered": 0,
+          "txFail": 0
+        }
+      ]
+    }
+  ],
+  "status": [
+    {
+      "role": 1,
+      "state": "SEARCH",
+      "cycle": 4,
+      "tx": 4,
+      "rx": 0,
+      "miss": 3,
+      "txFail": 0,
+      "ack": 0,
+      "delivered": 0,
+      "retry": 3,
+      "dup": 0,
+      "queue": 1,
+      "resync": 1,
+      "f0": 0,
+      "f1": 0,
+      "corr": 0,
+      "peerCorr": 0,
+      "heap": 48360,
+      "t": 25385,
+      "rate": 0,
+      "bitUs": 3000,
+      "limit": 0,
+      "up": 0,
+      "down": 0,
+      "recovery": 4
+    },
+    {
+      "role": 2,
+      "state": "SEARCH",
+      "cycle": 0,
+      "tx": 0,
+      "rx": 0,
+      "miss": 0,
+      "txFail": 0,
+      "ack": 0,
+      "delivered": 0,
+      "retry": 0,
+      "dup": 0,
+      "queue": 1,
+      "resync": 0,
+      "f0": "-57986",
+      "f1": 52481,
+      "corr": 9,
+      "peerCorr": 0,
+      "heap": 48360,
+      "t": 24645,
+      "rate": 0,
+      "bitUs": 3000,
+      "limit": 0,
+      "up": 0,
+      "down": 0,
+      "recovery": 3
+    }
+  ],
+  "phy": [
+    {
+      "role": 1,
+      "sync": 0,
+      "crc": 0,
+      "reject": 0,
+      "slow": 0,
+      "abort": 0,
+      "late": 26,
+      "calAge": 0,
+      "invalid": 0,
+      "full": 0,
+      "workUs": 1954226,
+      "samples": 7950,
+      "maxPoll": 404
+    },
+    {
+      "role": 2,
+      "sync": 30,
+      "crc": 0,
+      "reject": 0,
+      "slow": 0,
+      "abort": 0,
+      "late": 0,
+      "calAge": 0,
+      "invalid": 0,
+      "full": 0,
+      "workUs": 6197530,
+      "samples": 40736,
+      "maxPoll": 384
+    }
+  ],
+  "adapt": [
+    {
+      "role": 1,
+      "rate": 0,
+      "next": 1,
+      "waitMs": 0,
+      "good": 0,
+      "qualityQ4": 0,
+      "bad": 0,
+      "losses": 0
+    },
+    {
+      "role": 2,
+      "rate": 0,
+      "next": 1,
+      "waitMs": 0,
+      "good": 0,
+      "qualityQ4": 0,
+      "bad": 0,
+      "losses": 0
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "independently_checked_deliveries": [
+    0,
+    0
+  ],
+  "boots": [
+    1,
+    1
+  ],
+  "events": [
+    {
+      "t": 0.0,
+      "board": 0,
+      "command": "/reset"
+    },
+    {
+      "t": 0.0,
+      "board": 1,
+      "command": "/reset"
+    },
+    {
+      "t": 0.43,
+      "board": 0,
+      "text": "s$\u0000$\ufffd\ufffd<\u0000\ufffdl\ufffd|\u0003\f\u0004\u0004\ufffd\fl\ufffd\u0004#<\ufffd\ufffd\u0003\ufffd\u0013\ufffd;\ufffdc\ufffd\u0004#\ufffd\ufffdon\ufffdlgo\ufffd\ufffd\ufffd\fc\u001cp\ufffd\ufffdd{lr$x\ufffd'\ufffd\u0018\u0003\u0004\u0004\ufffd\f$\u0004\ufffd\ufffd\u0004\f\fb\u0004g\ufffd<\u0003\ufffd\f\ufffd\u001c\ufffd\u0004c\ufffd\ufffd'g\ufffd\u0000$\ufffd\ufffdl`\u0002\ufffd\u001b\u001bgo\u0004d`\u0003\u0007\u0003g{\ufffd\ufffd\ufffdg\u0004\u0004c$\ufffd\u000el8\ufffd'\ufffd\u0018\u0003\u0004\u0004s\ufffd\ufffd\ufffd\ufffd\u001c\ufffd\ufffd\u0003\u0004c\u0004'\ufffd|\u0002\f\ufffd\u0004c\ufffd\ufffd'g\ufffd\u0000\u0004\u0004d`\u0003\ufffd\u001b\u0013go\u0004d`\u0003\u0007\u0003';\ufffd\ufffd\ufffd'\f\f#\ufffd\ufffd`\u0003\u0007;\ufffd\ufffdo\u0004\u0004c\ufffd\ufffd \u0003\ufffd\u0002\u0004\u0004\u0004\ufffd\ufffd\ufffd\u0004l`\u0003\ufffd\ufffdg\ufffd\u0007d\ufffd\ufffd\u0003\ufffd\u0013\ufffdn\ufffd\ufffd{\ufffd\ufffdn<\ufffd\f$\f\ufffd\u0004l`\u0003\u001cc\ufffd\u001b\u0003\u0004\ufffd<\u0003;\ufffd\u0003$\ufffdg\ufffd\u0004\ufffdg\ufffd\u0000\u0004l`\u0003\ufffd\ufffd;\ufffdd\ufffd$\u001b\ufffd\u0004\u0004\f\ufffd"
+    },
+    {
+      "t": 0.432,
+      "board": 0,
+      "text": "TDM_READY version=0.4.1 role=1 chip=230ef4 session=b0c7513c cycleUs=4520000 payload=14 ok=1"
+    },
+    {
+      "t": 0.451,
+      "board": 0,
+      "text": "TDM role=1 state=SEARCH cycle=0 tx=0 rx=0 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=1 resync=0 f0=0 f1=0 corr=0 peerCorr=0 heap=48360 t=409 rate=0 bitUs=3000 limit=5 up=0 down=0 recovery=0"
+    },
+    {
+      "t": 0.458,
+      "board": 1,
+      "text": "{l\u0000d\ufffd\ufffd<\u0000\ufffdd\ufffd|\u0003\u0004\u0004\u0004\ufffd\fd\ufffd\u0004c|\ufffd\ufffd\u0003\ufffd\u001b\ufffd;\ufffd#\ufffd\f#\ufffd\ufffdg'\ufffd$gn\ufffd\ufffd\ufffd\fc\u001c8\ufffd\ufffdd{l{lx\ufffdg\ufffd\u0010\u0002\u0004\f\ufffd\f$\f\ufffd\ufffd\u0004\u0004\f#\f'\ufffd|\u0003\ufffd\u0004\ufffd\u001c\ufffd\fb\ufffd\ufffdgo\ufffd\u0000$\ufffd\ufffdd`\u0003\ufffd\u0013\u001bgo\f$ \u0003\u0007\u0003os\ufffd\ufffd\ufffdg\u0004\f#d\ufffd\u000flx\ufffdg\ufffd\u0010\u0002\u0004\f{\ufffd\ufffd\ufffd\ufffd\u001c\ufffd\ufffd\u0003\u0004#\f'\ufffd|\u0003\f\ufffd\fb\ufffd\ufffdgo\ufffd\u0000\u0004\u0004$ \u0003\ufffd\u0013\u001b'o\u0004l \u0003\u0007\u0003gs\ufffd\ufffd\ufffd'\f\u0004#\ufffd\ufffd \u0003\u0007{\ufffd\ufffdg\u0004\f#\ufffd\ufffd \u0003\ufffd\u0003\f\u0004\f\ufffd\ufffd\ufffd\f$ \u0003\ufffd\ufffdo\ufffd\u0007d\ufffd\ufffd\u0003\ufffd\u001b\ufffdo\ufffd\ufffdr\ufffd\ufffd'|\ufffd\u0004l\u0004\ufffd\u0004l \u0003\u001cc\ufffd\u0013\u0003\f\ufffd<\u0003{\ufffd\u0003l\ufffdo\ufffd\f\ufffdg\ufffd\u0000\fd`\u0003\ufffd\ufffds\ufffdd\ufffdl\u0012\ufffd\u0004\f\u0004\ufffd"
+    },
+    {
+      "t": 0.46,
+      "board": 0,
+      "text": "PHY role=1 sync=0 crc=0 reject=0 slow=0 abort=0 late=0 calAge=0 invalid=0 full=0 workUs=404 samples=1 maxPoll=404"
+    },
+    {
+      "t": 0.464,
+      "board": 0,
+      "text": "ADAPT role=1 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 0.464,
+      "board": 1,
+      "text": "TDM_READY version=0.4.1 role=2 chip=d60ee8 session=adbfdb4a cycleUs=4520000 payload=14 ok=1"
+    },
+    {
+      "t": 0.467,
+      "board": 0,
+      "command": "/pause"
+    },
+    {
+      "t": 0.467,
+      "board": 0,
+      "command": "/stats"
+    },
+    {
+      "t": 0.467,
+      "board": 1,
+      "command": "/pause"
+    },
+    {
+      "t": 0.467,
+      "board": 1,
+      "command": "/stats"
+    },
+    {
+      "t": 0.471,
+      "board": 0,
+      "text": "IQ role=1 hz=28922 e=15 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 0.474,
+      "board": 1,
+      "text": "PAUSED"
+    },
+    {
+      "t": 0.478,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 0.485,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=60 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 0.487,
+      "board": 0,
+      "text": "PAUSED"
+    },
+    {
+      "t": 0.489,
+      "board": 1,
+      "text": "TDM role=2 state=SEARCH cycle=0 tx=0 rx=0 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=1 resync=0 f0=0 f1=0 corr=0 peerCorr=0 heap=48360 t=425 rate=0 bitUs=3000 limit=5 up=0 down=0 recovery=1"
+    },
+    {
+      "t": 0.501,
+      "board": 1,
+      "text": "PHY role=2 sync=0 crc=0 reject=0 slow=0 abort=0 late=0 calAge=0 invalid=0 full=0 workUs=2415 samples=9 maxPoll=384"
+    },
+    {
+      "t": 0.503,
+      "board": 0,
+      "text": "TDM role=1 state=SEARCH cycle=0 tx=0 rx=0 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=1 resync=0 f0=0 f1=0 corr=0 peerCorr=0 heap=48360 t=459 rate=0 bitUs=3000 limit=5 up=0 down=0 recovery=1"
+    },
+    {
+      "t": 0.508,
+      "board": 1,
+      "text": "ADAPT role=2 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 0.51,
+      "board": 1,
+      "text": "IQ role=2 hz=133480 e=12 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 0.515,
+      "board": 0,
+      "text": "PHY role=1 sync=0 crc=0 reject=0 slow=0 abort=0 late=0 calAge=0 invalid=0 full=0 workUs=648 samples=3 maxPoll=404"
+    },
+    {
+      "t": 0.517,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 0.521,
+      "board": 0,
+      "text": "ADAPT role=1 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 0.524,
+      "board": 0,
+      "text": "IQ role=1 hz=11510 e=8 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 0.526,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fc rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 0.529,
+      "board": 0,
+      "command": "/limit 0"
+    },
+    {
+      "t": 0.529,
+      "board": 0,
+      "command": "/gain 2 2"
+    },
+    {
+      "t": 0.529,
+      "board": 0,
+      "command": "/iq 0"
+    },
+    {
+      "t": 0.529,
+      "board": 0,
+      "command": "/stats"
+    },
+    {
+      "t": 0.529,
+      "board": 1,
+      "command": "/limit 0"
+    },
+    {
+      "t": 0.529,
+      "board": 1,
+      "command": "/gain 2 2"
+    },
+    {
+      "t": 0.529,
+      "board": 1,
+      "command": "/iq 0"
+    },
+    {
+      "t": 0.529,
+      "board": 1,
+      "command": "/stats"
+    },
+    {
+      "t": 0.531,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 0.54,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 0.54,
+      "board": 0,
+      "text": "LIMIT 0"
+    },
+    {
+      "t": 0.543,
+      "board": 0,
+      "text": "GAIN rf=2 bb=2"
+    },
+    {
+      "t": 0.543,
+      "board": 0,
+      "text": "IQMODE 0"
+    },
+    {
+      "t": 0.545,
+      "board": 1,
+      "text": "TDM role=2 state=SEARCH cycle=0 tx=0 rx=0 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=1 resync=0 f0=0 f1=0 corr=0 peerCorr=0 heap=48360 t=468 rate=0 bitUs=3000 limit=5 up=0 down=0 recovery=1"
+    },
+    {
+      "t": 0.554,
+      "board": 1,
+      "text": "PHY role=2 sync=0 crc=0 reject=0 slow=0 abort=0 late=0 calAge=0 invalid=0 full=0 workUs=2557 samples=10 maxPoll=384"
+    },
+    {
+      "t": 0.559,
+      "board": 0,
+      "text": "TDM role=1 state=SEARCH cycle=0 tx=0 rx=0 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=1 resync=0 f0=0 f1=0 corr=0 peerCorr=0 heap=48360 t=520 rate=0 bitUs=3000 limit=0 up=0 down=0 recovery=1"
+    },
+    {
+      "t": 0.559,
+      "board": 1,
+      "text": "ADAPT role=2 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 0.563,
+      "board": 1,
+      "text": "IQ role=2 hz=-20776 e=22 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 0.57,
+      "board": 0,
+      "text": "PHY role=1 sync=0 crc=0 reject=0 slow=0 abort=0 late=0 calAge=0 invalid=0 full=0 workUs=1804 samples=9 maxPoll=404"
+    },
+    {
+      "t": 0.57,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 0.578,
+      "board": 0,
+      "text": "ADAPT role=1 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 0.58,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fc rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 0.58,
+      "board": 1,
+      "text": "LIMIT 0"
+    },
+    {
+      "t": 0.582,
+      "board": 0,
+      "text": "IQ role=1 hz=43440 e=126 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 0.582,
+      "board": 1,
+      "text": "GAIN rf=2 bb=2"
+    },
+    {
+      "t": 0.582,
+      "board": 1,
+      "text": "IQMODE 0"
+    },
+    {
+      "t": 0.587,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 0.596,
+      "board": 0,
+      "text": "RF role=1 manual=1 rxStop=1 path=1fe rfWord=60 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 0.599,
+      "board": 1,
+      "text": "TDM role=2 state=SEARCH cycle=0 tx=0 rx=0 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=1 resync=0 f0=0 f1=0 corr=0 peerCorr=0 heap=48360 t=525 rate=0 bitUs=3000 limit=0 up=0 down=0 recovery=1"
+    },
+    {
+      "t": 0.61,
+      "board": 1,
+      "text": "PHY role=2 sync=0 crc=0 reject=0 slow=0 abort=0 late=0 calAge=0 invalid=0 full=0 workUs=2955 samples=13 maxPoll=384"
+    },
+    {
+      "t": 0.618,
+      "board": 1,
+      "text": "ADAPT role=2 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 0.62,
+      "board": 1,
+      "text": "IQ role=2 hz=59038 e=640 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 0.627,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 0.636,
+      "board": 1,
+      "text": "RF role=2 manual=1 rxStop=1 path=1fe rfWord=60 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 0.639,
+      "board": 1,
+      "command": "/run"
+    },
+    {
+      "t": 0.639,
+      "board": 0,
+      "command": "/run"
+    },
+    {
+      "t": 0.648,
+      "board": 0,
+      "text": "RUNNING"
+    },
+    {
+      "t": 18.745,
+      "board": 0,
+      "text": "TDM role=1 state=SEARCH cycle=3 tx=3 rx=0 miss=3 txFail=0 ack=0 delivered=0 retry=2 dup=0 queue=1 resync=1 f0=0 f1=0 corr=0 peerCorr=0 heap=48360 t=18709 rate=0 bitUs=3000 limit=0 up=0 down=0 recovery=3"
+    },
+    {
+      "t": 18.756,
+      "board": 0,
+      "text": "PHY role=1 sync=0 crc=0 reject=0 slow=0 abort=0 late=9 calAge=0 invalid=0 full=0 workUs=1445790 samples=5719 maxPoll=404"
+    },
+    {
+      "t": 18.761,
+      "board": 0,
+      "text": "ADAPT role=1 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 18.765,
+      "board": 0,
+      "text": "IQ role=1 hz=8829 e=338 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 18.772,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 18.781,
+      "board": 0,
+      "text": "RF role=1 manual=1 rxStop=1 path=1fe rfWord=60 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 24.641,
+      "board": 0,
+      "command": "/pause"
+    },
+    {
+      "t": 24.641,
+      "board": 0,
+      "command": "/stats"
+    },
+    {
+      "t": 24.641,
+      "board": 1,
+      "command": "/pause"
+    },
+    {
+      "t": 24.641,
+      "board": 1,
+      "command": "/stats"
+    },
+    {
+      "t": 24.648,
+      "board": 1,
+      "text": "PAUSED"
+    },
+    {
+      "t": 24.666,
+      "board": 1,
+      "text": "TDM role=2 state=SEARCH cycle=0 tx=0 rx=0 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=1 resync=0 f0=-57986 f1=52481 corr=9 peerCorr=0 heap=48360 t=24600 rate=0 bitUs=3000 limit=0 up=0 down=0 recovery=3"
+    },
+    {
+      "t": 24.677,
+      "board": 1,
+      "text": "PHY role=2 sync=30 crc=0 reject=0 slow=0 abort=0 late=0 calAge=0 invalid=0 full=0 workUs=6197376 samples=40735 maxPoll=384"
+    },
+    {
+      "t": 24.682,
+      "board": 1,
+      "text": "ADAPT role=2 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 24.688,
+      "board": 1,
+      "text": "IQ role=2 hz=-51859 e=14375 dtNs=3025 jitterNs=0 mode=0"
+    },
+    {
+      "t": 24.695,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=13 drops=3"
+    },
+    {
+      "t": 24.704,
+      "board": 1,
+      "text": "RF role=2 manual=1 rxStop=1 path=1fe rfWord=60 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 24.722,
+      "board": 1,
+      "text": "TDM role=2 state=SEARCH cycle=0 tx=0 rx=0 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=1 resync=0 f0=-57986 f1=52481 corr=9 peerCorr=0 heap=48360 t=24645 rate=0 bitUs=3000 limit=0 up=0 down=0 recovery=3"
+    },
+    {
+      "t": 24.731,
+      "board": 1,
+      "text": "PHY role=2 sync=30 crc=0 reject=0 slow=0 abort=0 late=0 calAge=0 invalid=0 full=0 workUs=6197530 samples=40736 maxPoll=384"
+    },
+    {
+      "t": 24.738,
+      "board": 1,
+      "text": "ADAPT role=2 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 24.745,
+      "board": 1,
+      "text": "IQ role=2 hz=-55693 e=15137 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 24.752,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=13 drops=3"
+    },
+    {
+      "t": 24.758,
+      "board": 1,
+      "text": "RF role=2 manual=1 rxStop=1 path=1fe rfWord=60 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 25.363,
+      "board": 0,
+      "text": "PAUSED"
+    },
+    {
+      "t": 25.376,
+      "board": 0,
+      "text": "TDM role=1 state=SEARCH cycle=4 tx=4 rx=0 miss=3 txFail=0 ack=0 delivered=0 retry=3 dup=0 queue=1 resync=1 f0=0 f1=0 corr=0 peerCorr=0 heap=48360 t=25341 rate=0 bitUs=3000 limit=0 up=0 down=0 recovery=4"
+    },
+    {
+      "t": 25.388,
+      "board": 0,
+      "text": "PHY role=1 sync=0 crc=0 reject=0 slow=0 abort=0 late=26 calAge=0 invalid=0 full=0 workUs=1953976 samples=7949 maxPoll=404"
+    },
+    {
+      "t": 25.395,
+      "board": 0,
+      "text": "ADAPT role=1 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 25.399,
+      "board": 0,
+      "text": "IQ role=1 hz=-44344 e=1006 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 25.404,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 25.413,
+      "board": 0,
+      "text": "RF role=1 manual=1 rxStop=1 path=1fe rfWord=60 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 25.415,
+      "board": 0,
+      "command": "/gain agc"
+    },
+    {
+      "t": 25.415,
+      "board": 0,
+      "command": "/iq 0"
+    },
+    {
+      "t": 25.415,
+      "board": 0,
+      "command": "/limit 5"
+    },
+    {
+      "t": 25.416,
+      "board": 0,
+      "command": "/run"
+    },
+    {
+      "t": 25.416,
+      "board": 1,
+      "command": "/gain agc"
+    },
+    {
+      "t": 25.416,
+      "board": 1,
+      "command": "/iq 0"
+    },
+    {
+      "t": 25.416,
+      "board": 1,
+      "command": "/limit 5"
+    },
+    {
+      "t": 25.416,
+      "board": 1,
+      "command": "/run"
+    },
+    {
+      "t": 25.425,
+      "board": 1,
+      "text": "GAIN agc"
+    },
+    {
+      "t": 25.425,
+      "board": 1,
+      "text": "IQMODE 0"
+    },
+    {
+      "t": 25.425,
+      "board": 1,
+      "text": "LIMIT 5"
+    },
+    {
+      "t": 25.434,
+      "board": 0,
+      "text": "TDM role=1 state=SEARCH cycle=4 tx=4 rx=0 miss=3 txFail=0 ack=0 delivered=0 retry=3 dup=0 queue=1 resync=1 f0=0 f1=0 corr=0 peerCorr=0 heap=48360 t=25385 rate=0 bitUs=3000 limit=0 up=0 down=0 recovery=4"
+    },
+    {
+      "t": 25.441,
+      "board": 0,
+      "text": "PHY role=1 sync=0 crc=0 reject=0 slow=0 abort=0 late=26 calAge=0 invalid=0 full=0 workUs=1954226 samples=7950 maxPoll=404"
+    },
+    {
+      "t": 25.449,
+      "board": 0,
+      "text": "ADAPT role=1 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 25.452,
+      "board": 0,
+      "text": "IQ role=1 hz=10886 e=141 dtNs=3025 jitterNs=6 mode=0"
+    },
+    {
+      "t": 25.461,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 25.467,
+      "board": 0,
+      "text": "RF role=1 manual=1 rxStop=1 path=1fe rfWord=60 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 25.468,
+      "board": 0,
+      "text": "GAIN agc"
+    },
+    {
+      "t": 25.468,
+      "board": 0,
+      "text": "IQMODE 0"
+    },
+    {
+      "t": 25.472,
+      "board": 0,
+      "text": "LIMIT 5"
+    },
+    {
+      "t": 25.472,
+      "board": 0,
+      "text": "RUNNING"
+    }
+  ]
+}
