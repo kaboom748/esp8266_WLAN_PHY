@@ -1,0 +1,304 @@
+{
+  "schemaVersion": 1,
+  "library": "ESP8266TDMAdaptive",
+  "version": "0.5.1",
+  "releaseType": "frozen-source-and-binary-delivery",
+  "packagedAt": "2026-10-07T22:01:02.4430528-04:00",
+  "scope": "Package and document the existing 0.5.1 without functional changes.",
+  "functionalChangesDuringFinalization": false,
+  "newCompilationsDuringFinalization": false,
+  "newSoftwareOrRadioTestsDuringFinalization": false,
+  "serialPortsOpenedDuringFinalization": false,
+  "deviceFlashingDuringFinalization": false,
+  "configuration": {
+    "slotUs": 1000000,
+    "cycleUs": 2000000,
+    "txGuardUs": 20000,
+    "payloadBytes": 14,
+    "queueMessagesPerDirection": 32,
+    "defaultExampleRateLimit": 6,
+    "tones": [
+      16,
+      1016
+    ],
+    "channel": 6,
+    "cpuMHz": 160
+  },
+  "toolchainOfExistingBinaries": {
+    "arduinoCore": "esp8266 3.1.2",
+    "fqbn": "esp8266:esp8266:d1_mini:xtal=160,eesz=4M"
+  },
+  "validation": {
+    "currentFirmware": "validation/buffered-200-v051.json",
+    "currentFirmwarePassed": false,
+    "currentFirmwareStopReason": "timeout: target_rate_reached",
+    "currentFirmwareSerialWarningPresent": true,
+    "existingHostResults": "validation/host-tests-v051.txt",
+    "earlierDifferentFirmware": "validation/buffered-200-v050.json",
+    "earlierDifferentFirmwarePassed": true,
+    "earlierManualFailure": "validation/buffered-manual-initial.json",
+    "interpretation": "A frozen delivery does not imply a passed full RF qualification. See VALIDATION.md."
+  },
+  "firmware": [
+    {
+      "path": "firmware/TDM_A.ino.bin",
+      "sha256": "c5b252178ada1adfe2d9445811c1b0a6d85e7f781f7428debddab57b4d8e4443",
+      "bytes": 294144
+    },
+    {
+      "path": "firmware/TDM_B.ino.bin",
+      "sha256": "f732d13458ab8aeb514689bc782f05a78a515203ea7c84d405ca15ba812d0c99",
+      "bytes": 294144
+    }
+  ],
+  "preservedFiles": [
+    {
+      "path": "build.sh",
+      "sha256": "fe2ad50cbae9ad9f0a82c9c9faa4a148d916971e770c30c9d3bcdeab0365a33d",
+      "bytes": 263
+    },
+    {
+      "path": "examples/TDM_A/TDM_A.ino",
+      "sha256": "467dba2622935f2fad4cc76052d632547c9b9800ffa16458daafb30543b92a26",
+      "bytes": 40
+    },
+    {
+      "path": "examples/TDM_B/TDM_B.ino",
+      "sha256": "bc161b0e95b625120f02293e991e834308155409bde0f028e208c22b151b4518",
+      "bytes": 40
+    },
+    {
+      "path": "firmware/TDM_A.ino.bin",
+      "sha256": "c5b252178ada1adfe2d9445811c1b0a6d85e7f781f7428debddab57b4d8e4443",
+      "bytes": 294144
+    },
+    {
+      "path": "firmware/TDM_B.ino.bin",
+      "sha256": "f732d13458ab8aeb514689bc782f05a78a515203ea7c84d405ca15ba812d0c99",
+      "bytes": 294144
+    },
+    {
+      "path": "library.properties",
+      "sha256": "a6b42492c55568aef7df9cfb831b57b236662185171c37e35f6c796381a6189f",
+      "bytes": 446
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "21e0e0becde62dce21941c5b15918213924e40af63f5f15cef6c721b95a3ea69",
+      "bytes": 1066
+    },
+    {
+      "path": "src/ESP8266TDM.cpp",
+      "sha256": "d436953a0e9d6deca03e73f15ac8492b8f4ef85e9501d67aa3a2e22f0b2c13c1",
+      "bytes": 10988
+    },
+    {
+      "path": "src/ESP8266TDM.h",
+      "sha256": "8942b5bff5e41156ee1558a6182ff5d9dbea194c8e552d63e02ce42fa0169833",
+      "bytes": 3794
+    },
+    {
+      "path": "src/FskCodec.h",
+      "sha256": "3721a2c292f10852b2d32a9524b4c7b45be0145a25f023b264cb1de2e3caa1ad",
+      "bytes": 1644
+    },
+    {
+      "path": "src/FskPhase.h",
+      "sha256": "3d47fd31bc9794181f9c11d62c4df71ce56bcea45f9d4435e57c57a245d13099",
+      "bytes": 911
+    },
+    {
+      "path": "src/RH_ESP8266FSK.cpp",
+      "sha256": "46ee6819d31c5f0060a53af5dafaa45909029091550cd0230f30a4b81164cf20",
+      "bytes": 22600
+    },
+    {
+      "path": "src/RH_ESP8266FSK.h",
+      "sha256": "3dbf4172e98a3ec0bf8dd47a9b76b6f3bd5ab6e42fee5664d6b619831cd04cdb",
+      "bytes": 5802
+    },
+    {
+      "path": "src/RHCompat.h",
+      "sha256": "aeade41b5736712f2882aa427ca64b349d657fe6613e8e04bda30fbccf9cfb0f",
+      "bytes": 313
+    },
+    {
+      "path": "src/RHDatagram.cpp",
+      "sha256": "03e5c92a434c848e2c6187055a139a809aa382f114e56e245aebfe1233fa7c45",
+      "bytes": 1685
+    },
+    {
+      "path": "src/RHDatagram.h",
+      "sha256": "67e0d3d6779c72a361ab9a16596c2ee0001d28714b61f65ba47b9b6a7df2f00d",
+      "bytes": 891
+    },
+    {
+      "path": "src/RHGenericDriver.cpp",
+      "sha256": "d5c7336d428cd941afcc80c11c379bbbc395cd8fced33bae32efb4f3020fe5fd",
+      "bytes": 2569
+    },
+    {
+      "path": "src/RHGenericDriver.h",
+      "sha256": "ff7be06877b7d4f41c7d09b94b27a5414912156f6bc930fc053584b7bb0ba205",
+      "bytes": 1922
+    },
+    {
+      "path": "src/RHReliableDatagram.cpp",
+      "sha256": "2ceeb59ba309b9a54808b8a23734d225819337f807874bda5f4d2b96f1d16bb7",
+      "bytes": 3530
+    },
+    {
+      "path": "src/RHReliableDatagram.h",
+      "sha256": "d23b014e1eed137c8b0fc7037862305f569bd5e531182b0d79adf6bed03a404c",
+      "bytes": 1205
+    },
+    {
+      "path": "src/TdmDemo.h",
+      "sha256": "2ab5ff77b75a1d046191fc24738efb22bb441a6e4fb4c18af7cbfb8ab26639d9",
+      "bytes": 8248
+    },
+    {
+      "path": "src/TdmLog.h",
+      "sha256": "b29223ce17eda77a2ac14eb5f85fa8c047974a21eb1c584184e46df99f9b1599",
+      "bytes": 1468
+    },
+    {
+      "path": "src/TdmProtocol.h",
+      "sha256": "168bf1e4bf67cd9b6b12a89298d1a923c748f4edd5500d707923d2b9a3a08201",
+      "bytes": 1944
+    },
+    {
+      "path": "src/TdmRate.h",
+      "sha256": "3f77e9e207f6de631d151bc7ff0a2cb5999702799cc4b5f89de1f31bb1092876",
+      "bytes": 2130
+    },
+    {
+      "path": "tests/hardware_adaptive.py",
+      "sha256": "fb48770b31759f7b0d2b180ecb283ca1949778ec12ba3b4d6f8343b0f2f94b3e",
+      "bytes": 4149
+    },
+    {
+      "path": "tests/hardware_bench.py",
+      "sha256": "3bcbf3cf2ac24c1b2ba297f594af983688c0cb269c37d7b8c6fff747dc778e02",
+      "bytes": 3797
+    },
+    {
+      "path": "tests/hardware_buffered.py",
+      "sha256": "2578d1739bea73166df6efd9c01a5363b95d6beef28f67ca646c6e394dafbfc2",
+      "bytes": 6170
+    },
+    {
+      "path": "tests/hardware_distance.py",
+      "sha256": "a57b0f222a5241b578114bb9a77072ad918250024a49ad3ed677cf1cf4f14735",
+      "bytes": 2181
+    },
+    {
+      "path": "tests/hardware_gain.py",
+      "sha256": "12dcb1a23c3491be93ea9bf3893aa6246d3fa561442c06e1140cb4108a1b7006",
+      "bytes": 5659
+    },
+    {
+      "path": "tests/hardware_iq35.py",
+      "sha256": "b80fbefc8f231de400a0f9058576ac68826697258d82b2d00202996f0cfcac58",
+      "bytes": 3441
+    },
+    {
+      "path": "tests/hardware_live.py",
+      "sha256": "6a5d2f6bef9a683ac781031b337d7051c90c9bb68937a9d4c4862fbb75ee801d",
+      "bytes": 1719
+    },
+    {
+      "path": "tests/hardware_manual.py",
+      "sha256": "41374fe8815fcec80a6733a460401968acfc94fa961a91b8302c1e14bf26d90f",
+      "bytes": 1894
+    },
+    {
+      "path": "tests/hardware_negative.py",
+      "sha256": "8a06e45066101f550c5e0ebc142c75f15170e691a2bcbc075b95b3c7a4bde71c",
+      "bytes": 2703
+    },
+    {
+      "path": "tests/hardware_tdm.py",
+      "sha256": "ad26cd589637c619eddf3c1a0d3715a63d20e7d072f3d3fbd13fc4782ed243db",
+      "bytes": 10339
+    },
+    {
+      "path": "tests/host/Arduino.h",
+      "sha256": "080007e721f109f7725ae22ee0a91023eff87d90ce369c4249e067d7b0553a4b",
+      "bytes": 774
+    },
+    {
+      "path": "tests/host/codec_test.cpp",
+      "sha256": "8b53356050294ccb8f31fc559ab0993167fdd9053f95dcde0ef4e1129b0cfece",
+      "bytes": 1000
+    },
+    {
+      "path": "tests/host/log_test.cpp",
+      "sha256": "0e40a4af57e1ad1a682f239311238616525b910c2251aff7df6eb81c7ff90dba",
+      "bytes": 796
+    },
+    {
+      "path": "tests/host/phase_test.cpp",
+      "sha256": "f1a4fd05bc8965e209976bab601524ab1dc850a27a891378acc8cc5b70b0a0f7",
+      "bytes": 733
+    },
+    {
+      "path": "tests/host/rate_test.cpp",
+      "sha256": "2c0392ba0128b02d54b2151d344f7dd5932aacc622379ae5fff41226cfcddd4b",
+      "bytes": 2292
+    },
+    {
+      "path": "tests/host/reliable_test.cpp",
+      "sha256": "462e4076535929fb3cc20fbb9b18cbc8c4f15c9d93ff509e45457327446e8fb6",
+      "bytes": 2996
+    },
+    {
+      "path": "tests/host/tdm_test.cpp",
+      "sha256": "aa730b18ee27f1ed2985280d41867f1b97643d405474458193878d88b8688db6",
+      "bytes": 14858
+    },
+    {
+      "path": "tests/host/user_interface.h",
+      "sha256": "73d84551dc97f3a8d6869dda8f5a72285ce5505957763ebf55dd78fe0d79fa0f",
+      "bytes": 59
+    },
+    {
+      "path": "tests/probe_adaptive.py",
+      "sha256": "e7a2211c9e049ba9efd41d08a15421a0d6a40cd9057f3f23a0aa11acd8b21172",
+      "bytes": 757
+    },
+    {
+      "path": "tests/run_host_tests.sh",
+      "sha256": "a4b513ab3846c5691abea025df0a6b69c7e3b51e2fe4c30976e565ae0c962b06",
+      "bytes": 903
+    },
+    {
+      "path": "tests/test_bench.py",
+      "sha256": "625d3891068b0447eda41b3bb94a2ec78699ba509f21cb7663c25a320f91c748",
+      "bytes": 1211
+    },
+    {
+      "path": "validation/buffered-200-v050.json",
+      "sha256": "b2c3272528e4dbc5a182ded21d325182b4b0f5f4dd3f918fa9b7a50f7304e6b1",
+      "bytes": 203258
+    },
+    {
+      "path": "validation/buffered-200-v051.json",
+      "sha256": "4b2d611e672fe89d42d49890b194367121828c042e0a8825d5608207a2823ec1",
+      "bytes": 167101
+    },
+    {
+      "path": "validation/buffered-manual-initial.json",
+      "sha256": "d2a79b0adb579f27c49e14323d6a1cec6866c54bebab9e98eb3cd56c457deca5",
+      "bytes": 28532
+    }
+  ],
+  "separatelyRetrievedExistingEvidence": [
+    {
+      "path": "validation/host-tests-v051.txt",
+      "sha256": "0b432932cc296fad844d7f99589935ac1543bf2d03b56fd39a312cdb033213cb",
+      "bytes": 587
+    }
+  ],
+  "integrity": "SHA256SUMS.txt covers all release files except itself. The ZIP checksum is provided beside the ZIP."
+}

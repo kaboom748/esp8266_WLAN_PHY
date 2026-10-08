@@ -1,0 +1,6 @@
+PASS: CRC16 standard vector; Hamming single-bit errors; every <=8-bit burst in 256 interleaved blocks
+PASS: ACK identity/payload, retries, 255 retry bound, time wrap, deduplication, broadcast
+PASS rate: four clean cells, wall-clock bound, per-profile retry, decay, caps, rollover
+PASS integer phase: quadrants, dynamic range, error below 4.2 degrees
+PASS TDM: loss, cumulative ACK identity, 448-byte backpressure, middle-frame loss, slow/fast buffered slots, rollover, rates, reboot, no TX overlap
+PASS logger: complete-line idle budget, zero/short writes, ring wrap, overflow reporting
