@@ -1,0 +1,3806 @@
+{
+  "passed": true,
+  "timestamp": "2026-10-09T00:42:32.162830+00:00",
+  "elapsed": 63.621,
+  "parameters": {
+    "ports": [
+      "/dev/ttyUSB1",
+      "/dev/ttyUSB0"
+    ],
+    "seconds": 60,
+    "output": "smoke.json"
+  },
+  "phases": [
+    {
+      "name": "both_expected_4fsk_firmwares",
+      "passed": true,
+      "t": 1.617,
+      "latest": [
+        {},
+        {}
+      ]
+    },
+    {
+      "name": "bounded_default_configuration_smoke",
+      "passed": true,
+      "t": 61.619,
+      "criteria": {
+        "both_locked": true,
+        "independent_payloads": true,
+        "acknowledgments": true,
+        "no_unexpected_restart": true,
+        "fixed_windows_without_filler": true,
+        "no_tx_failure": true
+      },
+      "latest": [
+        {
+          "TDM": {
+            "t": 58.566,
+            "data": {
+              "role": 1,
+              "state": "LOCKED",
+              "cycle": 25,
+              "tx": 96,
+              "rx": 83,
+              "miss": 1,
+              "txFail": 0,
+              "ack": 86,
+              "delivered": 68,
+              "retry": 4,
+              "dup": 0,
+              "queue": 32,
+              "resync": 0,
+              "f0": 38558,
+              "f1": -72372,
+              "corr": 0,
+              "peerCorr": 0,
+              "heap": 42136,
+              "t": 51385,
+              "rate": 4,
+              "symbolUs": 400,
+              "limit": 5,
+              "up": 4,
+              "down": 0,
+              "recovery": 0
+            }
+          },
+          "PHY": {
+            "t": 58.577,
+            "data": {
+              "role": 1,
+              "sync": 587,
+              "crc": 0,
+              "reject": 0,
+              "slow": 0,
+              "abort": 0,
+              "late": 9,
+              "calAge": 1042,
+              "invalid": 0,
+              "full": 0,
+              "workUs": 24102109,
+              "samples": 858667,
+              "maxPoll": 288799
+            }
+          },
+          "IQ": {
+            "t": 58.711,
+            "data": {
+              "role": 1,
+              "hz": -9974,
+              "e": 12,
+              "dtNs": 3027,
+              "jitterNs": 6,
+              "mode": 1
+            }
+          },
+          "WINDOW": {
+            "t": 56.565,
+            "data": {
+              "role": 1,
+              "slotUs": 1000000,
+              "guardUs": 20000,
+              "fillBits": 0,
+              "syncs": 72,
+              "phaseUs": 438,
+              "frames": 6,
+              "bytes": 84,
+              "windows": 23,
+              "queuedBytes": 448,
+              "deliveredBytes": 868,
+              "ackBytes": 1036,
+              "outOfOrder": 10,
+              "logDrop": 2
+            }
+          },
+          "IQ35": {
+            "t": 56.572,
+            "data": {
+              "role": 1,
+              "estimates": 791232,
+              "rawSamples": 3164928,
+              "activeUs": 22220329,
+              "estimatesPerSec": 35608
+            }
+          },
+          "FSK4": {
+            "t": 59.582,
+            "data": {
+              "role": 1,
+              "trained": 1,
+              "centers": "-72372,-34995,-2006,38558",
+              "symbolUs": 400,
+              "rawBps": 5000,
+              "dither": "off",
+              "calUs": 160000
+            }
+          }
+        },
+        {
+          "TDM": {
+            "t": 59.594,
+            "data": {
+              "role": 2,
+              "state": "LOCKED",
+              "cycle": 26,
+              "tx": 94,
+              "rx": 99,
+              "miss": 0,
+              "txFail": 0,
+              "ack": 74,
+              "delivered": 98,
+              "retry": 20,
+              "dup": 0,
+              "queue": 32,
+              "resync": 0,
+              "f0": 69793,
+              "f1": -38130,
+              "corr": 0,
+              "peerCorr": 1,
+              "heap": 42136,
+              "t": 53396,
+              "rate": 4,
+              "symbolUs": 400,
+              "limit": 5,
+              "up": 4,
+              "down": 0,
+              "recovery": 0
+            }
+          },
+          "PHY": {
+            "t": 60.563,
+            "data": {
+              "role": 2,
+              "sync": 675,
+              "crc": 0,
+              "reject": 0,
+              "slow": 0,
+              "abort": 0,
+              "late": 9,
+              "calAge": 49,
+              "invalid": 0,
+              "full": 0,
+              "workUs": 26965160,
+              "samples": 962966,
+              "maxPoll": 288192
+            }
+          },
+          "IQ": {
+            "t": 60.57,
+            "data": {
+              "role": 2,
+              "hz": 82782,
+              "e": 19156,
+              "dtNs": 3027,
+              "jitterNs": 6,
+              "mode": 1
+            }
+          },
+          "WINDOW": {
+            "t": 60.588,
+            "data": {
+              "role": 2,
+              "slotUs": 1000000,
+              "guardUs": 20000,
+              "fillBits": 0,
+              "syncs": 99,
+              "phaseUs": -4,
+              "frames": 6,
+              "bytes": 84,
+              "windows": 24,
+              "queuedBytes": 448,
+              "deliveredBytes": 1372,
+              "ackBytes": 1036,
+              "outOfOrder": 1,
+              "logDrop": 0
+            }
+          },
+          "IQ35": {
+            "t": 60.594,
+            "data": {
+              "role": 2,
+              "estimates": 962966,
+              "rawSamples": 3851864,
+              "activeUs": 26965160,
+              "estimatesPerSec": 35711
+            }
+          },
+          "FSK4": {
+            "t": 61.559,
+            "data": {
+              "role": 2,
+              "trained": 1,
+              "centers": "-38130,1481,36834,69793",
+              "symbolUs": 400,
+              "rawBps": 5000,
+              "dither": "off",
+              "calUs": 160000
+            }
+          }
+        }
+      ],
+      "scope": "Startup only. Stepwise adaptation is covered separately by host tests."
+    }
+  ],
+  "latest": [
+    {
+      "TDM": {
+        "t": 62.594,
+        "data": {
+          "role": 1,
+          "state": "LOCKED",
+          "cycle": 27,
+          "tx": 110,
+          "rx": 95,
+          "miss": 1,
+          "txFail": 0,
+          "ack": 98,
+          "delivered": 80,
+          "retry": 4,
+          "dup": 0,
+          "queue": 32,
+          "resync": 0,
+          "f0": 38558,
+          "f1": -72372,
+          "corr": 0,
+          "peerCorr": 0,
+          "heap": 42136,
+          "t": 55389,
+          "rate": 5,
+          "symbolUs": 300,
+          "limit": 5,
+          "up": 5,
+          "down": 0,
+          "recovery": 0
+        }
+      },
+      "PHY": {
+        "t": 63.562,
+        "data": {
+          "role": 1,
+          "sync": 673,
+          "crc": 0,
+          "reject": 0,
+          "slow": 0,
+          "abort": 0,
+          "late": 9,
+          "calAge": 1046,
+          "invalid": 0,
+          "full": 0,
+          "workUs": 25983906,
+          "samples": 926287,
+          "maxPoll": 288799
+        }
+      },
+      "IQ": {
+        "t": 63.569,
+        "data": {
+          "role": 1,
+          "hz": 23970,
+          "e": 43,
+          "dtNs": 3027,
+          "jitterNs": 6,
+          "mode": 1
+        }
+      },
+      "WINDOW": {
+        "t": 63.587,
+        "data": {
+          "role": 1,
+          "slotUs": 1000000,
+          "guardUs": 20000,
+          "fillBits": 0,
+          "syncs": 95,
+          "phaseUs": 457,
+          "frames": 8,
+          "bytes": 112,
+          "windows": 27,
+          "queuedBytes": 448,
+          "deliveredBytes": 1120,
+          "ackBytes": 1372,
+          "outOfOrder": 15,
+          "logDrop": 3
+        }
+      },
+      "IQ35": {
+        "t": 63.594,
+        "data": {
+          "role": 1,
+          "estimates": 926287,
+          "rawSamples": 3705148,
+          "activeUs": 25983906,
+          "estimatesPerSec": 35648
+        }
+      },
+      "FSK4": {
+        "t": 59.582,
+        "data": {
+          "role": 1,
+          "trained": 1,
+          "centers": "-72372,-34995,-2006,38558",
+          "symbolUs": 400,
+          "rawBps": 5000,
+          "dither": "off",
+          "calUs": 160000
+        }
+      }
+    },
+    {
+      "TDM": {
+        "t": 62.569,
+        "data": {
+          "role": 2,
+          "state": "LOCKED",
+          "cycle": 28,
+          "tx": 108,
+          "rx": 113,
+          "miss": 0,
+          "txFail": 0,
+          "ack": 88,
+          "delivered": 99,
+          "retry": 20,
+          "dup": 0,
+          "queue": 32,
+          "resync": 0,
+          "f0": 69793,
+          "f1": -38130,
+          "corr": 0,
+          "peerCorr": 4,
+          "heap": 42136,
+          "t": 57398,
+          "rate": 5,
+          "symbolUs": 300,
+          "limit": 5,
+          "up": 5,
+          "down": 0,
+          "recovery": 0
+        }
+      },
+      "PHY": {
+        "t": 62.582,
+        "data": {
+          "role": 2,
+          "sync": 778,
+          "crc": 0,
+          "reject": 0,
+          "slow": 0,
+          "abort": 0,
+          "late": 9,
+          "calAge": 50,
+          "invalid": 0,
+          "full": 0,
+          "workUs": 28849529,
+          "samples": 1030793,
+          "maxPoll": 288192
+        }
+      },
+      "IQ": {
+        "t": 62.591,
+        "data": {
+          "role": 2,
+          "hz": 74360,
+          "e": 18073,
+          "dtNs": 3027,
+          "jitterNs": 6,
+          "mode": 1
+        }
+      },
+      "WINDOW": {
+        "t": 63.565,
+        "data": {
+          "role": 2,
+          "slotUs": 1000000,
+          "guardUs": 20000,
+          "fillBits": 0,
+          "syncs": 113,
+          "phaseUs": -8,
+          "frames": 8,
+          "bytes": 112,
+          "windows": 26,
+          "queuedBytes": 448,
+          "deliveredBytes": 1386,
+          "ackBytes": 1232,
+          "outOfOrder": 14,
+          "logDrop": 0
+        }
+      },
+      "IQ35": {
+        "t": 63.574,
+        "data": {
+          "role": 2,
+          "estimates": 1030793,
+          "rawSamples": 4123172,
+          "activeUs": 28849529,
+          "estimatesPerSec": 35729
+        }
+      },
+      "FSK4": {
+        "t": 63.581,
+        "data": {
+          "role": 2,
+          "trained": 1,
+          "centers": "-38130,1481,36834,69793",
+          "symbolUs": 300,
+          "rawBps": 6666,
+          "dither": "off",
+          "calUs": 160000
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    {
+      "t": 59.573,
+      "board": 0,
+      "malformed": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=83 phaseUs=525 frames=6 bytes=84 windows=25 queuedBytes=448 deliveres=858667 rawSamples=3434668 activeUs=24102109 estimatesPerSec=35626"
+    }
+  ],
+  "boots": [
+    2,
+    2
+  ],
+  "independently_checked_deliveries": [
+    74,
+    99
+  ],
+  "records": [
+    [
+      {
+        "t": 9.422,
+        "id": 0,
+        "hex": "a50200000000acc9ea07203d5e7b",
+        "sequence": 0
+      },
+      {
+        "t": 9.429,
+        "id": 1,
+        "hex": "a50201000000bddefb1431526f88",
+        "sequence": 1
+      },
+      {
+        "t": 11.423,
+        "id": 2,
+        "hex": "a50202000000d2ef082546637c99",
+        "sequence": 2
+      },
+      {
+        "t": 11.428,
+        "id": 3,
+        "hex": "a50203000000e3fc193a57708dae",
+        "sequence": 3
+      },
+      {
+        "t": 13.423,
+        "id": 4,
+        "hex": "a50204000000f00d2e4b6481a2bf",
+        "sequence": 4
+      },
+      {
+        "t": 13.428,
+        "id": 5,
+        "hex": "a5020500000001223f587596b3cc",
+        "sequence": 5
+      },
+      {
+        "t": 15.425,
+        "id": 6,
+        "hex": "a5020600000016334c698aa7c0dd",
+        "sequence": 6
+      },
+      {
+        "t": 15.429,
+        "id": 7,
+        "hex": "a5020700000027405d7e9bb4d1f2",
+        "sequence": 7
+      },
+      {
+        "t": 18.554,
+        "id": 8,
+        "hex": "a502080000003451728fa8c5e603",
+        "sequence": 8
+      },
+      {
+        "t": 18.558,
+        "id": 9,
+        "hex": "a502090000004566839cb9daf710",
+        "sequence": 9
+      },
+      {
+        "t": 18.565,
+        "id": 10,
+        "hex": "a5020a0000005a7790adceeb0421",
+        "sequence": 10
+      },
+      {
+        "t": 19.555,
+        "id": 11,
+        "hex": "a5020b0000006b84a1c2dff81536",
+        "sequence": 11
+      },
+      {
+        "t": 19.559,
+        "id": 12,
+        "hex": "a5020c0000007895b6d3ec092a47",
+        "sequence": 12
+      },
+      {
+        "t": 19.564,
+        "id": 13,
+        "hex": "a5020d00000089aac7e0fd1e3b54",
+        "sequence": 13
+      },
+      {
+        "t": 22.554,
+        "id": 14,
+        "hex": "a5020e0000009ebbd4f1122f4865",
+        "sequence": 14
+      },
+      {
+        "t": 22.559,
+        "id": 15,
+        "hex": "a5020f000000afc8e506233c597a",
+        "sequence": 15
+      },
+      {
+        "t": 22.566,
+        "id": 16,
+        "hex": "a50210000000bcd9fa17304d6e8b",
+        "sequence": 16
+      },
+      {
+        "t": 23.554,
+        "id": 17,
+        "hex": "a50211000000cdee0b2441627f98",
+        "sequence": 17
+      },
+      {
+        "t": 23.558,
+        "id": 18,
+        "hex": "a50212000000e2ff183556738ca9",
+        "sequence": 18
+      },
+      {
+        "t": 23.565,
+        "id": 19,
+        "hex": "a50213000000f30c294a67809dbe",
+        "sequence": 19
+      },
+      {
+        "t": 26.554,
+        "id": 20,
+        "hex": "a50214000000001d3e5b7491b2cf",
+        "sequence": 20
+      },
+      {
+        "t": 26.561,
+        "id": 21,
+        "hex": "a5021500000011324f6885a6c3dc",
+        "sequence": 21
+      },
+      {
+        "t": 26.566,
+        "id": 22,
+        "hex": "a5021600000026435c799ab7d0ed",
+        "sequence": 22
+      },
+      {
+        "t": 27.553,
+        "id": 23,
+        "hex": "a5021700000037506d8eabc4e102",
+        "sequence": 23
+      },
+      {
+        "t": 27.56,
+        "id": 24,
+        "hex": "a502180000004461829fb8d5f613",
+        "sequence": 24
+      },
+      {
+        "t": 27.565,
+        "id": 25,
+        "hex": "a50219000000557693acc9ea0720",
+        "sequence": 25
+      },
+      {
+        "t": 27.572,
+        "id": 26,
+        "hex": "a5021a0000006a87a0bddefb1431",
+        "sequence": 26
+      },
+      {
+        "t": 31.555,
+        "id": 27,
+        "hex": "a5021b0000007b94b1d2ef082546",
+        "sequence": 27
+      },
+      {
+        "t": 31.559,
+        "id": 28,
+        "hex": "a5021c00000088a5c6e3fc193a57",
+        "sequence": 28
+      },
+      {
+        "t": 31.566,
+        "id": 29,
+        "hex": "a5021d00000099bad7f00d2e4b64",
+        "sequence": 29
+      },
+      {
+        "t": 31.571,
+        "id": 30,
+        "hex": "a5021e000000aecbe401223f5875",
+        "sequence": 30
+      },
+      {
+        "t": 34.554,
+        "id": 31,
+        "hex": "a5021f000000bfd8f516334c698a",
+        "sequence": 31
+      },
+      {
+        "t": 34.561,
+        "id": 32,
+        "hex": "a50220000000cce90a27405d7e9b",
+        "sequence": 32
+      },
+      {
+        "t": 34.565,
+        "id": 33,
+        "hex": "a50221000000ddfe1b3451728fa8",
+        "sequence": 33
+      },
+      {
+        "t": 34.572,
+        "id": 34,
+        "hex": "a50222000000f20f284566839cb9",
+        "sequence": 34
+      },
+      {
+        "t": 35.554,
+        "id": 35,
+        "hex": "a50223000000031c395a7790adce",
+        "sequence": 35
+      },
+      {
+        "t": 35.559,
+        "id": 36,
+        "hex": "a50224000000102d4e6b84a1c2df",
+        "sequence": 36
+      },
+      {
+        "t": 35.566,
+        "id": 37,
+        "hex": "a5022500000021425f7895b6d3ec",
+        "sequence": 37
+      },
+      {
+        "t": 35.573,
+        "id": 38,
+        "hex": "a5022600000036536c89aac7e0fd",
+        "sequence": 38
+      },
+      {
+        "t": 48.555,
+        "id": 39,
+        "hex": "a5022700000047607d9ebbd4f112",
+        "sequence": 39
+      },
+      {
+        "t": 48.56,
+        "id": 40,
+        "hex": "a50228000000547192afc8e50623",
+        "sequence": 40
+      },
+      {
+        "t": 48.567,
+        "id": 41,
+        "hex": "a502290000006586a3bcd9fa1730",
+        "sequence": 41
+      },
+      {
+        "t": 48.571,
+        "id": 42,
+        "hex": "a5022a0000007a97b0cdee0b2441",
+        "sequence": 42
+      },
+      {
+        "t": 48.578,
+        "id": 43,
+        "hex": "a5022b0000008ba4c1e2ff183556",
+        "sequence": 43
+      },
+      {
+        "t": 51.556,
+        "id": 44,
+        "hex": "a5022c00000098b5d6f30c294a67",
+        "sequence": 44
+      },
+      {
+        "t": 51.561,
+        "id": 45,
+        "hex": "a5022d000000a9cae7001d3e5b74",
+        "sequence": 45
+      },
+      {
+        "t": 51.567,
+        "id": 46,
+        "hex": "a5022e000000bedbf411324f6885",
+        "sequence": 46
+      },
+      {
+        "t": 51.572,
+        "id": 47,
+        "hex": "a5022f000000cfe80526435c799a",
+        "sequence": 47
+      },
+      {
+        "t": 51.579,
+        "id": 48,
+        "hex": "a50230000000dcf91a37506d8eab",
+        "sequence": 48
+      },
+      {
+        "t": 51.583,
+        "id": 49,
+        "hex": "a50231000000ed0e2b4461829fb8",
+        "sequence": 49
+      },
+      {
+        "t": 51.588,
+        "id": 50,
+        "hex": "a50232000000021f38557693acc9",
+        "sequence": 50
+      },
+      {
+        "t": 51.595,
+        "id": 51,
+        "hex": "a50233000000132c496a87a0bdde",
+        "sequence": 51
+      },
+      {
+        "t": 52.556,
+        "id": 52,
+        "hex": "a50234000000203d5e7b94b1d2ef",
+        "sequence": 52
+      },
+      {
+        "t": 52.56,
+        "id": 53,
+        "hex": "a5023500000031526f88a5c6e3fc",
+        "sequence": 53
+      },
+      {
+        "t": 54.561,
+        "id": 56,
+        "hex": "a502380000006481a2bfd8f51633",
+        "sequence": 56
+      },
+      {
+        "t": 54.568,
+        "id": 57,
+        "hex": "a502390000007596b3cce90a2740",
+        "sequence": 57
+      },
+      {
+        "t": 54.575,
+        "id": 58,
+        "hex": "a5023a0000008aa7c0ddfe1b3451",
+        "sequence": 58
+      },
+      {
+        "t": 54.579,
+        "id": 59,
+        "hex": "a5023b0000009bb4d1f20f284566",
+        "sequence": 59
+      },
+      {
+        "t": 54.586,
+        "id": 60,
+        "hex": "a5023c000000a8c5e6031c395a77",
+        "sequence": 60
+      },
+      {
+        "t": 54.593,
+        "id": 61,
+        "hex": "a5023d000000b9daf7102d4e6b84",
+        "sequence": 61
+      },
+      {
+        "t": 56.595,
+        "id": 62,
+        "hex": "a5023e000000ceeb0421425f7895",
+        "sequence": 62
+      },
+      {
+        "t": 57.556,
+        "id": 63,
+        "hex": "a5023f000000dff81536536c89aa",
+        "sequence": 63
+      },
+      {
+        "t": 57.561,
+        "id": 64,
+        "hex": "a50240000000ec092a47607d9ebb",
+        "sequence": 64
+      },
+      {
+        "t": 57.568,
+        "id": 65,
+        "hex": "a50241000000fd1e3b547192afc8",
+        "sequence": 65
+      },
+      {
+        "t": 57.573,
+        "id": 66,
+        "hex": "a50242000000122f486586a3bcd9",
+        "sequence": 66
+      },
+      {
+        "t": 57.579,
+        "id": 67,
+        "hex": "a50243000000233c597a97b0cdee",
+        "sequence": 67
+      },
+      {
+        "t": 60.578,
+        "id": 68,
+        "hex": "a50244000000304d6e8ba4c1e2ff",
+        "sequence": 68
+      },
+      {
+        "t": 60.583,
+        "id": 73,
+        "hex": "a5024900000085a6c3dcf91a3750",
+        "sequence": 73
+      },
+      {
+        "t": 60.59,
+        "id": 74,
+        "hex": "a5024a0000009ab7d0ed0e2b4461",
+        "sequence": 74
+      },
+      {
+        "t": 60.597,
+        "id": 75,
+        "hex": "a5024b000000abc4e1021f385576",
+        "sequence": 75
+      },
+      {
+        "t": 62.557,
+        "id": 76,
+        "hex": "a5024c000000b8d5f6132c496a87",
+        "sequence": 76
+      },
+      {
+        "t": 62.562,
+        "id": 77,
+        "hex": "a5024d000000c9ea07203d5e7b94",
+        "sequence": 77
+      },
+      {
+        "t": 62.566,
+        "id": 78,
+        "hex": "a5024e000000defb1431526f88a5",
+        "sequence": 78
+      },
+      {
+        "t": 62.573,
+        "id": 79,
+        "hex": "a5024f000000ef082546637c99ba",
+        "sequence": 79
+      }
+    ],
+    [
+      {
+        "t": 8.425,
+        "id": 0,
+        "hex": "a50100000000afcae904233e5d78",
+        "sequence": 0
+      },
+      {
+        "t": 8.429,
+        "id": 1,
+        "hex": "a50101000000beddf81732516c8b",
+        "sequence": 1
+      },
+      {
+        "t": 10.427,
+        "id": 2,
+        "hex": "a50102000000d1ec0b2645607f9a",
+        "sequence": 2
+      },
+      {
+        "t": 10.431,
+        "id": 3,
+        "hex": "a50103000000e0ff1a3954738ead",
+        "sequence": 3
+      },
+      {
+        "t": 12.425,
+        "id": 4,
+        "hex": "a50104000000f30e2d486782a1bc",
+        "sequence": 4
+      },
+      {
+        "t": 12.429,
+        "id": 5,
+        "hex": "a5010500000002213c5b7695b0cf",
+        "sequence": 5
+      },
+      {
+        "t": 14.424,
+        "id": 6,
+        "hex": "a5010600000015304f6a89a4c3de",
+        "sequence": 6
+      },
+      {
+        "t": 14.43,
+        "id": 7,
+        "hex": "a5010700000024435e7d98b7d2f1",
+        "sequence": 7
+      },
+      {
+        "t": 16.554,
+        "id": 8,
+        "hex": "a501080000003752718cabc6e500",
+        "sequence": 8
+      },
+      {
+        "t": 16.561,
+        "id": 9,
+        "hex": "a501090000004665809fbad9f413",
+        "sequence": 9
+      },
+      {
+        "t": 16.565,
+        "id": 10,
+        "hex": "a5010a000000597493aecde80722",
+        "sequence": 10
+      },
+      {
+        "t": 18.556,
+        "id": 11,
+        "hex": "a5010b0000006887a2c1dcfb1635",
+        "sequence": 11
+      },
+      {
+        "t": 18.561,
+        "id": 12,
+        "hex": "a5010c0000007b96b5d0ef0a2944",
+        "sequence": 12
+      },
+      {
+        "t": 18.568,
+        "id": 13,
+        "hex": "a5010d0000008aa9c4e3fe1d3857",
+        "sequence": 13
+      },
+      {
+        "t": 20.559,
+        "id": 14,
+        "hex": "a5010e0000009db8d7f2112c4b66",
+        "sequence": 14
+      },
+      {
+        "t": 20.568,
+        "id": 15,
+        "hex": "a5010f000000accbe605203f5a79",
+        "sequence": 15
+      },
+      {
+        "t": 20.573,
+        "id": 16,
+        "hex": "a50110000000bfdaf914334e6d88",
+        "sequence": 16
+      },
+      {
+        "t": 22.557,
+        "id": 17,
+        "hex": "a50111000000ceed082742617c9b",
+        "sequence": 17
+      },
+      {
+        "t": 22.561,
+        "id": 18,
+        "hex": "a50112000000e1fc1b3655708faa",
+        "sequence": 18
+      },
+      {
+        "t": 22.566,
+        "id": 19,
+        "hex": "a50113000000f00f2a4964839ebd",
+        "sequence": 19
+      },
+      {
+        "t": 24.559,
+        "id": 20,
+        "hex": "a50114000000031e3d587792b1cc",
+        "sequence": 20
+      },
+      {
+        "t": 24.568,
+        "id": 21,
+        "hex": "a5011500000012314c6b86a5c0df",
+        "sequence": 21
+      },
+      {
+        "t": 24.573,
+        "id": 22,
+        "hex": "a5011600000025405f7a99b4d3ee",
+        "sequence": 22
+      },
+      {
+        "t": 26.556,
+        "id": 23,
+        "hex": "a5011700000034536e8da8c7e201",
+        "sequence": 23
+      },
+      {
+        "t": 26.561,
+        "id": 24,
+        "hex": "a501180000004762819cbbd6f510",
+        "sequence": 24
+      },
+      {
+        "t": 26.566,
+        "id": 25,
+        "hex": "a50119000000567590afcae90423",
+        "sequence": 25
+      },
+      {
+        "t": 26.573,
+        "id": 26,
+        "hex": "a5011a0000006984a3beddf81732",
+        "sequence": 26
+      },
+      {
+        "t": 28.577,
+        "id": 27,
+        "hex": "a5011b0000007897b2d1ec0b2645",
+        "sequence": 27
+      },
+      {
+        "t": 28.581,
+        "id": 28,
+        "hex": "a5011c0000008ba6c5e0ff1a3954",
+        "sequence": 28
+      },
+      {
+        "t": 28.59,
+        "id": 29,
+        "hex": "a5011d0000009ab9d4f30e2d4867",
+        "sequence": 29
+      },
+      {
+        "t": 28.595,
+        "id": 30,
+        "hex": "a5011e000000adc8e702213c5b76",
+        "sequence": 30
+      },
+      {
+        "t": 30.556,
+        "id": 31,
+        "hex": "a5011f000000bcdbf615304f6a89",
+        "sequence": 31
+      },
+      {
+        "t": 30.559,
+        "id": 32,
+        "hex": "a50120000000cfea0924435e7d98",
+        "sequence": 32
+      },
+      {
+        "t": 30.568,
+        "id": 33,
+        "hex": "a50121000000defd183752718cab",
+        "sequence": 33
+      },
+      {
+        "t": 30.572,
+        "id": 34,
+        "hex": "a50122000000f10c2b4665809fba",
+        "sequence": 34
+      },
+      {
+        "t": 32.577,
+        "id": 35,
+        "hex": "a50123000000001f3a597493aecd",
+        "sequence": 35
+      },
+      {
+        "t": 32.582,
+        "id": 36,
+        "hex": "a50124000000132e4d6887a2c1dc",
+        "sequence": 36
+      },
+      {
+        "t": 32.591,
+        "id": 37,
+        "hex": "a5012500000022415c7b96b5d0ef",
+        "sequence": 37
+      },
+      {
+        "t": 32.596,
+        "id": 38,
+        "hex": "a5012600000035506f8aa9c4e3fe",
+        "sequence": 38
+      },
+      {
+        "t": 34.556,
+        "id": 39,
+        "hex": "a5012700000044637e9db8d7f211",
+        "sequence": 39
+      },
+      {
+        "t": 34.561,
+        "id": 40,
+        "hex": "a50128000000577291accbe60520",
+        "sequence": 40
+      },
+      {
+        "t": 34.565,
+        "id": 41,
+        "hex": "a501290000006685a0bfdaf91433",
+        "sequence": 41
+      },
+      {
+        "t": 34.572,
+        "id": 42,
+        "hex": "a5012a0000007994b3ceed082742",
+        "sequence": 42
+      },
+      {
+        "t": 37.596,
+        "id": 43,
+        "hex": "a5012b00000088a7c2e1fc1b3655",
+        "sequence": 43
+      },
+      {
+        "t": 38.589,
+        "id": 44,
+        "hex": "a5012c0000009bb6d5f00f2a4964",
+        "sequence": 44
+      },
+      {
+        "t": 38.594,
+        "id": 45,
+        "hex": "a5012d000000aac9e4031e3d5877",
+        "sequence": 45
+      },
+      {
+        "t": 39.587,
+        "id": 46,
+        "hex": "a5012e000000bdd8f712314c6b86",
+        "sequence": 46
+      },
+      {
+        "t": 39.592,
+        "id": 47,
+        "hex": "a5012f000000cceb0625405f7a99",
+        "sequence": 47
+      },
+      {
+        "t": 39.599,
+        "id": 48,
+        "hex": "a50130000000dffa1934536e8da8",
+        "sequence": 48
+      },
+      {
+        "t": 40.586,
+        "id": 49,
+        "hex": "a50131000000ee0d284762819cbb",
+        "sequence": 49
+      },
+      {
+        "t": 40.593,
+        "id": 50,
+        "hex": "a50132000000011c3b567590afca",
+        "sequence": 50
+      },
+      {
+        "t": 40.6,
+        "id": 51,
+        "hex": "a50133000000102f4a6984a3bedd",
+        "sequence": 51
+      },
+      {
+        "t": 41.587,
+        "id": 52,
+        "hex": "a50134000000233e5d7897b2d1ec",
+        "sequence": 52
+      },
+      {
+        "t": 48.556,
+        "id": 53,
+        "hex": "a5013500000032516c8ba6c5e0ff",
+        "sequence": 53
+      },
+      {
+        "t": 48.56,
+        "id": 54,
+        "hex": "a5013600000045607f9ab9d4f30e",
+        "sequence": 54
+      },
+      {
+        "t": 48.567,
+        "id": 55,
+        "hex": "a5013700000054738eadc8e70221",
+        "sequence": 55
+      },
+      {
+        "t": 48.572,
+        "id": 56,
+        "hex": "a501380000006782a1bcdbf61530",
+        "sequence": 56
+      },
+      {
+        "t": 48.578,
+        "id": 57,
+        "hex": "a501390000007695b0cfea092443",
+        "sequence": 57
+      },
+      {
+        "t": 48.585,
+        "id": 58,
+        "hex": "a5013a00000089a4c3defd183752",
+        "sequence": 58
+      },
+      {
+        "t": 48.59,
+        "id": 59,
+        "hex": "a5013b00000098b7d2f10c2b4665",
+        "sequence": 59
+      },
+      {
+        "t": 48.594,
+        "id": 60,
+        "hex": "a5013c000000abc6e5001f3a5974",
+        "sequence": 60
+      },
+      {
+        "t": 49.557,
+        "id": 61,
+        "hex": "a5013d000000bad9f4132e4d6887",
+        "sequence": 61
+      },
+      {
+        "t": 49.562,
+        "id": 62,
+        "hex": "a5013e000000cde80722415c7b96",
+        "sequence": 62
+      },
+      {
+        "t": 51.561,
+        "id": 63,
+        "hex": "a5013f000000dcfb1635506f8aa9",
+        "sequence": 63
+      },
+      {
+        "t": 51.57,
+        "id": 64,
+        "hex": "a50140000000ef0a2944637e9db8",
+        "sequence": 64
+      },
+      {
+        "t": 51.574,
+        "id": 65,
+        "hex": "a50141000000fe1d38577291accb",
+        "sequence": 65
+      },
+      {
+        "t": 51.584,
+        "id": 66,
+        "hex": "a50142000000112c4b6685a0bfda",
+        "sequence": 66
+      },
+      {
+        "t": 51.586,
+        "id": 67,
+        "hex": "a50143000000203f5a7994b3ceed",
+        "sequence": 67
+      },
+      {
+        "t": 51.593,
+        "id": 68,
+        "hex": "a50144000000334e6d88a7c2e1fc",
+        "sequence": 68
+      },
+      {
+        "t": 51.597,
+        "id": 69,
+        "hex": "a5014500000042617c9bb6d5f00f",
+        "sequence": 69
+      },
+      {
+        "t": 52.556,
+        "id": 70,
+        "hex": "a5014600000055708faac9e4031e",
+        "sequence": 70
+      },
+      {
+        "t": 52.561,
+        "id": 71,
+        "hex": "a5014700000064839ebdd8f71231",
+        "sequence": 71
+      },
+      {
+        "t": 52.567,
+        "id": 72,
+        "hex": "a501480000007792b1cceb062540",
+        "sequence": 72
+      },
+      {
+        "t": 52.572,
+        "id": 73,
+        "hex": "a5014900000086a5c0dffa193453",
+        "sequence": 73
+      },
+      {
+        "t": 54.579,
+        "id": 74,
+        "hex": "a5014a00000099b4d3ee0d284762",
+        "sequence": 74
+      },
+      {
+        "t": 54.584,
+        "id": 75,
+        "hex": "a5014b000000a8c7e2011c3b5675",
+        "sequence": 75
+      },
+      {
+        "t": 54.593,
+        "id": 76,
+        "hex": "a5014c000000bbd6f5102f4a6984",
+        "sequence": 76
+      },
+      {
+        "t": 54.598,
+        "id": 77,
+        "hex": "a5014d000000cae904233e5d7897",
+        "sequence": 77
+      },
+      {
+        "t": 55.556,
+        "id": 78,
+        "hex": "a5014e000000ddf81732516c8ba6",
+        "sequence": 78
+      },
+      {
+        "t": 55.56,
+        "id": 79,
+        "hex": "a5014f000000ec0b2645607f9ab9",
+        "sequence": 79
+      },
+      {
+        "t": 55.567,
+        "id": 80,
+        "hex": "a50150000000ff1a3954738eadc8",
+        "sequence": 80
+      },
+      {
+        "t": 55.572,
+        "id": 81,
+        "hex": "a501510000000e2d486782a1bcdb",
+        "sequence": 81
+      },
+      {
+        "t": 55.579,
+        "id": 82,
+        "hex": "a50152000000213c5b7695b0cfea",
+        "sequence": 82
+      },
+      {
+        "t": 55.583,
+        "id": 83,
+        "hex": "a50153000000304f6a89a4c3defd",
+        "sequence": 83
+      },
+      {
+        "t": 55.59,
+        "id": 84,
+        "hex": "a50154000000435e7d98b7d2f10c",
+        "sequence": 84
+      },
+      {
+        "t": 55.595,
+        "id": 85,
+        "hex": "a5015500000052718cabc6e5001f",
+        "sequence": 85
+      },
+      {
+        "t": 58.557,
+        "id": 86,
+        "hex": "a5015600000065809fbad9f4132e",
+        "sequence": 86
+      },
+      {
+        "t": 58.561,
+        "id": 87,
+        "hex": "a501570000007493aecde8072241",
+        "sequence": 87
+      },
+      {
+        "t": 58.568,
+        "id": 88,
+        "hex": "a5015800000087a2c1dcfb163550",
+        "sequence": 88
+      },
+      {
+        "t": 58.573,
+        "id": 89,
+        "hex": "a5015900000096b5d0ef0a294463",
+        "sequence": 89
+      },
+      {
+        "t": 58.577,
+        "id": 90,
+        "hex": "a5015a000000a9c4e3fe1d385772",
+        "sequence": 90
+      },
+      {
+        "t": 58.584,
+        "id": 91,
+        "hex": "a5015b000000b8d7f2112c4b6685",
+        "sequence": 91
+      },
+      {
+        "t": 58.589,
+        "id": 92,
+        "hex": "a5015c000000cbe605203f5a7994",
+        "sequence": 92
+      },
+      {
+        "t": 58.596,
+        "id": 93,
+        "hex": "a5015d000000daf914334e6d88a7",
+        "sequence": 93
+      },
+      {
+        "t": 59.557,
+        "id": 94,
+        "hex": "a5015e000000ed082742617c9bb6",
+        "sequence": 94
+      },
+      {
+        "t": 59.562,
+        "id": 95,
+        "hex": "a5015f000000fc1b3655708faac9",
+        "sequence": 95
+      },
+      {
+        "t": 59.566,
+        "id": 96,
+        "hex": "a501600000000f2a4964839ebdd8",
+        "sequence": 96
+      },
+      {
+        "t": 59.573,
+        "id": 97,
+        "hex": "a501610000001e3d587792b1cceb",
+        "sequence": 97
+      },
+      {
+        "t": 61.581,
+        "id": 98,
+        "hex": "a50162000000314c6b86a5c0dffa",
+        "sequence": 98
+      }
+    ]
+  ],
+  "events": [
+    {
+      "t": 0.515,
+      "board": 0,
+      "text": "r$\u0000d\ufffd\ufffd|\u0000\ufffdl\ufffd|\u0003\f\u0004\u0004\ufffd\u0004d\ufffd\u0004#<\ufffd\ufffd\u0003\ufffd\u001b\ufffd{\ufffd#\ufffd\fc\ufffd\ufffdgn\ufffdln'\ufffd\ufffd\ufffd\u0004c\u001cx\ufffd\ufffd$;lr$x\ufffdg\ufffd\u0018\u0003\u0004\f\ufffd\u0004d\f\ufffd\ufffd\f\f\u0004#\fo\ufffd|\u0003\ufffd\u0004\ufffd\u001c\ufffd\u0004#\ufffd\ufffdn'\ufffd\u0000$\ufffd\ufffd$ \u0003\ufffd\u0013\u0012o'\fl \u0003\u000e\u0002nr\ufffd\ufffd\ufffd'\u0004\f#d\ufffd\u0007dp\ufffdg\ufffd\u0018\u0003\f\f;\ufffd\ufffd\ufffd\ufffd\u001c\ufffd\ufffd\u0003\u0004c\u0004'\ufffd<\u0003\u0004\ufffd\fb\ufffd\ufffdn'\ufffd\u0000\u0004\u0004l`\u0003\ufffd\u0013\u0012o'\f$ \u0003\u000e\u0003n;\ufffd\ufffd\ufffd'\f\u0004c\ufffd\ufffd \u0003\u000er\ufffd\ufffdg\f\u0004c\ufffd\ufffd \u0003\ufffd\u0003\u0004\f\u0004\ufffd\ufffd\ufffd\u0004d`\u0003\ufffd\ufffdg\ufffd\u000fl\ufffd\ufffd\u0003\ufffd\u001b\ufffdg\ufffd\ufffd;\ufffd\ufffdo|\ufffd\f$\u0004\ufffd\u0004l`\u0003\u001cb\ufffd\u0013\u0002\u0004\ufffd|\u0003{\ufffd\u0003d\ufffdo\ufffd\f\ufffdn\ufffd\u0000\f$ \u0003\ufffd\ufffds\ufffd$\ufffdl\u001b\ufffd\u0004\u0004\f\ufffd"
+    },
+    {
+      "t": 0.519,
+      "board": 0,
+      "text": "TDM_READY version=0.6.0-beta.2-4fsk role=1 chip=230ef4 session=9f2c3e42 cycleUs=2000000 payload=14 ok=1"
+    },
+    {
+      "t": 0.535,
+      "board": 1,
+      "text": "s$\u0000l\ufffd\ufffd|\u0000\ufffdl\ufffd<\u0003\f\u0004\f\ufffd\f$\ufffd\u0004c|\ufffd\ufffd\u0003\ufffd\u001b\ufffd{\ufffdc\ufffd\u0004c\ufffd\ufffdng\ufffdlng\ufffd\ufffd\ufffd\u0004c\u001cp\ufffd\ufffd${l{lx\ufffdo\ufffd\u0010\u0003\u0004\u0004\ufffd\u0004d\u0004\ufffd\ufffd\f\u0004\fc\fo\ufffd<\u0003\ufffd\u0004\ufffd\u001c\ufffd\fb\ufffd\ufffdgn\ufffd\u0000d\ufffd\ufffdl \u0003\ufffd\u001b\u0012ng\u0004l`\u0003\u0007\u0003os\ufffd\ufffd\ufffdg\u0004\fcl\ufffd\u0007$p\ufffdn\ufffd\u0018\u0003\f\u0004s\ufffd\ufffd\ufffd\ufffd\u001c\ufffd\ufffd\u0003\fc\u0004o\ufffd|\u0003\u0004\ufffd\u0004c\ufffd\ufffd'o\ufffd\u0000\f\u0004l \u0003\ufffd\u001b\u0012'g\u0004l`\u0003\u0007\u0003gs\ufffd\ufffd\ufffdg\u0004\fc\ufffd\ufffd`\u0003\u000fs\ufffd\ufffdn\f\u0004b\ufffd\ufffd`\u0003\ufffd\u0003\f\u0004\f\ufffd\ufffd\ufffd\fd`\u0002\ufffd\ufffd'\ufffd\u000fl\ufffd\ufffd\u0003\ufffd\u0013\ufffdg\ufffd\ufffd{\ufffd\ufffdo<\ufffd\u0004l\u0004\ufffd\f$`\u0003\u001c#\ufffd\u001b\u0003\u0004\ufffd|\u0003;\ufffd\u0003l\ufffdg\ufffd\f\ufffd'\ufffd\u0000\f$`\u0003\ufffd\ufffds\ufffdl\ufffdl\u001b\ufffd\u0004\f\u0004\ufffd"
+    },
+    {
+      "t": 0.542,
+      "board": 1,
+      "text": "TDM_READY version=0.6.0-beta.2-4fsk role=2 chip=d60ee8 session=e383bc6b cycleUs=2000000 payload=14 ok=1"
+    },
+    {
+      "t": 1.079,
+      "board": 0,
+      "command": "/reset"
+    },
+    {
+      "t": 1.079,
+      "board": 1,
+      "command": "/reset"
+    },
+    {
+      "t": 1.195,
+      "board": 1,
+      "text": "ets Jan  8 2013,rst cause:2, boot mode:(3,7)"
+    },
+    {
+      "t": 1.199,
+      "board": 0,
+      "text": "ets Jan  8 2013,rst cause:2, boot mode:(3,7)"
+    },
+    {
+      "t": 1.2,
+      "board": 1,
+      "text": "load 0x4010f000, len 3424, room 16"
+    },
+    {
+      "t": 1.2,
+      "board": 1,
+      "text": "tail 0"
+    },
+    {
+      "t": 1.202,
+      "board": 0,
+      "text": "load 0x4010f000, len 3424, room 16"
+    },
+    {
+      "t": 1.202,
+      "board": 0,
+      "text": "tail 0"
+    },
+    {
+      "t": 1.202,
+      "board": 1,
+      "text": "chksum 0x2e"
+    },
+    {
+      "t": 1.204,
+      "board": 1,
+      "text": "load 0x3fff20b8, len 40, room 8"
+    },
+    {
+      "t": 1.204,
+      "board": 1,
+      "text": "tail 0"
+    },
+    {
+      "t": 1.206,
+      "board": 0,
+      "text": "chksum 0x2e"
+    },
+    {
+      "t": 1.209,
+      "board": 0,
+      "text": "load 0x3fff20b8, len 40, room 8"
+    },
+    {
+      "t": 1.209,
+      "board": 0,
+      "text": "tail 0"
+    },
+    {
+      "t": 1.209,
+      "board": 1,
+      "text": "chksum 0x2b"
+    },
+    {
+      "t": 1.209,
+      "board": 1,
+      "text": "csum 0x2b"
+    },
+    {
+      "t": 1.209,
+      "board": 1,
+      "text": "v00048780"
+    },
+    {
+      "t": 1.209,
+      "board": 1,
+      "text": "~ld"
+    },
+    {
+      "t": 1.213,
+      "board": 0,
+      "text": "chksum 0x2b"
+    },
+    {
+      "t": 1.213,
+      "board": 0,
+      "text": "csum 0x2b"
+    },
+    {
+      "t": 1.213,
+      "board": 0,
+      "text": "v00048780"
+    },
+    {
+      "t": 1.213,
+      "board": 0,
+      "text": "~ld"
+    },
+    {
+      "t": 1.606,
+      "board": 1,
+      "text": "\ufffd\ufffd\u0003\ufffd\u0013\ufffdg\ufffd\ufffd{\ufffd\ufffdo|\ufffd\fl\u0004\ufffd\u0004l \u0003\u001cc\ufffd\u0012\u0003\f\ufffd|\u0003s\ufffd\u0002d\ufffd'\ufffd\u0004\ufffdo\ufffd\u0000\u0004l \u0003\ufffd\ufffd{\ufffdd\ufffdd\u0013\ufffd\u0004\f\u0004\ufffd"
+    },
+    {
+      "t": 1.611,
+      "board": 0,
+      "text": "\ufffd\ufffd\u0002\ufffd\u0013\ufffdn\ufffd\ufffd{\ufffd\ufffd'<\ufffd\u0004d\f\ufffd\u0004l`\u0002\u001cb\ufffd\u0013\u0003\u0004\ufffd|\u0003{\ufffd\u0003d\ufffdo\ufffd\f\ufffdo\ufffd\u0000\f$ \u0003\ufffd\ufffds\ufffd$\ufffdl\u001b\ufffd\u0004\u0004\f\ufffd"
+    },
+    {
+      "t": 1.613,
+      "board": 1,
+      "text": "TDM_READY version=0.6.0-beta.2-4fsk role=2 chip=d60ee8 session=037e7557 cycleUs=2000000 payload=14 ok=1"
+    },
+    {
+      "t": 1.615,
+      "board": 0,
+      "text": "TDM_READY version=0.6.0-beta.2-4fsk role=1 chip=230ef4 session=e32508bb cycleUs=2000000 payload=14 ok=1"
+    },
+    {
+      "t": 1.618,
+      "board": 0,
+      "command": "/stats"
+    },
+    {
+      "t": 1.618,
+      "board": 1,
+      "command": "/stats"
+    },
+    {
+      "t": 4.436,
+      "board": 0,
+      "text": "TDM role=1 state=SEARCH cycle=1 tx=2 rx=0 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=32 resync=0 f0=0 f1=0 corr=0 peerCorr=0 heap=42136 t=3212 rate=0 symbolUs=1000 limit=5 up=0 down=0 recovery=0"
+    },
+    {
+      "t": 4.447,
+      "board": 0,
+      "text": "PHY role=1 sync=0 crc=0 reject=0 slow=0 abort=0 late=9 calAge=0 invalid=0 full=0 workUs=1964727 samples=67013 maxPoll=1331"
+    },
+    {
+      "t": 4.454,
+      "board": 0,
+      "text": "ADAPT role=1 rate=0 next=1 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 4.458,
+      "board": 0,
+      "text": "IQ role=1 hz=-109953 e=116 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 4.471,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=0 phaseUs=0 frames=2 bytes=28 windows=1 queuedBytes=448 deliveredBytes=0 ackBytes=0 outOfOrder=0 logDrop=0"
+    },
+    {
+      "t": 4.48,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=67013 rawSamples=268052 activeUs=1964727 estimatesPerSec=34108"
+    },
+    {
+      "t": 4.487,
+      "board": 0,
+      "text": "FSK4 role=1 trained=0 centers=0,0,0,0 symbolUs=1000 rawBps=2000 dither=off calUs=160000"
+    },
+    {
+      "t": 4.494,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=0 addressReject=0 to=0 from=0 len=0 good=0 candidates=0 drops=0"
+    },
+    {
+      "t": 4.503,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 6.437,
+      "board": 1,
+      "text": "TDM role=2 state=SYNC cycle=2 tx=0 rx=1 miss=0 txFail=0 ack=0 delivered=0 retry=0 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=5217 rate=0 symbolUs=1000 limit=5 up=0 down=0 recovery=0"
+    },
+    {
+      "t": 6.448,
+      "board": 1,
+      "text": "PHY role=2 sync=7 crc=0 reject=0 slow=0 abort=0 late=0 calAge=1 invalid=0 full=0 workUs=4745159 samples=163185 maxPoll=287559"
+    },
+    {
+      "t": 6.453,
+      "board": 1,
+      "text": "ADAPT role=2 rate=0 next=1 waitMs=0 good=1 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 6.459,
+      "board": 1,
+      "text": "IQ role=2 hz=66241 e=1924 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 6.473,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=1 phaseUs=0 frames=0 bytes=0 windows=0 queuedBytes=448 deliveredBytes=0 ackBytes=0 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 6.48,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=163185 rawSamples=652740 activeUs=4745159 estimatesPerSec=34389"
+    },
+    {
+      "t": 6.489,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=1000 rawBps=2000 dither=off calUs=160000"
+    },
+    {
+      "t": 6.498,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=1 addressReject=0 to=2 from=1 len=36 good=1 candidates=1 drops=0"
+    },
+    {
+      "t": 6.505,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=00e vga=1 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 8.425,
+      "board": 1,
+      "text": "RXDATA role=2 id=0 len=14 hex=a50100000000afcae904233e5d78 valid=1"
+    },
+    {
+      "t": 8.429,
+      "board": 1,
+      "text": "RXDATA role=2 id=1 len=14 hex=a50101000000beddf81732516c8b valid=1"
+    },
+    {
+      "t": 8.438,
+      "board": 0,
+      "text": "TDM role=1 state=SYNC cycle=3 tx=6 rx=1 miss=1 txFail=0 ack=0 delivered=0 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=1 peerCorr=0 heap=42136 t=7214 rate=0 symbolUs=1000 limit=5 up=0 down=0 recovery=0"
+    },
+    {
+      "t": 8.449,
+      "board": 0,
+      "text": "PHY role=1 sync=8 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1003 invalid=0 full=0 workUs=3763501 samples=129319 maxPoll=288799"
+    },
+    {
+      "t": 8.456,
+      "board": 0,
+      "text": "ADAPT role=1 rate=0 next=1 waitMs=0 good=1 qualityQ4=2 bad=0 losses=2"
+    },
+    {
+      "t": 8.46,
+      "board": 0,
+      "text": "IQ role=1 hz=589 e=17 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 8.474,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=1 phaseUs=-16 frames=2 bytes=28 windows=3 queuedBytes=448 deliveredBytes=0 ackBytes=0 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 8.483,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=129319 rawSamples=517276 activeUs=3763501 estimatesPerSec=34361"
+    },
+    {
+      "t": 8.492,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=1000 rawBps=2000 dither=off calUs=160000"
+    },
+    {
+      "t": 8.498,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=1 addressReject=0 to=1 from=2 len=36 good=1 candidates=6 drops=0"
+    },
+    {
+      "t": 8.507,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 9.422,
+      "board": 0,
+      "text": "RXDATA role=1 id=0 len=14 hex=a50200000000acc9ea07203d5e7b valid=1"
+    },
+    {
+      "t": 9.429,
+      "board": 0,
+      "text": "RXDATA role=1 id=1 len=14 hex=a50201000000bddefb1431526f88 valid=1"
+    },
+    {
+      "t": 10.427,
+      "board": 1,
+      "text": "RXDATA role=2 id=2 len=14 hex=a50102000000d1ec0b2645607f9a valid=1"
+    },
+    {
+      "t": 10.431,
+      "board": 1,
+      "text": "RXDATA role=2 id=3 len=14 hex=a50103000000e0ff1a3954738ead valid=1"
+    },
+    {
+      "t": 10.447,
+      "board": 1,
+      "text": "TDM role=2 state=SYNC cycle=4 tx=4 rx=5 miss=0 txFail=0 ack=2 delivered=4 retry=2 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=9222 rate=0 symbolUs=1000 limit=5 up=0 down=0 recovery=0"
+    },
+    {
+      "t": 10.458,
+      "board": 1,
+      "text": "PHY role=2 sync=36 crc=0 reject=0 slow=0 abort=0 late=9 calAge=7 invalid=0 full=0 workUs=6366814 samples=221465 maxPoll=288121"
+    },
+    {
+      "t": 10.463,
+      "board": 1,
+      "text": "ADAPT role=2 rate=0 next=1 waitMs=0 good=3 qualityQ4=1 bad=0 losses=0"
+    },
+    {
+      "t": 10.47,
+      "board": 1,
+      "text": "IQ role=2 hz=77223 e=18330 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 10.485,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=5 phaseUs=106 frames=2 bytes=28 windows=2 queuedBytes=448 deliveredBytes=56 ackBytes=28 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 10.492,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=221465 rawSamples=885860 activeUs=6366814 estimatesPerSec=34784"
+    },
+    {
+      "t": 10.501,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=1000 rawBps=2000 dither=off calUs=160000"
+    },
+    {
+      "t": 10.508,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=5 addressReject=0 to=2 from=1 len=36 good=5 candidates=5 drops=0"
+    },
+    {
+      "t": 10.517,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 11.423,
+      "board": 0,
+      "text": "RXDATA role=1 id=2 len=14 hex=a50202000000d2ef082546637c99 valid=1"
+    },
+    {
+      "t": 11.428,
+      "board": 0,
+      "text": "RXDATA role=1 id=3 len=14 hex=a50203000000e3fc193a57708dae valid=1"
+    },
+    {
+      "t": 12.425,
+      "board": 1,
+      "text": "RXDATA role=2 id=4 len=14 hex=a50104000000f30e2d486782a1bc valid=1"
+    },
+    {
+      "t": 12.429,
+      "board": 1,
+      "text": "RXDATA role=2 id=5 len=14 hex=a5010500000002213c5b7695b0cf valid=1"
+    },
+    {
+      "t": 12.44,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=5 tx=10 rx=5 miss=1 txFail=0 ack=4 delivered=4 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=0 peerCorr=0 heap=42136 t=11216 rate=0 symbolUs=1000 limit=5 up=0 down=0 recovery=0"
+    },
+    {
+      "t": 12.452,
+      "board": 0,
+      "text": "PHY role=1 sync=37 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1005 invalid=0 full=0 workUs=5385578 samples=187404 maxPoll=288799"
+    },
+    {
+      "t": 12.458,
+      "board": 0,
+      "text": "ADAPT role=1 rate=0 next=1 waitMs=0 good=3 qualityQ4=0 bad=0 losses=8"
+    },
+    {
+      "t": 12.463,
+      "board": 0,
+      "text": "IQ role=1 hz=-6476 e=13 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 12.479,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=5 phaseUs=-100 frames=2 bytes=28 windows=5 queuedBytes=448 deliveredBytes=56 ackBytes=56 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 12.486,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=187404 rawSamples=749616 activeUs=5385578 estimatesPerSec=34797"
+    },
+    {
+      "t": 12.493,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=1000 rawBps=2000 dither=off calUs=160000"
+    },
+    {
+      "t": 12.502,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=5 addressReject=0 to=1 from=2 len=36 good=5 candidates=12 drops=0"
+    },
+    {
+      "t": 12.511,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 13.423,
+      "board": 0,
+      "text": "RXDATA role=1 id=4 len=14 hex=a50204000000f00d2e4b6481a2bf valid=1"
+    },
+    {
+      "t": 13.428,
+      "board": 0,
+      "text": "RXDATA role=1 id=5 len=14 hex=a5020500000001223f587596b3cc valid=1"
+    },
+    {
+      "t": 14.424,
+      "board": 1,
+      "text": "RXDATA role=2 id=6 len=14 hex=a5010600000015304f6a89a4c3de valid=1"
+    },
+    {
+      "t": 14.43,
+      "board": 1,
+      "text": "RXDATA role=2 id=7 len=14 hex=a5010700000024435e7d98b7d2f1 valid=1"
+    },
+    {
+      "t": 14.448,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=6 tx=8 rx=9 miss=0 txFail=0 ack=6 delivered=8 retry=2 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=13228 rate=0 symbolUs=1000 limit=5 up=0 down=0 recovery=0"
+    },
+    {
+      "t": 14.459,
+      "board": 1,
+      "text": "PHY role=2 sync=64 crc=0 reject=0 slow=0 abort=0 late=9 calAge=12 invalid=0 full=0 workUs=7988491 samples=279750 maxPoll=288192"
+    },
+    {
+      "t": 14.466,
+      "board": 1,
+      "text": "ADAPT role=2 rate=0 next=1 waitMs=0 good=5 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 14.468,
+      "board": 1,
+      "text": "IQ role=2 hz=77243 e=18594 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 14.489,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=9 phaseUs=83 frames=2 bytes=28 windows=4 queuedBytes=448 deliveredBytes=112 ackBytes=84 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 14.493,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=279750 rawSamples=1119000 activeUs=7988491 estimatesPerSec=35019"
+    },
+    {
+      "t": 14.502,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=1000 rawBps=2000 dither=off calUs=160000"
+    },
+    {
+      "t": 14.509,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=9 addressReject=0 to=2 from=1 len=36 good=9 candidates=9 drops=0"
+    },
+    {
+      "t": 14.518,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 15.424,
+      "board": 0,
+      "text": "RXDATA role=1 id=6 len=14 hex=a5020600000016334c698aa7c0dd valid=1"
+    },
+    {
+      "t": 15.429,
+      "board": 0,
+      "text": "RXDATA role=1 id=7 len=14 hex=a5020700000027405d7e9bb4d1f2 valid=1"
+    },
+    {
+      "t": 16.554,
+      "board": 1,
+      "text": "RXDATA role=2 id=8 len=14 hex=a501080000003752718cabc6e500 valid=1"
+    },
+    {
+      "t": 16.561,
+      "board": 1,
+      "text": "RXDATA role=2 id=9 len=14 hex=a501090000004665809fbad9f413 valid=1"
+    },
+    {
+      "t": 16.565,
+      "board": 1,
+      "text": "RXDATA role=2 id=10 len=14 hex=a5010a000000597493aecde80722 valid=1"
+    },
+    {
+      "t": 16.567,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=7 tx=15 rx=9 miss=1 txFail=0 ack=8 delivered=8 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=0 peerCorr=0 heap=42136 t=15342 rate=1 symbolUs=800 limit=5 up=1 down=0 recovery=0"
+    },
+    {
+      "t": 16.579,
+      "board": 0,
+      "text": "PHY role=1 sync=64 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1131 invalid=0 full=0 workUs=7007558 samples=245487 maxPoll=288799"
+    },
+    {
+      "t": 16.583,
+      "board": 0,
+      "text": "ADAPT role=1 rate=1 next=2 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 16.59,
+      "board": 0,
+      "text": "IQ role=1 hz=-5287 e=44 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 17.562,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=9 phaseUs=-122 frames=3 bytes=42 windows=7 queuedBytes=448 deliveredBytes=112 ackBytes=112 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 17.571,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=245487 rawSamples=981948 activeUs=7007558 estimatesPerSec=35031"
+    },
+    {
+      "t": 17.578,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=800 rawBps=2500 dither=off calUs=160000"
+    },
+    {
+      "t": 17.587,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=9 addressReject=0 to=1 from=2 len=36 good=9 candidates=17 drops=0"
+    },
+    {
+      "t": 17.594,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 18.554,
+      "board": 0,
+      "text": "RXDATA role=1 id=8 len=14 hex=a502080000003451728fa8c5e603 valid=1"
+    },
+    {
+      "t": 18.556,
+      "board": 1,
+      "text": "RXDATA role=2 id=11 len=14 hex=a5010b0000006887a2c1dcfb1635 valid=1"
+    },
+    {
+      "t": 18.558,
+      "board": 0,
+      "text": "RXDATA role=1 id=9 len=14 hex=a502090000004566839cb9daf710 valid=1"
+    },
+    {
+      "t": 18.561,
+      "board": 1,
+      "text": "RXDATA role=2 id=12 len=14 hex=a5010c0000007b96b5d0ef0a2944 valid=1"
+    },
+    {
+      "t": 18.565,
+      "board": 0,
+      "text": "RXDATA role=1 id=10 len=14 hex=a5020a0000005a7790adceeb0421 valid=1"
+    },
+    {
+      "t": 18.568,
+      "board": 1,
+      "text": "RXDATA role=2 id=13 len=14 hex=a5010d0000008aa9c4e3fe1d3857 valid=1"
+    },
+    {
+      "t": 18.586,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=8 tx=13 rx=15 miss=0 txFail=0 ack=11 delivered=14 retry=2 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=17347 rate=1 symbolUs=800 limit=5 up=1 down=0 recovery=0"
+    },
+    {
+      "t": 18.597,
+      "board": 1,
+      "text": "PHY role=2 sync=107 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1 invalid=0 full=0 workUs=9869890 samples=347384 maxPoll=288192"
+    },
+    {
+      "t": 19.554,
+      "board": 0,
+      "text": "RXDATA role=1 id=11 len=14 hex=a5020b0000006b84a1c2dff81536 valid=1"
+    },
+    {
+      "t": 19.555,
+      "board": 1,
+      "text": "ADAPT role=2 rate=1 next=2 waitMs=0 good=2 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 19.557,
+      "board": 1,
+      "text": "IQ role=2 hz=68831 e=14310 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 19.559,
+      "board": 0,
+      "text": "RXDATA role=1 id=12 len=14 hex=a5020c0000007895b6d3ec092a47 valid=1"
+    },
+    {
+      "t": 19.564,
+      "board": 0,
+      "text": "RXDATA role=1 id=13 len=14 hex=a5020d00000089aac7e0fd1e3b54 valid=1"
+    },
+    {
+      "t": 19.573,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=15 phaseUs=20 frames=3 bytes=42 windows=6 queuedBytes=448 deliveredBytes=196 ackBytes=154 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 19.582,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=347384 rawSamples=1389536 activeUs=9869890 estimatesPerSec=35196"
+    },
+    {
+      "t": 19.591,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=800 rawBps=2500 dither=off calUs=160000"
+    },
+    {
+      "t": 19.597,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=15 addressReject=0 to=2 from=1 len=36 good=15 candidates=16 drops=0"
+    },
+    {
+      "t": 20.555,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 20.559,
+      "board": 1,
+      "text": "RXDATA role=2 id=14 len=14 hex=a5010e0000009db8d7f2112c4b66 valid=1"
+    },
+    {
+      "t": 20.568,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=9 tx=21 rx=15 miss=1 txFail=0 ack=14 delivered=14 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=0 peerCorr=0 heap=42136 t=19344 rate=1 symbolUs=800 limit=5 up=1 down=0 recovery=0"
+    },
+    {
+      "t": 20.568,
+      "board": 1,
+      "text": "RXDATA role=2 id=15 len=14 hex=a5010f000000accbe605203f5a79 valid=1"
+    },
+    {
+      "t": 20.573,
+      "board": 1,
+      "text": "RXDATA role=2 id=16 len=14 hex=a50110000000bfdaf914334e6d88 valid=1"
+    },
+    {
+      "t": 20.58,
+      "board": 0,
+      "text": "PHY role=1 sync=107 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1003 invalid=0 full=0 workUs=8888967 samples=313031 maxPoll=288799"
+    },
+    {
+      "t": 20.588,
+      "board": 0,
+      "text": "ADAPT role=1 rate=1 next=2 waitMs=0 good=2 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 20.593,
+      "board": 0,
+      "text": "IQ role=1 hz=-44422 e=103 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 21.563,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=15 phaseUs=72 frames=3 bytes=42 windows=9 queuedBytes=448 deliveredBytes=196 ackBytes=196 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 21.569,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=313031 rawSamples=1252124 activeUs=8888967 estimatesPerSec=35215"
+    },
+    {
+      "t": 21.578,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=800 rawBps=2500 dither=off calUs=160000"
+    },
+    {
+      "t": 21.587,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=15 addressReject=0 to=1 from=2 len=36 good=15 candidates=24 drops=0"
+    },
+    {
+      "t": 21.594,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 22.554,
+      "board": 0,
+      "text": "RXDATA role=1 id=14 len=14 hex=a5020e0000009ebbd4f1122f4865 valid=1"
+    },
+    {
+      "t": 22.557,
+      "board": 1,
+      "text": "RXDATA role=2 id=17 len=14 hex=a50111000000ceed082742617c9b valid=1"
+    },
+    {
+      "t": 22.559,
+      "board": 0,
+      "text": "RXDATA role=1 id=15 len=14 hex=a5020f000000afc8e506233c597a valid=1"
+    },
+    {
+      "t": 22.561,
+      "board": 1,
+      "text": "RXDATA role=2 id=18 len=14 hex=a50112000000e1fc1b3655708faa valid=1"
+    },
+    {
+      "t": 22.566,
+      "board": 0,
+      "text": "RXDATA role=1 id=16 len=14 hex=a50210000000bcd9fa17304d6e8b valid=1"
+    },
+    {
+      "t": 22.566,
+      "board": 1,
+      "text": "RXDATA role=2 id=19 len=14 hex=a50113000000f00f2a4964839ebd valid=1"
+    },
+    {
+      "t": 22.586,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=10 tx=19 rx=21 miss=0 txFail=0 ack=17 delivered=20 retry=2 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=21353 rate=1 symbolUs=800 limit=5 up=1 down=0 recovery=0"
+    },
+    {
+      "t": 22.597,
+      "board": 1,
+      "text": "PHY role=2 sync=148 crc=0 reject=0 slow=0 abort=0 late=9 calAge=7 invalid=0 full=0 workUs=11751228 samples=415055 maxPoll=288192"
+    },
+    {
+      "t": 23.554,
+      "board": 0,
+      "text": "RXDATA role=1 id=17 len=14 hex=a50211000000cdee0b2441627f98 valid=1"
+    },
+    {
+      "t": 23.554,
+      "board": 1,
+      "text": "ADAPT role=2 rate=1 next=2 waitMs=0 good=4 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 23.556,
+      "board": 1,
+      "text": "IQ role=2 hz=52214 e=16041 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 23.558,
+      "board": 0,
+      "text": "RXDATA role=1 id=18 len=14 hex=a50212000000e2ff183556738ca9 valid=1"
+    },
+    {
+      "t": 23.565,
+      "board": 0,
+      "text": "RXDATA role=1 id=19 len=14 hex=a50213000000f30c294a67809dbe valid=1"
+    },
+    {
+      "t": 23.574,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=21 phaseUs=26 frames=3 bytes=42 windows=8 queuedBytes=448 deliveredBytes=280 ackBytes=238 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 23.581,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=415055 rawSamples=1660220 activeUs=11751228 estimatesPerSec=35320"
+    },
+    {
+      "t": 23.592,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=800 rawBps=2500 dither=off calUs=160000"
+    },
+    {
+      "t": 23.596,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=21 addressReject=0 to=2 from=1 len=36 good=21 candidates=23 drops=0"
+    },
+    {
+      "t": 24.555,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 24.559,
+      "board": 1,
+      "text": "RXDATA role=2 id=20 len=14 hex=a50114000000031e3d587792b1cc valid=1"
+    },
+    {
+      "t": 24.568,
+      "board": 1,
+      "text": "RXDATA role=2 id=21 len=14 hex=a5011500000012314c6b86a5c0df valid=1"
+    },
+    {
+      "t": 24.571,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=11 tx=27 rx=21 miss=1 txFail=0 ack=20 delivered=20 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=0 peerCorr=0 heap=42136 t=23346 rate=1 symbolUs=800 limit=5 up=1 down=0 recovery=0"
+    },
+    {
+      "t": 24.573,
+      "board": 1,
+      "text": "RXDATA role=2 id=22 len=14 hex=a5011600000025405f7a99b4d3ee valid=1"
+    },
+    {
+      "t": 24.582,
+      "board": 0,
+      "text": "PHY role=1 sync=148 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1005 invalid=0 full=0 workUs=10770594 samples=380600 maxPoll=288799"
+    },
+    {
+      "t": 24.589,
+      "board": 0,
+      "text": "ADAPT role=1 rate=1 next=2 waitMs=0 good=4 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 24.593,
+      "board": 0,
+      "text": "IQ role=1 hz=12378 e=24 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 25.563,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=21 phaseUs=66 frames=3 bytes=42 windows=11 queuedBytes=448 deliveredBytes=280 ackBytes=280 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 25.57,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=380600 rawSamples=1522400 activeUs=10770594 estimatesPerSec=35336"
+    },
+    {
+      "t": 25.579,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=800 rawBps=2500 dither=off calUs=160000"
+    },
+    {
+      "t": 25.588,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=21 addressReject=0 to=1 from=2 len=36 good=21 candidates=36 drops=0"
+    },
+    {
+      "t": 25.595,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 26.554,
+      "board": 0,
+      "text": "RXDATA role=1 id=20 len=14 hex=a50214000000001d3e5b7491b2cf valid=1"
+    },
+    {
+      "t": 26.556,
+      "board": 1,
+      "text": "RXDATA role=2 id=23 len=14 hex=a5011700000034536e8da8c7e201 valid=1"
+    },
+    {
+      "t": 26.561,
+      "board": 0,
+      "text": "RXDATA role=1 id=21 len=14 hex=a5021500000011324f6885a6c3dc valid=1"
+    },
+    {
+      "t": 26.561,
+      "board": 1,
+      "text": "RXDATA role=2 id=24 len=14 hex=a501180000004762819cbbd6f510 valid=1"
+    },
+    {
+      "t": 26.566,
+      "board": 0,
+      "text": "RXDATA role=1 id=22 len=14 hex=a5021600000026435c799ab7d0ed valid=1"
+    },
+    {
+      "t": 26.566,
+      "board": 1,
+      "text": "RXDATA role=2 id=25 len=14 hex=a50119000000567590afcae90423 valid=1"
+    },
+    {
+      "t": 26.573,
+      "board": 1,
+      "text": "RXDATA role=2 id=26 len=14 hex=a5011a0000006984a3beddf81732 valid=1"
+    },
+    {
+      "t": 26.593,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=12 tx=25 rx=28 miss=0 txFail=0 ack=23 delivered=27 retry=2 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=25359 rate=2 symbolUs=600 limit=5 up=2 down=0 recovery=0"
+    },
+    {
+      "t": 27.553,
+      "board": 0,
+      "text": "RXDATA role=1 id=23 len=14 hex=a5021700000037506d8eabc4e102 valid=1"
+    },
+    {
+      "t": 27.56,
+      "board": 0,
+      "text": "RXDATA role=1 id=24 len=14 hex=a502180000004461829fb8d5f613 valid=1"
+    },
+    {
+      "t": 27.56,
+      "board": 1,
+      "text": "PHY role=2 sync=196 crc=0 reject=0 slow=0 abort=0 late=9 calAge=12 invalid=0 full=0 workUs=13632839 samples=482787 maxPoll=288192"
+    },
+    {
+      "t": 27.565,
+      "board": 0,
+      "text": "RXDATA role=1 id=25 len=14 hex=a50219000000557693acc9ea0720 valid=1"
+    },
+    {
+      "t": 27.565,
+      "board": 1,
+      "text": "ADAPT role=2 rate=2 next=3 waitMs=0 good=1 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 27.57,
+      "board": 1,
+      "text": "IQ role=2 hz=57370 e=14459 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 27.572,
+      "board": 0,
+      "text": "RXDATA role=1 id=26 len=14 hex=a5021a0000006a87a0bddefb1431 valid=1"
+    },
+    {
+      "t": 27.585,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=28 phaseUs=37 frames=3 bytes=42 windows=10 queuedBytes=448 deliveredBytes=378 ackBytes=322 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 27.592,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=482787 rawSamples=1931148 activeUs=13632839 estimatesPerSec=35413"
+    },
+    {
+      "t": 28.558,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=600 rawBps=3333 dither=off calUs=160000"
+    },
+    {
+      "t": 28.562,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=28 addressReject=0 to=2 from=1 len=36 good=28 candidates=31 drops=0"
+    },
+    {
+      "t": 28.571,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 28.574,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=13 tx=35 rx=28 miss=1 txFail=0 ack=27 delivered=27 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=0 peerCorr=0 heap=42136 t=27348 rate=2 symbolUs=600 limit=5 up=2 down=0 recovery=0"
+    },
+    {
+      "t": 28.576,
+      "board": 1,
+      "text": "RXDATA role=2 id=27 len=14 hex=a5011b0000007897b2d1ec0b2645 valid=1"
+    },
+    {
+      "t": 28.581,
+      "board": 1,
+      "text": "RXDATA role=2 id=28 len=14 hex=a5011c0000008ba6c5e0ff1a3954 valid=1"
+    },
+    {
+      "t": 28.583,
+      "board": 0,
+      "text": "PHY role=1 sync=196 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1006 invalid=0 full=0 workUs=12652265 samples=448242 maxPoll=288799"
+    },
+    {
+      "t": 28.59,
+      "board": 1,
+      "text": "RXDATA role=2 id=29 len=14 hex=a5011d0000009ab9d4f30e2d4867 valid=1"
+    },
+    {
+      "t": 28.593,
+      "board": 0,
+      "text": "ADAPT role=1 rate=2 next=3 waitMs=0 good=1 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 28.595,
+      "board": 1,
+      "text": "RXDATA role=2 id=30 len=14 hex=a5011e000000adc8e702213c5b76 valid=1"
+    },
+    {
+      "t": 28.597,
+      "board": 0,
+      "text": "IQ role=1 hz=19222 e=28 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 29.562,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=28 phaseUs=386 frames=4 bytes=56 windows=13 queuedBytes=448 deliveredBytes=378 ackBytes=378 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 29.571,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=448242 rawSamples=1792968 activeUs=12652265 estimatesPerSec=35427"
+    },
+    {
+      "t": 29.578,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=600 rawBps=3333 dither=off calUs=160000"
+    },
+    {
+      "t": 29.587,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=28 addressReject=0 to=1 from=2 len=36 good=28 candidates=49 drops=0"
+    },
+    {
+      "t": 29.594,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 30.556,
+      "board": 1,
+      "text": "RXDATA role=2 id=31 len=14 hex=a5011f000000bcdbf615304f6a89 valid=1"
+    },
+    {
+      "t": 30.559,
+      "board": 1,
+      "text": "RXDATA role=2 id=32 len=14 hex=a50120000000cfea0924435e7d98 valid=1"
+    },
+    {
+      "t": 30.568,
+      "board": 1,
+      "text": "RXDATA role=2 id=33 len=14 hex=a50121000000defd183752718cab valid=1"
+    },
+    {
+      "t": 30.572,
+      "board": 1,
+      "text": "RXDATA role=2 id=34 len=14 hex=a50122000000f10c2b4665809fba valid=1"
+    },
+    {
+      "t": 30.593,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=14 tx=33 rx=36 miss=0 txFail=0 ack=27 delivered=35 retry=2 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=29365 rate=2 symbolUs=600 limit=5 up=2 down=0 recovery=0"
+    },
+    {
+      "t": 31.555,
+      "board": 0,
+      "text": "RXDATA role=1 id=27 len=14 hex=a5021b0000007b94b1d2ef082546 valid=1"
+    },
+    {
+      "t": 31.559,
+      "board": 0,
+      "text": "RXDATA role=1 id=28 len=14 hex=a5021c00000088a5c6e3fc193a57 valid=1"
+    },
+    {
+      "t": 31.56,
+      "board": 1,
+      "text": "PHY role=2 sync=252 crc=0 reject=0 slow=0 abort=0 late=9 calAge=18 invalid=0 full=0 workUs=15514232 samples=550502 maxPoll=288192"
+    },
+    {
+      "t": 31.566,
+      "board": 0,
+      "text": "RXDATA role=1 id=29 len=14 hex=a5021d00000099bad7f00d2e4b64 valid=1"
+    },
+    {
+      "t": 31.566,
+      "board": 1,
+      "text": "ADAPT role=2 rate=2 next=3 waitMs=0 good=3 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 31.569,
+      "board": 1,
+      "text": "IQ role=2 hz=67219 e=17952 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 31.571,
+      "board": 0,
+      "text": "RXDATA role=1 id=30 len=14 hex=a5021e000000aecbe401223f5875 valid=1"
+    },
+    {
+      "t": 31.585,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=36 phaseUs=51 frames=4 bytes=56 windows=12 queuedBytes=448 deliveredBytes=490 ackBytes=378 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 31.592,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=550502 rawSamples=2202008 activeUs=15514232 estimatesPerSec=35483"
+    },
+    {
+      "t": 32.559,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=600 rawBps=3333 dither=off calUs=160000"
+    },
+    {
+      "t": 32.563,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=36 addressReject=0 to=2 from=1 len=36 good=36 candidates=41 drops=0"
+    },
+    {
+      "t": 32.57,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 32.575,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=15 tx=43 rx=35 miss=1 txFail=0 ack=35 delivered=31 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=0 peerCorr=0 heap=42136 t=31350 rate=2 symbolUs=600 limit=5 up=2 down=0 recovery=0"
+    },
+    {
+      "t": 32.577,
+      "board": 1,
+      "text": "RXDATA role=2 id=35 len=14 hex=a50123000000001f3a597493aecd valid=1"
+    },
+    {
+      "t": 32.582,
+      "board": 1,
+      "text": "RXDATA role=2 id=36 len=14 hex=a50124000000132e4d6887a2c1dc valid=1"
+    },
+    {
+      "t": 32.586,
+      "board": 0,
+      "text": "PHY role=1 sync=243 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1008 invalid=0 full=0 workUs=14532788 samples=515372 maxPoll=288799"
+    },
+    {
+      "t": 32.591,
+      "board": 1,
+      "text": "RXDATA role=2 id=37 len=14 hex=a5012500000022415c7b96b5d0ef valid=1"
+    },
+    {
+      "t": 32.593,
+      "board": 0,
+      "text": "ADAPT role=1 rate=2 next=3 waitMs=0 good=3 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 32.596,
+      "board": 1,
+      "text": "RXDATA role=2 id=38 len=14 hex=a5012600000035506f8aa9c4e3fe valid=1"
+    },
+    {
+      "t": 32.598,
+      "board": 0,
+      "text": "IQ role=1 hz=-19338 e=23 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 33.563,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=35 phaseUs=343 frames=4 bytes=56 windows=15 queuedBytes=448 deliveredBytes=434 ackBytes=490 outOfOrder=4 logDrop=0"
+    },
+    {
+      "t": 33.572,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=515372 rawSamples=2061488 activeUs=14532788 estimatesPerSec=35462"
+    },
+    {
+      "t": 33.579,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=600 rawBps=3333 dither=off calUs=160000"
+    },
+    {
+      "t": 33.588,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=35 addressReject=0 to=1 from=2 len=36 good=35 candidates=59 drops=0"
+    },
+    {
+      "t": 33.593,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 34.554,
+      "board": 0,
+      "text": "RXDATA role=1 id=31 len=14 hex=a5021f000000bfd8f516334c698a valid=1"
+    },
+    {
+      "t": 34.556,
+      "board": 1,
+      "text": "RXDATA role=2 id=39 len=14 hex=a5012700000044637e9db8d7f211 valid=1"
+    },
+    {
+      "t": 34.561,
+      "board": 0,
+      "text": "RXDATA role=1 id=32 len=14 hex=a50220000000cce90a27405d7e9b valid=1"
+    },
+    {
+      "t": 34.561,
+      "board": 1,
+      "text": "RXDATA role=2 id=40 len=14 hex=a50128000000577291accbe60520 valid=1"
+    },
+    {
+      "t": 34.565,
+      "board": 0,
+      "text": "RXDATA role=1 id=33 len=14 hex=a50221000000ddfe1b3451728fa8 valid=1"
+    },
+    {
+      "t": 34.565,
+      "board": 1,
+      "text": "RXDATA role=2 id=41 len=14 hex=a501290000006685a0bfdaf91433 valid=1"
+    },
+    {
+      "t": 34.572,
+      "board": 0,
+      "text": "RXDATA role=1 id=34 len=14 hex=a50222000000f20f284566839cb9 valid=1"
+    },
+    {
+      "t": 34.572,
+      "board": 1,
+      "text": "RXDATA role=2 id=42 len=14 hex=a5012a0000007994b3ceed082742 valid=1"
+    },
+    {
+      "t": 34.592,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=16 tx=41 rx=44 miss=0 txFail=0 ack=35 delivered=43 retry=6 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=33371 rate=2 symbolUs=600 limit=5 up=2 down=0 recovery=0"
+    },
+    {
+      "t": 35.554,
+      "board": 0,
+      "text": "RXDATA role=1 id=35 len=14 hex=a50223000000031c395a7790adce valid=1"
+    },
+    {
+      "t": 35.559,
+      "board": 0,
+      "text": "RXDATA role=1 id=36 len=14 hex=a50224000000102d4e6b84a1c2df valid=1"
+    },
+    {
+      "t": 35.559,
+      "board": 1,
+      "text": "PHY role=2 sync=306 crc=0 reject=0 slow=0 abort=0 late=9 calAge=24 invalid=0 full=0 workUs=17395601 samples=618244 maxPoll=288192"
+    },
+    {
+      "t": 35.566,
+      "board": 0,
+      "text": "RXDATA role=1 id=37 len=14 hex=a5022500000021425f7895b6d3ec valid=1"
+    },
+    {
+      "t": 35.566,
+      "board": 1,
+      "text": "ADAPT role=2 rate=2 next=3 waitMs=0 good=5 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 35.569,
+      "board": 1,
+      "text": "IQ role=2 hz=52653 e=17413 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 35.573,
+      "board": 0,
+      "text": "RXDATA role=1 id=38 len=14 hex=a5022600000036536c89aac7e0fd valid=1"
+    },
+    {
+      "t": 35.585,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=44 phaseUs=13 frames=4 bytes=56 windows=14 queuedBytes=448 deliveredBytes=602 ackBytes=490 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 35.592,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=618244 rawSamples=2472976 activeUs=17395601 estimatesPerSec=35540"
+    },
+    {
+      "t": 36.59,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=600 rawBps=3333 dither=off calUs=160000"
+    },
+    {
+      "t": 36.599,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=44 addressReject=0 to=2 from=1 len=36 good=44 candidates=49 drops=0"
+    },
+    {
+      "t": 37.587,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 37.596,
+      "board": 1,
+      "text": "RXDATA role=2 id=43 len=14 hex=a5012b00000088a7c2e1fc1b3655 valid=1"
+    },
+    {
+      "t": 38.589,
+      "board": 1,
+      "text": "RXDATA role=2 id=44 len=14 hex=a5012c0000009bb6d5f00f2a4964 valid=1"
+    },
+    {
+      "t": 38.594,
+      "board": 1,
+      "text": "RXDATA role=2 id=45 len=14 hex=a5012d000000aac9e4031e3d5877 valid=1"
+    },
+    {
+      "t": 39.587,
+      "board": 1,
+      "text": "RXDATA role=2 id=46 len=14 hex=a5012e000000bdd8f712314c6b86 valid=1"
+    },
+    {
+      "t": 39.592,
+      "board": 1,
+      "text": "RXDATA role=2 id=47 len=14 hex=a5012f000000cceb0625405f7a99 valid=1"
+    },
+    {
+      "t": 39.599,
+      "board": 1,
+      "text": "RXDATA role=2 id=48 len=14 hex=a50130000000dffa1934536e8da8 valid=1"
+    },
+    {
+      "t": 40.586,
+      "board": 1,
+      "text": "RXDATA role=2 id=49 len=14 hex=a50131000000ee0d284762819cbb valid=1"
+    },
+    {
+      "t": 40.593,
+      "board": 1,
+      "text": "RXDATA role=2 id=50 len=14 hex=a50132000000011c3b567590afca valid=1"
+    },
+    {
+      "t": 40.6,
+      "board": 1,
+      "text": "RXDATA role=2 id=51 len=14 hex=a50133000000102f4a6984a3bedd valid=1"
+    },
+    {
+      "t": 41.587,
+      "board": 1,
+      "text": "RXDATA role=2 id=52 len=14 hex=a50134000000233e5d7897b2d1ec valid=1"
+    },
+    {
+      "t": 46.565,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=17 tx=52 rx=43 miss=1 txFail=0 ack=43 delivered=39 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=0 peerCorr=0 heap=42136 t=35375 rate=3 symbolUs=500 limit=5 up=3 down=0 recovery=0"
+    },
+    {
+      "t": 46.565,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=18 tx=50 rx=54 miss=0 txFail=0 ack=44 delivered=53 retry=6 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=37380 rate=3 symbolUs=500 limit=5 up=3 down=0 recovery=0"
+    },
+    {
+      "t": 46.577,
+      "board": 0,
+      "text": "PHY role=1 sync=300 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1033 invalid=0 full=0 workUs=16414593 samples=583009 maxPoll=288799"
+    },
+    {
+      "t": 46.577,
+      "board": 1,
+      "text": "PHY role=2 sync=376 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1 invalid=0 full=0 workUs=19341910 samples=688356 maxPoll=288192"
+    },
+    {
+      "t": 46.586,
+      "board": 0,
+      "text": "ADAPT role=1 rate=3 next=4 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 46.588,
+      "board": 1,
+      "text": "ADAPT role=2 rate=3 next=4 waitMs=0 good=2 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 46.591,
+      "board": 0,
+      "text": "IQ role=1 hz=11193 e=19 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 46.593,
+      "board": 1,
+      "text": "IQ role=2 hz=75424 e=17795 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 47.565,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=43 phaseUs=303 frames=5 bytes=70 windows=17 queuedBytes=448 deliveredBytes=546 ackBytes=602 outOfOrder=4 logDrop=0"
+    },
+    {
+      "t": 47.565,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=54 phaseUs=-3 frames=5 bytes=70 windows=16 queuedBytes=448 deliveredBytes=742 ackBytes=616 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 47.572,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=583009 rawSamples=2332036 activeUs=16414593 estimatesPerSec=35517"
+    },
+    {
+      "t": 47.572,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=688356 rawSamples=2753424 activeUs=19341910 estimatesPerSec=35588"
+    },
+    {
+      "t": 47.581,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=500 rawBps=4000 dither=off calUs=160000"
+    },
+    {
+      "t": 47.581,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=500 rawBps=4000 dither=off calUs=160000"
+    },
+    {
+      "t": 47.588,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=43 addressReject=0 to=1 from=2 len=36 good=43 candidates=71 drops=0"
+    },
+    {
+      "t": 47.588,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=54 addressReject=0 to=2 from=1 len=36 good=54 candidates=60 drops=0"
+    },
+    {
+      "t": 47.594,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 47.597,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 48.555,
+      "board": 0,
+      "text": "RXDATA role=1 id=39 len=14 hex=a5022700000047607d9ebbd4f112 valid=1"
+    },
+    {
+      "t": 48.556,
+      "board": 1,
+      "text": "RXDATA role=2 id=53 len=14 hex=a5013500000032516c8ba6c5e0ff valid=1"
+    },
+    {
+      "t": 48.56,
+      "board": 0,
+      "text": "RXDATA role=1 id=40 len=14 hex=a50228000000547192afc8e50623 valid=1"
+    },
+    {
+      "t": 48.56,
+      "board": 1,
+      "text": "RXDATA role=2 id=54 len=14 hex=a5013600000045607f9ab9d4f30e valid=1"
+    },
+    {
+      "t": 48.567,
+      "board": 0,
+      "text": "RXDATA role=1 id=41 len=14 hex=a502290000006586a3bcd9fa1730 valid=1"
+    },
+    {
+      "t": 48.567,
+      "board": 1,
+      "text": "RXDATA role=2 id=55 len=14 hex=a5013700000054738eadc8e70221 valid=1"
+    },
+    {
+      "t": 48.571,
+      "board": 0,
+      "text": "RXDATA role=1 id=42 len=14 hex=a5022a0000007a97b0cdee0b2441 valid=1"
+    },
+    {
+      "t": 48.571,
+      "board": 1,
+      "text": "RXDATA role=2 id=56 len=14 hex=a501380000006782a1bcdbf61530 valid=1"
+    },
+    {
+      "t": 48.578,
+      "board": 0,
+      "text": "RXDATA role=1 id=43 len=14 hex=a5022b0000008ba4c1e2ff183556 valid=1"
+    },
+    {
+      "t": 48.578,
+      "board": 1,
+      "text": "RXDATA role=2 id=57 len=14 hex=a501390000007695b0cfea092443 valid=1"
+    },
+    {
+      "t": 48.585,
+      "board": 1,
+      "text": "RXDATA role=2 id=58 len=14 hex=a5013a00000089a4c3defd183752 valid=1"
+    },
+    {
+      "t": 48.59,
+      "board": 1,
+      "text": "RXDATA role=2 id=59 len=14 hex=a5013b00000098b7d2f10c2b4665 valid=1"
+    },
+    {
+      "t": 48.594,
+      "board": 1,
+      "text": "RXDATA role=2 id=60 len=14 hex=a5013c000000abc6e5001f3a5974 valid=1"
+    },
+    {
+      "t": 49.557,
+      "board": 1,
+      "text": "RXDATA role=2 id=61 len=14 hex=a5013d000000bad9f4132e4d6887 valid=1"
+    },
+    {
+      "t": 49.562,
+      "board": 1,
+      "text": "RXDATA role=2 id=62 len=14 hex=a5013e000000cde80722415c7b96 valid=1"
+    },
+    {
+      "t": 49.566,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=19 tx=62 rx=52 miss=1 txFail=0 ack=53 delivered=44 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=0 peerCorr=0 heap=42136 t=39377 rate=3 symbolUs=500 limit=5 up=3 down=0 recovery=0"
+    },
+    {
+      "t": 49.578,
+      "board": 0,
+      "text": "PHY role=1 sync=362 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1002 invalid=0 full=0 workUs=18360603 samples=652710 maxPoll=288799"
+    },
+    {
+      "t": 49.584,
+      "board": 0,
+      "text": "ADAPT role=1 rate=3 next=4 waitMs=0 good=2 qualityQ4=2 bad=0 losses=0"
+    },
+    {
+      "t": 49.585,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=20 tx=60 rx=64 miss=0 txFail=0 ack=49 delivered=63 retry=11 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=41382 rate=3 symbolUs=500 limit=5 up=3 down=0 recovery=0"
+    },
+    {
+      "t": 49.589,
+      "board": 0,
+      "text": "IQ role=1 hz=12443 e=30 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 49.591,
+      "board": 1,
+      "text": "PHY role=2 sync=443 crc=0 reject=0 slow=0 abort=0 late=9 calAge=3 invalid=0 full=0 workUs=21288225 samples=758448 maxPoll=288192"
+    },
+    {
+      "t": 49.598,
+      "board": 1,
+      "text": "ADAPT role=2 rate=3 next=4 waitMs=0 good=4 qualityQ4=1 bad=0 losses=0"
+    },
+    {
+      "t": 50.553,
+      "board": 1,
+      "text": "IQ role=2 hz=82293 e=19410 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 50.565,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=52 phaseUs=300 frames=5 bytes=70 windows=19 queuedBytes=448 deliveredBytes=616 ackBytes=742 outOfOrder=8 logDrop=0"
+    },
+    {
+      "t": 50.569,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=64 phaseUs=79 frames=5 bytes=70 windows=18 queuedBytes=448 deliveredBytes=882 ackBytes=686 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 50.571,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=652710 rawSamples=2610840 activeUs=18360603 estimatesPerSec=35549"
+    },
+    {
+      "t": 50.576,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=758448 rawSamples=3033792 activeUs=21288225 estimatesPerSec=35627"
+    },
+    {
+      "t": 50.581,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=500 rawBps=4000 dither=off calUs=160000"
+    },
+    {
+      "t": 50.585,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=500 rawBps=4000 dither=off calUs=160000"
+    },
+    {
+      "t": 50.587,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=52 addressReject=0 to=1 from=2 len=36 good=52 candidates=85 drops=0"
+    },
+    {
+      "t": 50.592,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=64 addressReject=0 to=2 from=1 len=36 good=64 candidates=70 drops=0"
+    },
+    {
+      "t": 50.594,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 51.556,
+      "board": 0,
+      "text": "RXDATA role=1 id=44 len=14 hex=a5022c00000098b5d6f30c294a67 valid=1"
+    },
+    {
+      "t": 51.556,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 51.561,
+      "board": 0,
+      "text": "RXDATA role=1 id=45 len=14 hex=a5022d000000a9cae7001d3e5b74 valid=1"
+    },
+    {
+      "t": 51.561,
+      "board": 1,
+      "text": "RXDATA role=2 id=63 len=14 hex=a5013f000000dcfb1635506f8aa9 valid=1"
+    },
+    {
+      "t": 51.567,
+      "board": 0,
+      "text": "RXDATA role=1 id=46 len=14 hex=a5022e000000bedbf411324f6885 valid=1"
+    },
+    {
+      "t": 51.57,
+      "board": 1,
+      "text": "RXDATA role=2 id=64 len=14 hex=a50140000000ef0a2944637e9db8 valid=1"
+    },
+    {
+      "t": 51.572,
+      "board": 0,
+      "text": "RXDATA role=1 id=47 len=14 hex=a5022f000000cfe80526435c799a valid=1"
+    },
+    {
+      "t": 51.574,
+      "board": 1,
+      "text": "RXDATA role=2 id=65 len=14 hex=a50141000000fe1d38577291accb valid=1"
+    },
+    {
+      "t": 51.579,
+      "board": 0,
+      "text": "RXDATA role=1 id=48 len=14 hex=a50230000000dcf91a37506d8eab valid=1"
+    },
+    {
+      "t": 51.583,
+      "board": 0,
+      "text": "RXDATA role=1 id=49 len=14 hex=a50231000000ed0e2b4461829fb8 valid=1"
+    },
+    {
+      "t": 51.584,
+      "board": 1,
+      "text": "RXDATA role=2 id=66 len=14 hex=a50142000000112c4b6685a0bfda valid=1"
+    },
+    {
+      "t": 51.586,
+      "board": 1,
+      "text": "RXDATA role=2 id=67 len=14 hex=a50143000000203f5a7994b3ceed valid=1"
+    },
+    {
+      "t": 51.588,
+      "board": 0,
+      "text": "RXDATA role=1 id=50 len=14 hex=a50232000000021f38557693acc9 valid=1"
+    },
+    {
+      "t": 51.593,
+      "board": 1,
+      "text": "RXDATA role=2 id=68 len=14 hex=a50144000000334e6d88a7c2e1fc valid=1"
+    },
+    {
+      "t": 51.595,
+      "board": 0,
+      "text": "RXDATA role=1 id=51 len=14 hex=a50233000000132c496a87a0bdde valid=1"
+    },
+    {
+      "t": 51.597,
+      "board": 1,
+      "text": "RXDATA role=2 id=69 len=14 hex=a5014500000042617c9bb6d5f00f valid=1"
+    },
+    {
+      "t": 52.556,
+      "board": 0,
+      "text": "RXDATA role=1 id=52 len=14 hex=a50234000000203d5e7b94b1d2ef valid=1"
+    },
+    {
+      "t": 52.556,
+      "board": 1,
+      "text": "RXDATA role=2 id=70 len=14 hex=a5014600000055708faac9e4031e valid=1"
+    },
+    {
+      "t": 52.56,
+      "board": 0,
+      "text": "RXDATA role=1 id=53 len=14 hex=a5023500000031526f88a5c6e3fc valid=1"
+    },
+    {
+      "t": 52.561,
+      "board": 1,
+      "text": "RXDATA role=2 id=71 len=14 hex=a5014700000064839ebdd8f71231 valid=1"
+    },
+    {
+      "t": 52.567,
+      "board": 1,
+      "text": "RXDATA role=2 id=72 len=14 hex=a501480000007792b1cceb062540 valid=1"
+    },
+    {
+      "t": 52.572,
+      "board": 1,
+      "text": "RXDATA role=2 id=73 len=14 hex=a5014900000086a5c0dffa193453 valid=1"
+    },
+    {
+      "t": 52.581,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=21 tx=72 rx=62 miss=1 txFail=0 ack=63 delivered=54 retry=4 dup=0 queue=32 resync=0 f0=35594 f1=-66543 corr=0 peerCorr=0 heap=42136 t=43379 rate=3 symbolUs=500 limit=5 up=3 down=0 recovery=0"
+    },
+    {
+      "t": 52.592,
+      "board": 0,
+      "text": "PHY role=1 sync=429 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1004 invalid=0 full=0 workUs=20307208 samples=722682 maxPoll=288799"
+    },
+    {
+      "t": 52.592,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=22 tx=70 rx=75 miss=0 txFail=0 ack=56 delivered=74 retry=11 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=45384 rate=4 symbolUs=400 limit=5 up=4 down=0 recovery=0"
+    },
+    {
+      "t": 52.599,
+      "board": 0,
+      "text": "ADAPT role=1 rate=3 next=4 waitMs=0 good=4 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 53.552,
+      "board": 0,
+      "text": "IQ role=1 hz=1280 e=10 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 53.561,
+      "board": 1,
+      "text": "PHY role=2 sync=518 crc=0 reject=0 slow=0 abort=0 late=9 calAge=37 invalid=0 full=0 workUs=23202188 samples=827389 maxPoll=288192"
+    },
+    {
+      "t": 53.566,
+      "board": 1,
+      "text": "ADAPT role=2 rate=4 next=5 waitMs=0 good=1 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 53.57,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=62 phaseUs=389 frames=5 bytes=70 windows=21 queuedBytes=448 deliveredBytes=756 ackBytes=882 outOfOrder=8 logDrop=0"
+    },
+    {
+      "t": 53.571,
+      "board": 1,
+      "text": "IQ role=2 hz=77430 e=15837 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 53.575,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=722682 rawSamples=2890728 activeUs=20307208 estimatesPerSec=35587"
+    },
+    {
+      "t": 53.586,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-66543,-31210,-242,35594 symbolUs=500 rawBps=4000 dither=off calUs=160000"
+    },
+    {
+      "t": 53.586,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=75 phaseUs=-57 frames=5 bytes=70 windows=20 queuedBytes=448 deliveredBytes=1036 ackBytes=784 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 53.593,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=62 addressReject=0 to=1 from=2 len=36 good=62 candidates=96 drops=0"
+    },
+    {
+      "t": 53.593,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=827389 rawSamples=3309556 activeUs=23202188 estimatesPerSec=35659"
+    },
+    {
+      "t": 54.556,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 54.557,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=400 rawBps=5000 dither=off calUs=160000"
+    },
+    {
+      "t": 54.561,
+      "board": 0,
+      "text": "RXDATA role=1 id=56 len=14 hex=a502380000006481a2bfd8f51633 valid=1"
+    },
+    {
+      "t": 54.563,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=75 addressReject=0 to=2 from=1 len=36 good=75 candidates=84 drops=0"
+    },
+    {
+      "t": 54.568,
+      "board": 0,
+      "text": "RXDATA role=1 id=57 len=14 hex=a502390000007596b3cce90a2740 valid=1"
+    },
+    {
+      "t": 54.572,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 54.575,
+      "board": 0,
+      "text": "RXDATA role=1 id=58 len=14 hex=a5023a0000008aa7c0ddfe1b3451 valid=1"
+    },
+    {
+      "t": 54.579,
+      "board": 0,
+      "text": "RXDATA role=1 id=59 len=14 hex=a5023b0000009bb4d1f20f284566 valid=1"
+    },
+    {
+      "t": 54.579,
+      "board": 1,
+      "text": "RXDATA role=2 id=74 len=14 hex=a5014a00000099b4d3ee0d284762 valid=1"
+    },
+    {
+      "t": 54.584,
+      "board": 1,
+      "text": "RXDATA role=2 id=75 len=14 hex=a5014b000000a8c7e2011c3b5675 valid=1"
+    },
+    {
+      "t": 54.586,
+      "board": 0,
+      "text": "RXDATA role=1 id=60 len=14 hex=a5023c000000a8c5e6031c395a77 valid=1"
+    },
+    {
+      "t": 54.593,
+      "board": 0,
+      "text": "RXDATA role=1 id=61 len=14 hex=a5023d000000b9daf7102d4e6b84 valid=1"
+    },
+    {
+      "t": 54.593,
+      "board": 1,
+      "text": "RXDATA role=2 id=76 len=14 hex=a5014c000000bbd6f5102f4a6984 valid=1"
+    },
+    {
+      "t": 54.598,
+      "board": 1,
+      "text": "RXDATA role=2 id=77 len=14 hex=a5014d000000cae904233e5d7897 valid=1"
+    },
+    {
+      "t": 55.556,
+      "board": 1,
+      "text": "RXDATA role=2 id=78 len=14 hex=a5014e000000ddf81732516c8ba6 valid=1"
+    },
+    {
+      "t": 55.56,
+      "board": 1,
+      "text": "RXDATA role=2 id=79 len=14 hex=a5014f000000ec0b2645607f9ab9 valid=1"
+    },
+    {
+      "t": 55.567,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=23 tx=84 rx=72 miss=1 txFail=0 ack=74 delivered=62 retry=4 dup=0 queue=32 resync=0 f0=38558 f1=-72372 corr=0 peerCorr=0 heap=42136 t=47381 rate=4 symbolUs=400 limit=5 up=4 down=0 recovery=0"
+    },
+    {
+      "t": 55.567,
+      "board": 1,
+      "text": "RXDATA role=2 id=80 len=14 hex=a50150000000ff1a3954738eadc8 valid=1"
+    },
+    {
+      "t": 55.572,
+      "board": 1,
+      "text": "RXDATA role=2 id=81 len=14 hex=a501510000000e2d486782a1bcdb valid=1"
+    },
+    {
+      "t": 55.578,
+      "board": 0,
+      "text": "PHY role=1 sync=508 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1039 invalid=0 full=0 workUs=22220329 samples=791232 maxPoll=288799"
+    },
+    {
+      "t": 55.579,
+      "board": 1,
+      "text": "RXDATA role=2 id=82 len=14 hex=a50152000000213c5b7695b0cfea valid=1"
+    },
+    {
+      "t": 55.583,
+      "board": 1,
+      "text": "RXDATA role=2 id=83 len=14 hex=a50153000000304f6a89a4c3defd valid=1"
+    },
+    {
+      "t": 55.585,
+      "board": 0,
+      "text": "ADAPT role=1 rate=4 next=5 waitMs=0 good=1 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 55.59,
+      "board": 0,
+      "text": "IQ role=1 hz=7570 e=14 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 55.59,
+      "board": 1,
+      "text": "RXDATA role=2 id=84 len=14 hex=a50154000000435e7d98b7d2f10c valid=1"
+    },
+    {
+      "t": 55.595,
+      "board": 1,
+      "text": "RXDATA role=2 id=85 len=14 hex=a5015500000052718cabc6e5001f valid=1"
+    },
+    {
+      "t": 56.565,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=72 phaseUs=438 frames=6 bytes=84 windows=23 queuedBytes=448 deliveredBytes=868 ackBytes=1036 outOfOrder=10 logDrop=2"
+    },
+    {
+      "t": 56.567,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=24 tx=82 rx=87 miss=0 txFail=0 ack=62 delivered=86 retry=14 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=0 heap=42136 t=49392 rate=4 symbolUs=400 limit=5 up=4 down=0 recovery=0"
+    },
+    {
+      "t": 56.572,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=791232 rawSamples=3164928 activeUs=22220329 estimatesPerSec=35608"
+    },
+    {
+      "t": 56.579,
+      "board": 1,
+      "text": "PHY role=2 sync=594 crc=0 reject=0 slow=0 abort=0 late=9 calAge=45 invalid=0 full=0 workUs=25083648 samples=895178 maxPoll=288192"
+    },
+    {
+      "t": 56.581,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-72372,-34995,-2006,38558 symbolUs=400 rawBps=5000 dither=off calUs=160000"
+    },
+    {
+      "t": 56.586,
+      "board": 1,
+      "text": "ADAPT role=2 rate=4 next=5 waitMs=0 good=3 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 56.59,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=72 addressReject=0 to=1 from=2 len=36 good=72 candidates=107 drops=0"
+    },
+    {
+      "t": 56.59,
+      "board": 1,
+      "text": "IQ role=2 hz=56584 e=17011 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 56.595,
+      "board": 0,
+      "text": "RXDATA role=1 id=62 len=14 hex=a5023e000000ceeb0421425f7895 valid=1"
+    },
+    {
+      "t": 57.556,
+      "board": 0,
+      "text": "RXDATA role=1 id=63 len=14 hex=a5023f000000dff81536536c89aa valid=1"
+    },
+    {
+      "t": 57.561,
+      "board": 0,
+      "text": "RXDATA role=1 id=64 len=14 hex=a50240000000ec092a47607d9ebb valid=1"
+    },
+    {
+      "t": 57.566,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=87 phaseUs=-45 frames=6 bytes=84 windows=22 queuedBytes=448 deliveredBytes=1204 ackBytes=868 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 57.568,
+      "board": 0,
+      "text": "RXDATA role=1 id=65 len=14 hex=a50241000000fd1e3b547192afc8 valid=1"
+    },
+    {
+      "t": 57.572,
+      "board": 0,
+      "text": "RXDATA role=1 id=66 len=14 hex=a50242000000122f486586a3bcd9 valid=1"
+    },
+    {
+      "t": 57.573,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=895178 rawSamples=3580712 activeUs=25083648 estimatesPerSec=35687"
+    },
+    {
+      "t": 57.579,
+      "board": 0,
+      "text": "RXDATA role=1 id=67 len=14 hex=a50243000000233c597a97b0cdee valid=1"
+    },
+    {
+      "t": 57.582,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=400 rawBps=5000 dither=off calUs=160000"
+    },
+    {
+      "t": 57.591,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=87 addressReject=0 to=2 from=1 len=36 good=87 candidates=100 drops=0"
+    },
+    {
+      "t": 57.598,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 58.556,
+      "board": 1,
+      "text": "RXDATA role=2 id=86 len=14 hex=a5015600000065809fbad9f4132e valid=1"
+    },
+    {
+      "t": 58.561,
+      "board": 1,
+      "text": "RXDATA role=2 id=87 len=14 hex=a501570000007493aecde8072241 valid=1"
+    },
+    {
+      "t": 58.566,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=25 tx=96 rx=83 miss=1 txFail=0 ack=86 delivered=68 retry=4 dup=0 queue=32 resync=0 f0=38558 f1=-72372 corr=0 peerCorr=0 heap=42136 t=51385 rate=4 symbolUs=400 limit=5 up=4 down=0 recovery=0"
+    },
+    {
+      "t": 58.568,
+      "board": 1,
+      "text": "RXDATA role=2 id=88 len=14 hex=a5015800000087a2c1dcfb163550 valid=1"
+    },
+    {
+      "t": 58.573,
+      "board": 1,
+      "text": "RXDATA role=2 id=89 len=14 hex=a5015900000096b5d0ef0a294463 valid=1"
+    },
+    {
+      "t": 58.577,
+      "board": 0,
+      "text": "PHY role=1 sync=587 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1042 invalid=0 full=0 workUs=24102109 samples=858667 maxPoll=288799"
+    },
+    {
+      "t": 58.577,
+      "board": 1,
+      "text": "RXDATA role=2 id=90 len=14 hex=a5015a000000a9c4e3fe1d385772 valid=1"
+    },
+    {
+      "t": 58.584,
+      "board": 1,
+      "text": "RXDATA role=2 id=91 len=14 hex=a5015b000000b8d7f2112c4b6685 valid=1"
+    },
+    {
+      "t": 58.587,
+      "board": 0,
+      "text": "ADAPT role=1 rate=4 next=5 waitMs=0 good=3 qualityQ4=2 bad=0 losses=0"
+    },
+    {
+      "t": 58.589,
+      "board": 1,
+      "text": "RXDATA role=2 id=92 len=14 hex=a5015c000000cbe605203f5a7994 valid=1"
+    },
+    {
+      "t": 58.596,
+      "board": 1,
+      "text": "RXDATA role=2 id=93 len=14 hex=a5015d000000daf914334e6d88a7 valid=1"
+    },
+    {
+      "t": 58.711,
+      "board": 0,
+      "text": "IQ role=1 hz=-9974 e=12 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 59.557,
+      "board": 1,
+      "text": "RXDATA role=2 id=94 len=14 hex=a5015e000000ed082742617c9bb6 valid=1"
+    },
+    {
+      "t": 59.562,
+      "board": 1,
+      "text": "RXDATA role=2 id=95 len=14 hex=a5015f000000fc1b3655708faac9 valid=1"
+    },
+    {
+      "t": 59.566,
+      "board": 1,
+      "text": "RXDATA role=2 id=96 len=14 hex=a501600000000f2a4964839ebdd8 valid=1"
+    },
+    {
+      "t": 59.573,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=83 phaseUs=525 frames=6 bytes=84 windows=25 queuedBytes=448 deliveres=858667 rawSamples=3434668 activeUs=24102109 estimatesPerSec=35626"
+    },
+    {
+      "t": 59.573,
+      "board": 1,
+      "text": "RXDATA role=2 id=97 len=14 hex=a501610000001e3d587792b1cceb valid=1"
+    },
+    {
+      "t": 59.582,
+      "board": 0,
+      "text": "FSK4 role=1 trained=1 centers=-72372,-34995,-2006,38558 symbolUs=400 rawBps=5000 dither=off calUs=160000"
+    },
+    {
+      "t": 59.589,
+      "board": 0,
+      "text": "FRAME role=1 crcOk=83 addressReject=0 to=1 from=2 len=36 good=83 candidates=122 drops=0"
+    },
+    {
+      "t": 59.594,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=26 tx=94 rx=99 miss=0 txFail=0 ack=74 delivered=98 retry=20 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=1 heap=42136 t=53396 rate=4 symbolUs=400 limit=5 up=4 down=0 recovery=0"
+    },
+    {
+      "t": 59.598,
+      "board": 0,
+      "text": "RF role=1 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=016 vga=2 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 60.563,
+      "board": 1,
+      "text": "PHY role=2 sync=675 crc=0 reject=0 slow=0 abort=0 late=9 calAge=49 invalid=0 full=0 workUs=26965160 samples=962966 maxPoll=288192"
+    },
+    {
+      "t": 60.567,
+      "board": 1,
+      "text": "ADAPT role=2 rate=4 next=5 waitMs=0 good=5 qualityQ4=3 bad=0 losses=0"
+    },
+    {
+      "t": 60.569,
+      "board": 1,
+      "text": "IQ role=2 hz=82782 e=19156 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 60.578,
+      "board": 0,
+      "text": "RXDATA role=1 id=68 len=14 hex=a50244000000304d6e8ba4c1e2ff valid=1"
+    },
+    {
+      "t": 60.583,
+      "board": 0,
+      "text": "RXDATA role=1 id=69 len=14 hex=a5024500000041627f98b5d6f30c id=73 len=14 hex=a5024900000085a6c3dcf91a3750 valid=1"
+    },
+    {
+      "t": 60.588,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=99 phaseUs=-4 frames=6 bytes=84 windows=24 queuedBytes=448 deliveredBytes=1372 ackBytes=1036 outOfOrder=1 logDrop=0"
+    },
+    {
+      "t": 60.59,
+      "board": 0,
+      "text": "RXDATA role=1 id=74 len=14 hex=a5024a0000009ab7d0ed0e2b4461 valid=1"
+    },
+    {
+      "t": 60.594,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=962966 rawSamples=3851864 activeUs=26965160 estimatesPerSec=35711"
+    },
+    {
+      "t": 60.597,
+      "board": 0,
+      "text": "RXDATA role=1 id=75 len=14 hex=a5024b000000abc4e1021f385576 valid=1"
+    },
+    {
+      "t": 61.559,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=400 rawBps=5000 dither=off calUs=160000"
+    },
+    {
+      "t": 61.565,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=99 addressReject=0 to=2 from=1 len=36 good=99 candidates=114 drops=0"
+    },
+    {
+      "t": 61.572,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    },
+    {
+      "t": 61.581,
+      "board": 1,
+      "text": "RXDATA role=2 id=98 len=14 hex=a50162000000314c6b86a5c0dffa valid=1"
+    },
+    {
+      "t": 61.619,
+      "board": 0,
+      "command": "/limit 5"
+    },
+    {
+      "t": 61.619,
+      "board": 0,
+      "command": "/auto on"
+    },
+    {
+      "t": 61.619,
+      "board": 0,
+      "command": "/stats"
+    },
+    {
+      "t": 61.619,
+      "board": 1,
+      "command": "/limit 5"
+    },
+    {
+      "t": 61.619,
+      "board": 1,
+      "command": "/auto on"
+    },
+    {
+      "t": 61.619,
+      "board": 1,
+      "command": "/stats"
+    },
+    {
+      "t": 62.557,
+      "board": 0,
+      "text": "RXDATA role=1 id=76 len=14 hex=a5024c000000b8d5f6132c496a87 valid=1"
+    },
+    {
+      "t": 62.562,
+      "board": 0,
+      "text": "RXDATA role=1 id=77 len=14 hex=a5024d000000c9ea07203d5e7b94 valid=1"
+    },
+    {
+      "t": 62.566,
+      "board": 0,
+      "text": "RXDATA role=1 id=78 len=14 hex=a5024e000000defb1431526f88a5 valid=1"
+    },
+    {
+      "t": 62.569,
+      "board": 1,
+      "text": "TDM role=2 state=LOCKED cycle=28 tx=108 rx=113 miss=0 txFail=0 ack=88 delivered=99 retry=20 dup=0 queue=32 resync=0 f0=69793 f1=-38130 corr=0 peerCorr=4 heap=42136 t=57398 rate=5 symbolUs=300 limit=5 up=5 down=0 recovery=0"
+    },
+    {
+      "t": 62.573,
+      "board": 0,
+      "text": "RXDATA role=1 id=79 len=14 hex=a5024f000000ef082546637c99ba valid=1"
+    },
+    {
+      "t": 62.582,
+      "board": 1,
+      "text": "PHY role=2 sync=778 crc=0 reject=0 slow=0 abort=0 late=9 calAge=50 invalid=0 full=0 workUs=28849529 samples=1030793 maxPoll=288192"
+    },
+    {
+      "t": 62.589,
+      "board": 1,
+      "text": "ADAPT role=2 rate=5 next=6 waitMs=0 good=2 qualityQ4=11 bad=0 losses=0"
+    },
+    {
+      "t": 62.591,
+      "board": 1,
+      "text": "IQ role=2 hz=74360 e=18073 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 62.594,
+      "board": 0,
+      "text": "TDM role=1 state=LOCKED cycle=27 tx=110 rx=95 miss=1 txFail=0 ack=98 delivered=80 retry=4 dup=0 queue=32 resync=0 f0=38558 f1=-72372 corr=0 peerCorr=0 heap=42136 t=55389 rate=5 symbolUs=300 limit=5 up=5 down=0 recovery=0"
+    },
+    {
+      "t": 63.562,
+      "board": 0,
+      "text": "PHY role=1 sync=673 crc=0 reject=0 slow=0 abort=0 late=9 calAge=1046 invalid=0 full=0 workUs=25983906 samples=926287 maxPoll=288799"
+    },
+    {
+      "t": 63.565,
+      "board": 1,
+      "text": "WINDOW role=2 slotUs=1000000 guardUs=20000 fillBits=0 syncs=113 phaseUs=-8 frames=8 bytes=112 windows=26 queuedBytes=448 deliveredBytes=1386 ackBytes=1232 outOfOrder=14 logDrop=0"
+    },
+    {
+      "t": 63.567,
+      "board": 0,
+      "text": "ADAPT role=1 rate=5 next=6 waitMs=0 good=0 qualityQ4=0 bad=0 losses=0"
+    },
+    {
+      "t": 63.569,
+      "board": 0,
+      "text": "IQ role=1 hz=23970 e=43 dtNs=3027 jitterNs=6 mode=1"
+    },
+    {
+      "t": 63.574,
+      "board": 1,
+      "text": "IQ35 role=2 estimates=1030793 rawSamples=4123172 activeUs=28849529 estimatesPerSec=35729"
+    },
+    {
+      "t": 63.58,
+      "board": 1,
+      "text": "FSK4 role=2 trained=1 centers=-38130,1481,36834,69793 symbolUs=300 rawBps=6666 dither=off calUs=160000"
+    },
+    {
+      "t": 63.587,
+      "board": 0,
+      "text": "WINDOW role=1 slotUs=1000000 guardUs=20000 fillBits=0 syncs=95 phaseUs=457 frames=8 bytes=112 windows=27 queuedBytes=448 deliveredBytes=1120 ackBytes=1372 outOfOrder=15 logDrop=3"
+    },
+    {
+      "t": 63.59,
+      "board": 1,
+      "text": "FRAME role=2 crcOk=113 addressReject=0 to=2 from=1 len=36 good=113 candidates=132 drops=0"
+    },
+    {
+      "t": 63.594,
+      "board": 0,
+      "text": "IQ35 role=1 estimates=926287 rawSamples=3705148 activeUs=25983906 estimatesPerSec=35648"
+    },
+    {
+      "t": 63.599,
+      "board": 1,
+      "text": "RF role=2 manual=0 rxStop=0 path=1fe rfWord=00 bbWord=01e vga=3 apwr=0 ask=0 txAskField=0"
+    }
+  ],
+  "final_requested_state": {
+    "limit": 5,
+    "automatic_demo": true
+  }
+}

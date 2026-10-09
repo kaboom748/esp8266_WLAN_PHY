@@ -1,0 +1,29 @@
+ESP8266TDMAdaptive4FSK 0.6.0-beta.2
+
+Portage du controleur et de la recuperation de la 16-FSK 0.8.0-beta.4.
+Descente d'un palier, trois nouvelles pertes requises avant le suivant,
+calibration valide recente conservee hors retour a la base, temporisations
+de reessai 30/60/120/240 s par profil. Demarrage/pause/run restent a la base.
+
+Seuls ESP8266TDM.cpp, TdmRate.h et la version de TdmDemo.h changent dans src/.
+Pilote RF/IQ, quatre tonalites, codec, protocole et fenetres 1 s inchanges.
+Controleur identique a l'origine 16-FSK, hors commentaire de modulation.
+ESP8266TDM.cpp identique a l'origine, hors configuration du modem 4-FSK.
+
+Tests hote PASS : decodeur 4-FSK, CRC/FEC, ACK, buffers, pertes,
+54 replis adjacents, 18 sequences de reessais repetes, panne totale,
+calibration, pause/run, debordement des horloges et absence de chevauchement TX.
+Tests d'adaptation executes avec AddressSanitizer/UndefinedBehaviorSanitizer.
+Compilation A/B PASS, coeur 3.1.2, CPU 160 MHz, flash 4 MB.
+Flash des deux ESP PASS : identites MAC et empreinte des ecritures verifiees.
+
+Controle radio court : PASS, duree 63.621 s.
+Contenus verifies independamment en reception A/B : 74, 99.
+role 1: LOCKED, profil 5, livres 80, ACK 98
+role 2: LOCKED, profil 5, livres 99, ACK 88
+
+Ce controle court n'est pas une qualification exhaustive RF ou de debit.
+Les 54 replis sont verifies en simulation, pas par 54 pannes provoquees sur l'air.
+Le journal peut etre differe/perdre des lignes; voir smoke.json pour les limites.
+Configuration finale demandee : adaptation active, plafond 5, demo automatique.
+Anciennes archives conservees sans modification. Details et SHA256 : RELEASE.json.

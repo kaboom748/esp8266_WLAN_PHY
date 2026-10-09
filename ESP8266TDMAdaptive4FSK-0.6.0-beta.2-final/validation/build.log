@@ -1,0 +1,32 @@
+PASS: CRC16 standard vector; Hamming single-bit errors; every <=8-bit burst in 256 interleaved blocks
+PASS 4-FSK: Gray mapping, both orientations, 25292 frame decodes, all lengths, single-bit FEC, truncation, four-cluster pilots, ambiguity rejection, synthetic frequency round trip
+PASS 4-FSK timing: production vote/decoder, eight symbol periods, phase offsets, synthetic noise/jitter; CRC and correction-limit rejection
+PASS: ACK identity/payload, retries, 255 retry bound, time wrap, deduplication, broadcast
+PASS rate: four clean cells, wall-clock bound, per-profile retry, decay, caps, rollover
+PASS integer phase: quadrants, dynamic range, error below 4.2 degrees
+PASS TDM: loss, ACK identity, buffering, rollover, lost rate confirmations, reboot, no TX overlap; 54 adjacent-rate retreats; 18 repeated-probe runs; total outage staircase and recovery; explicit pause/run base restart
+PASS logger: complete-line idle budget, zero/short writes, ring wrap, overflow reporting
+. Variables and constants in RAM (global, static), used 37160 / 80192 bytes (46%)
+║   SEGMENT  BYTES    DESCRIPTION
+╠══ DATA     1500     initialized variables
+╠══ RODATA   2572     constants       
+╚══ BSS      33088    zeroed variables
+. Instruction RAM (IRAM_ATTR, ICACHE_RAM_ATTR), used 60431 / 65536 bytes (92%)
+║   SEGMENT  BYTES    DESCRIPTION
+╠══ ICACHE   32768    reserved space for flash instruction cache
+╚══ IRAM     27663    code in IRAM    
+. Code in flash (default, ICACHE_FLASH_ATTR), used 260944 / 1048576 bytes (24%)
+║   SEGMENT  BYTES    DESCRIPTION
+╚══ IROM     260944   code in flash   
+. Variables and constants in RAM (global, static), used 37160 / 80192 bytes (46%)
+║   SEGMENT  BYTES    DESCRIPTION
+╠══ DATA     1500     initialized variables
+╠══ RODATA   2572     constants       
+╚══ BSS      33088    zeroed variables
+. Instruction RAM (IRAM_ATTR, ICACHE_RAM_ATTR), used 60431 / 65536 bytes (92%)
+║   SEGMENT  BYTES    DESCRIPTION
+╠══ ICACHE   32768    reserved space for flash instruction cache
+╚══ IRAM     27663    code in IRAM    
+. Code in flash (default, ICACHE_FLASH_ATTR), used 260944 / 1048576 bytes (24%)
+║   SEGMENT  BYTES    DESCRIPTION
+╚══ IROM     260944   code in flash   
