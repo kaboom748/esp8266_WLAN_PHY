@@ -1,0 +1,16 @@
+[
+  {
+    "role": "A",
+    "mac": "b4:e6:2d:23:0e:f4",
+    "port": "/dev/ttyUSB0",
+    "stdout": "esptool.py v3.0\nSerial port /dev/ttyUSB0\nConnecting....\nChip is ESP8266EX\nFeatures: WiFi\nCrystal is 26MHz\nMAC: b4:e6:2d:23:0e:f4\nUploading stub...\nRunning stub...\nStub running...\nChanging baud rate to 460800\nChanged.\nConfiguring flash size...\nAuto-detected Flash size: 4MB\nCompressed 296416 bytes to 219140...\nWriting at 0x00000000... (7 %)\nWriting at 0x00004000... (14 %)\nWriting at 0x00008000... (21 %)\nWriting at 0x0000c000... (28 %)\nWriting at 0x00010000... (35 %)\nWriting at 0x00014000... (42 %)\nWriting at 0x00018000... (50 %)\nWriting at 0x0001c000... (57 %)\nWriting at 0x00020000... (64 %)\nWriting at 0x00024000... (71 %)\nWriting at 0x00028000... (78 %)\nWriting at 0x0002c000... (85 %)\nWriting at 0x00030000... (92 %)\nWriting at 0x00034000... (100 %)\nWrote 296416 bytes (219140 compressed) at 0x00000000 in 8.7 seconds (effective 273.0 kbit/s)...\nHash of data verified.\n\nLeaving...\nHard resetting via RTS pin...\nNew upload port: /dev/ttyUSB0 (serial)\n",
+    "stderr": ""
+  },
+  {
+    "role": "B",
+    "mac": "68:c6:3a:d6:0e:e8",
+    "port": "/dev/ttyUSB1",
+    "stdout": "esptool.py v3.0\nSerial port /dev/ttyUSB1\nConnecting....\nChip is ESP8266EX\nFeatures: WiFi\nCrystal is 26MHz\nMAC: 68:c6:3a:d6:0e:e8\nUploading stub...\nRunning stub...\nStub running...\nChanging baud rate to 460800\nChanged.\nConfiguring flash size...\nAuto-detected Flash size: 4MB\nCompressed 296416 bytes to 219143...\nWriting at 0x00000000... (7 %)\nWriting at 0x00004000... (14 %)\nWriting at 0x00008000... (21 %)\nWriting at 0x0000c000... (28 %)\nWriting at 0x00010000... (35 %)\nWriting at 0x00014000... (42 %)\nWriting at 0x00018000... (50 %)\nWriting at 0x0001c000... (57 %)\nWriting at 0x00020000... (64 %)\nWriting at 0x00024000... (71 %)\nWriting at 0x00028000... (78 %)\nWriting at 0x0002c000... (85 %)\nWriting at 0x00030000... (92 %)\nWriting at 0x00034000... (100 %)\nWrote 296416 bytes (219143 compressed) at 0x00000000 in 8.0 seconds (effective 297.5 kbit/s)...\nHash of data verified.\n\nLeaving...\nHard resetting via RTS pin...\nNew upload port: /dev/ttyUSB1 (serial)\n",
+    "stderr": ""
+  }
+]

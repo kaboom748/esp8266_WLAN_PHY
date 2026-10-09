@@ -1,0 +1,12 @@
+{"t": 3.078, "event": "startup", "received": ["12da3691e31923b21926fe95911f", "8a918d143b1923b21b8e242a09"]}
+{"t": 5.204, "event": "transparent_from_boot_pass"}
+{"t": 6.03, "event": "at_and_escape_are_payload_pass"}
+{"t": 19.59, "event": "repeated_handshakes_pass", "count": 6, "local_responses": 0}
+{"t": 24.838, "event": "xoff_mid_clientserver_pass", "prefix": "CLIE", "suffix": "NTSERVER", "pause_seconds": 4}
+{"t": 25.47, "event": "interleaved_controls_pass"}
+{"t": 33.486, "event": "host_resumed", "board": "B"}
+{"t": 35.502, "event": "progress", "sent": [1856, 1840], "received": [1504, 466], "xoff": [7, 7]}
+{"t": 45.492, "event": "progress", "sent": [3536, 3552], "received": [3297, 2911], "xoff": [14, 13]}
+{"t": 51.02, "event": "bidirectional_integrity_pass", "seconds": 25.548, "sent": [4152, 4151], "received": [4151, 4152], "sha256": ["d7087d4b5054d577f428872a3760bda93c43f130e1ba5ffb97cfdb5c787a440a", "f5e550119aeedbb3ae412b800f04836ac966a787efeb5213766f815dd4ba5ee6"]}
+{"t": 55.593, "event": "failure", "error": "AssertionError('Unexpected bytes after reopening')", "received": [15, 14], "tails": ["733fb96292fe1923b29176883cb209", "8b90b9b1e31b1293529aeb3e9633"]}
+

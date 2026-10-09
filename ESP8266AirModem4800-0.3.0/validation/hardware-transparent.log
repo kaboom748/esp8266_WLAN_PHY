@@ -1,0 +1,13 @@
+{"t": 3.062, "event": "startup", "received": ["93b2339177fa1b990046bbfe3eb210fe", "7377932ab8fff6f2931c34a67a1f28fe"]}
+{"t": 4.908, "event": "transparent_from_boot_pass"}
+{"t": 5.736, "event": "at_and_escape_are_payload_pass"}
+{"t": 19.593, "event": "repeated_handshakes_pass", "count": 6, "local_responses": 0}
+{"t": 25.095, "event": "xoff_mid_clientserver_pass", "prefix": "CLIE", "suffix": "NTSERVER", "pause_seconds": 4}
+{"t": 25.731, "event": "interleaved_controls_pass"}
+{"t": 33.744, "event": "host_resumed", "board": "B"}
+{"t": 35.764, "event": "progress", "sent": [2048, 2000], "received": [1608, 467], "xoff": [5, 5]}
+{"t": 45.761, "event": "progress", "sent": [3648, 3760], "received": [3401, 2911], "xoff": [12, 12]}
+{"t": 51.054, "event": "bidirectional_integrity_pass", "seconds": 25.321, "sent": [4152, 4151], "received": [4151, 4152], "sha256": ["d7087d4b5054d577f428872a3760bda93c43f130e1ba5ffb97cfdb5c787a440a", "f5e550119aeedbb3ae412b800f04836ac966a787efeb5213766f815dd4ba5ee6"]}
+{"t": 55.625, "event": "reopen_boot_bytes", "received": ["8a915eb193349123721a72ff1a9133", "0574a1b9e7fad2d6129990307abf28ff"]}
+{"t": 61.23, "event": "close_reopen_xon_handshakes_pass", "count": 2}
+

@@ -1,0 +1,39 @@
+PASS boot-transparent, automatic radio, AT/+++ literal, no local responses
+PASS 12 cable handshakes on one radio session; PC-open XON clears old pause
+PASS XON/XOFF interleaved with CLIENT, reply paused mid-word, simultaneous pauses
+PASS peer absent 150s: CLIENT preserved, no premature XOFF, bounded offline buffering
+PASS loss/corruption/duplicates/25s pause: 20180/16139 escaped bytes exact
+PASS loss/reconnect/reset, retained host pause, UART/overflow, legacy AT call rejected
+PASS CRC bit faults, sequence wrap, timer wrap
+PASS transparent core 0.3.0
+PASS PHY: 54 IQ cases, offsets/inversion/noise/timing; noise rejected
+
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.005s
+
+OK
+. Variables and constants in RAM (global, static), used 61304 / 80192 bytes (76%)
+║   SEGMENT  BYTES    DESCRIPTION
+╠══ DATA     1496     initialized variables
+╠══ RODATA   2080     constants       
+╚══ BSS      57728    zeroed variables
+. Instruction RAM (IRAM_ATTR, ICACHE_RAM_ATTR), used 61431 / 65536 bytes (93%)
+║   SEGMENT  BYTES    DESCRIPTION
+╠══ ICACHE   32768    reserved space for flash instruction cache
+╚══ IRAM     28663    code in IRAM    
+. Code in flash (default, ICACHE_FLASH_ATTR), used 260024 / 1048576 bytes (24%)
+║   SEGMENT  BYTES    DESCRIPTION
+╚══ IROM     260024   code in flash   
+. Variables and constants in RAM (global, static), used 61304 / 80192 bytes (76%)
+║   SEGMENT  BYTES    DESCRIPTION
+╠══ DATA     1496     initialized variables
+╠══ RODATA   2080     constants       
+╚══ BSS      57728    zeroed variables
+. Instruction RAM (IRAM_ATTR, ICACHE_RAM_ATTR), used 61431 / 65536 bytes (93%)
+║   SEGMENT  BYTES    DESCRIPTION
+╠══ ICACHE   32768    reserved space for flash instruction cache
+╚══ IRAM     28663    code in IRAM    
+. Code in flash (default, ICACHE_FLASH_ATTR), used 260024 / 1048576 bytes (24%)
+║   SEGMENT  BYTES    DESCRIPTION
+╚══ IROM     260024   code in flash   

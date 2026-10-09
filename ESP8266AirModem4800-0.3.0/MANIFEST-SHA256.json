@@ -1,0 +1,331 @@
+{
+  "version": "0.3.0",
+  "generatedUtc": "2026-10-09T20:09:43.619Z",
+  "files": [
+    {
+      "path": "LICENSE",
+      "bytes": 35141,
+      "sha256": "589ed823e9a84c56feb95ac58e7cf384626b9cbf4fda2a907bc36e103de1bad2"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6352,
+      "sha256": "d38eb86cc4be8e0328cfce6b3841fdd56c982e2beeb75d862cc27925d66f9d44"
+    },
+    {
+      "path": "THIRD_PARTY.md",
+      "bytes": 1833,
+      "sha256": "14759b79cf1b1ceb7ad241936a0872c063dc9958899b07e4e124c1010bdb0b82"
+    },
+    {
+      "path": "VALIDATION.md",
+      "bytes": 6424,
+      "sha256": "25ab4221e5c51d0eaf8319ea5b228072a6647646b9f630ff7e87612ad5b9c632"
+    },
+    {
+      "path": "build.sh",
+      "bytes": 283,
+      "sha256": "ae620165dacab74321ed21f5348de04341bf9978f9f4aad5b8451fa96378d5ea"
+    },
+    {
+      "path": "examples/Modem_A/Modem_A.ino",
+      "bytes": 118,
+      "sha256": "907f00fdeaf62d1a122e9462cd235219795809cc81fca06f50182b4f04903967"
+    },
+    {
+      "path": "examples/Modem_B/Modem_B.ino",
+      "bytes": 118,
+      "sha256": "f435880d4d68f21e3e6c929f1212689135c5e34dd65b97c88c9ab3e16f614902"
+    },
+    {
+      "path": "firmware/Modem_A.ino.bin",
+      "bytes": 296416,
+      "sha256": "21ad1313c3641cb08226a1ad79dd9ef78f5921b2d903514d337cff798b1322ca"
+    },
+    {
+      "path": "firmware/Modem_B.ino.bin",
+      "bytes": 296416,
+      "sha256": "e019988ff50ceb775b35a053bff476f7646f8702ef801a6f60fdeeaeebe58a0d"
+    },
+    {
+      "path": "library.properties",
+      "bytes": 311,
+      "sha256": "10583660319f669910c0405f8871af73bdefb5c533a3b232f5e8bbb8e977365c"
+    },
+    {
+      "path": "licenses/BASE-MIT.txt",
+      "bytes": 1066,
+      "sha256": "21e0e0becde62dce21941c5b15918213924e40af63f5f15cef6c721b95a3ea69"
+    },
+    {
+      "path": "licenses/MMDVM-GPL2.txt",
+      "bytes": 18011,
+      "sha256": "e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4"
+    },
+    {
+      "path": "licenses/SP8ESA-MIT.txt",
+      "bytes": 1063,
+      "sha256": "d567961b89d1953cdfdc56f7161eeebdeb5fcf7ee2b8c3f5a1770c90a1c0625c"
+    },
+    {
+      "path": "src/AirModem.cpp",
+      "bytes": 2645,
+      "sha256": "375a7bfdbff74c251f221c850f3cf07c1a6a46e1154b5b344fd0758bc1e6dffa"
+    },
+    {
+      "path": "src/AirModem.h",
+      "bytes": 1143,
+      "sha256": "d09be8ea345fa9653aabee0e1e22c678a5cd59bff0329e56fed40e37c19d81a1"
+    },
+    {
+      "path": "src/Fsk4.h",
+      "bytes": 3122,
+      "sha256": "b47434a35ed462e4d88fb4bf4103c20e3e9781d3306d919860f620f7f3c48018"
+    },
+    {
+      "path": "src/FskCodec.h",
+      "bytes": 1644,
+      "sha256": "3721a2c292f10852b2d32a9524b4c7b45be0145a25f023b264cb1de2e3caa1ad"
+    },
+    {
+      "path": "src/FskFrame.h",
+      "bytes": 3533,
+      "sha256": "a6557d9572e895489c8de5f7b4f342a87e140d8fc9a2d55d9631e6c33c62945d"
+    },
+    {
+      "path": "src/FskPhase.h",
+      "bytes": 911,
+      "sha256": "3d47fd31bc9794181f9c11d62c4df71ce56bcea45f9d4435e57c57a245d13099"
+    },
+    {
+      "path": "src/ModemFirmware.cpp",
+      "bytes": 3797,
+      "sha256": "e4470ff2ddefb35c3ec823482b3cf56fc0902867a1f65ccea6f158193b595ba4"
+    },
+    {
+      "path": "src/ModemFirmware.h",
+      "bytes": 603,
+      "sha256": "f939f56e48b53d7bffc65a4c2ca8ac4a04e105836dfe46ccb848469f6b8b35c0"
+    },
+    {
+      "path": "src/ModemLink.cpp",
+      "bytes": 4732,
+      "sha256": "bcb1ca7c696e346ed3df606184eeea21022ec1eac04bce673477554709f95ae9"
+    },
+    {
+      "path": "src/ModemLink.h",
+      "bytes": 1729,
+      "sha256": "836eeb8a9a873c8da434a60edf4bdc10cb0d54b36c3716f0941026a7362d62af"
+    },
+    {
+      "path": "src/ModemProtocol.h",
+      "bytes": 3662,
+      "sha256": "1e7da8560ae35c3d8741f797cce5bd3ed203f51ff1a3530c54f33336921aa4d4"
+    },
+    {
+      "path": "src/ModemRadio.cpp",
+      "bytes": 7172,
+      "sha256": "5500096d55e6b7ce51b5c0318ae3fb2386bb416837bf62305dec705b781f1656"
+    },
+    {
+      "path": "src/ModemRadio.h",
+      "bytes": 891,
+      "sha256": "9262cda259ba3c4d3bdb3c15dfb22c0833df8cf3ffe413dd5c56aed1d7dc4365"
+    },
+    {
+      "path": "src/ModemSignal.cpp",
+      "bytes": 8442,
+      "sha256": "2c5e19ce3021d00717cb504ea59fdecdeae36934d402fce36093ade82c06f65f"
+    },
+    {
+      "path": "src/ModemSignal.h",
+      "bytes": 1184,
+      "sha256": "9c0bbb9e35c84c69e838d29a323e3e5475e1ce8e7ad04b8494493a40ffc129ad"
+    },
+    {
+      "path": "src/RHCompat.h",
+      "bytes": 313,
+      "sha256": "aeade41b5736712f2882aa427ca64b349d657fe6613e8e04bda30fbccf9cfb0f"
+    },
+    {
+      "path": "src/RHGenericDriver.cpp",
+      "bytes": 2569,
+      "sha256": "d5c7336d428cd941afcc80c11c379bbbc395cd8fced33bae32efb4f3020fe5fd"
+    },
+    {
+      "path": "src/RHGenericDriver.h",
+      "bytes": 1922,
+      "sha256": "ff7be06877b7d4f41c7d09b94b27a5414912156f6bc930fc053584b7bb0ba205"
+    },
+    {
+      "path": "src/RH_ESP8266FSK.cpp",
+      "bytes": 22675,
+      "sha256": "c5a4b5d4a55780ca16a78d844ba378585b8c32e5eb653799ecbc49068436a44b"
+    },
+    {
+      "path": "src/RH_ESP8266FSK.h",
+      "bytes": 6309,
+      "sha256": "41e755e190dbc969534e9453def8cc39368d3f5e3d44e119e0b859f3a90e5bf2"
+    },
+    {
+      "path": "tests/cable_ppp.py",
+      "bytes": 5112,
+      "sha256": "b7ba74df1807a8bfb216ae5f1ce678db9a4f53d958cbfe253cfabcdd57d5c0ce"
+    },
+    {
+      "path": "tests/cable_sim.cpp",
+      "bytes": 2441,
+      "sha256": "b285cfdae53930b6800ef1a7817c3972bbe0098ec31f089aa9db6b782e3f2845"
+    },
+    {
+      "path": "tests/hardware_ppp.py",
+      "bytes": 7680,
+      "sha256": "d9739f9d6ce0aea244da39729c82dbce42e627d46059ad7b04ac37dec068466a"
+    },
+    {
+      "path": "tests/hardware_transparent.py",
+      "bytes": 8893,
+      "sha256": "d33c5515628d43bd34e6886a298b351825fa4847a5b21f9de86457e147b3c125"
+    },
+    {
+      "path": "tests/ppp_peer.py",
+      "bytes": 1745,
+      "sha256": "afc7fcc434eb2fcf5311c56f26ce2f758e57ebb7149bc0fd7f286a1bfc3ef00d"
+    },
+    {
+      "path": "tests/run_host_tests.sh",
+      "bytes": 518,
+      "sha256": "0ff209d4700365c15aeecf40e1eca70e90e37b6bbbbe358044f8f6121f0625a6"
+    },
+    {
+      "path": "tests/test_flow_serial.py",
+      "bytes": 3354,
+      "sha256": "c71d97efa4f69353c4201c504a5b37b42ca83c609bea390896ea68ce84d35287"
+    },
+    {
+      "path": "tests/test_signal.cpp",
+      "bytes": 1776,
+      "sha256": "9255fe9622414607eec4efe82ed03e9491552436c189627991f6d6f9b0d0500e"
+    },
+    {
+      "path": "tests/test_transparent.cpp",
+      "bytes": 9586,
+      "sha256": "69ba1fd126237896f5ca7e41adb7e760b3535f937ac434807048eb013d8d04f0"
+    },
+    {
+      "path": "tools/flow_serial.py",
+      "bytes": 3334,
+      "sha256": "7c204725d31d627eaf8de666886d154f42857770583b5f2d5bcc59bde265e321"
+    },
+    {
+      "path": "tools/modem_port.py",
+      "bytes": 3145,
+      "sha256": "b8436b945da924a97403b779c7d229c54434b32933ca7ceeb5fdfad96c9b3306"
+    },
+    {
+      "path": "tools/requirements.txt",
+      "bytes": 17,
+      "sha256": "95fdad543f34e4a191cd17219e1a73b4ab4b0b5ad9806a25c3b49e7b48ab8ca0"
+    },
+    {
+      "path": "validation/build.log",
+      "bytes": 2030,
+      "sha256": "4d86f5635b42d2a09a27fd9aaf2eabd5b23ac45c14745b55b050c37eca80f683"
+    },
+    {
+      "path": "validation/cable-ppp-simulation.json",
+      "bytes": 4647,
+      "sha256": "c92e559d4edcf51b099bd60d4d7a5f2db9f1a4444de015724417eb0f79a43541"
+    },
+    {
+      "path": "validation/cable-ppp-simulation.log",
+      "bytes": 4699,
+      "sha256": "7dac81c7dd0b0b6d6bbba94c3b4e60af192b1794ee932880097ede92ff8fb0c5"
+    },
+    {
+      "path": "validation/devices-before-flash.json",
+      "bytes": 629,
+      "sha256": "2fc6b265d7edbe08549e19f34bc0dd77e5d3399ea92e1eff74786788501bedaf"
+    },
+    {
+      "path": "validation/firmware-sha256.json",
+      "bytes": 259,
+      "sha256": "3697a8314e3a92b36e7d1c6710f8faef19b77ec340ad6e18b296af3c5127dfe3"
+    },
+    {
+      "path": "validation/flash-A.log",
+      "bytes": 959,
+      "sha256": "956af567ac0dbb81d88ac2707580db136685072db5b20ceab43f773d860c24ec"
+    },
+    {
+      "path": "validation/flash-B.log",
+      "bytes": 959,
+      "sha256": "5ebcf1d500d4235a3f27d03613b0fc2bdf8c551004a18500d00d5e8a88cf8142"
+    },
+    {
+      "path": "validation/flash.json",
+      "bytes": 2231,
+      "sha256": "cd15e14863276a375c2e3b1eab59b63d139a0465327ba69ab3f43acd735ac985"
+    },
+    {
+      "path": "validation/hardware-first-run.json",
+      "bytes": 2039,
+      "sha256": "1d90cffac9905623c7816f99d0f4388677186e6ddbcac3c03c919ee94119f234"
+    },
+    {
+      "path": "validation/hardware-first-run.log",
+      "bytes": 1182,
+      "sha256": "49aea25bba1534a89351a07750b980920cbc6dfd860306a8a7d7a27f8994732d"
+    },
+    {
+      "path": "validation/hardware-ppp.json",
+      "bytes": 2967,
+      "sha256": "e8fa5c78ab705e4b02734dd8a4cdbfc5c39203d8a868364bfd0cd73f697a1453"
+    },
+    {
+      "path": "validation/hardware-ppp.log",
+      "bytes": 182,
+      "sha256": "4898f84bd0c9e69da122e680cb79d73b9a401c981590cd5446f8cf85e8d16eb2"
+    },
+    {
+      "path": "validation/hardware-transparent.json",
+      "bytes": 2370,
+      "sha256": "5fb4949a3e85cda80ca0cfb8ca8a4396f8b8c019340712d076e697f445aef232"
+    },
+    {
+      "path": "validation/hardware-transparent.log",
+      "bytes": 1198,
+      "sha256": "4bfd3cbf1e4a4de89b7ae9aaa634068d531950bbde584a2fc44376ce668f30f9"
+    },
+    {
+      "path": "validation/reopen-boot-probe.log",
+      "bytes": 1680,
+      "sha256": "f805cc45b61ecc0111d60712acb12c90f4ab88179bc2615f40c47e473caa0260"
+    },
+    {
+      "path": "validation/virtualhere-release.json",
+      "bytes": 705,
+      "sha256": "d47ba4ccdd779d70d36f91d4fd24fae10511f8e16223fce5fcb74541aa14e485"
+    },
+    {
+      "path": "validation/windows-inf.json",
+      "bytes": 424,
+      "sha256": "8c259b041a5295f3df4c19524e9575d299abac1829bada55a54f5f44cb5f49cc"
+    },
+    {
+      "path": "windows/README.md",
+      "bytes": 3797,
+      "sha256": "b31b1daefbea593624ae978109b5be9c0c65e8f80e6032122ef041cae9ccd8ea"
+    },
+    {
+      "path": "windows/Test-Inf.ps1",
+      "bytes": 7904,
+      "sha256": "b002c3bfaad2f396b9f655776cef1a2fbf31c85ba3901fc73ac93ebdade58cd7"
+    },
+    {
+      "path": "windows/airmodem-transparent.inf",
+      "bytes": 1730,
+      "sha256": "04ffc54f1ced5be6e93684b44e320f239d00836ef7462eb5f83dc526047ac322"
+    }
+  ]
+}

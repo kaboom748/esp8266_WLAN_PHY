@@ -1,0 +1,36 @@
+esptool.py v3.0
+Serial port /dev/ttyUSB0
+Connecting....
+Chip is ESP8266EX
+Features: WiFi
+Crystal is 26MHz
+MAC: b4:e6:2d:23:0e:f4
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Auto-detected Flash size: 4MB
+Compressed 296416 bytes to 219140...
+Writing at 0x00000000... (7 %)
+Writing at 0x00004000... (14 %)
+Writing at 0x00008000... (21 %)
+Writing at 0x0000c000... (28 %)
+Writing at 0x00010000... (35 %)
+Writing at 0x00014000... (42 %)
+Writing at 0x00018000... (50 %)
+Writing at 0x0001c000... (57 %)
+Writing at 0x00020000... (64 %)
+Writing at 0x00024000... (71 %)
+Writing at 0x00028000... (78 %)
+Writing at 0x0002c000... (85 %)
+Writing at 0x00030000... (92 %)
+Writing at 0x00034000... (100 %)
+Wrote 296416 bytes (219140 compressed) at 0x00000000 in 8.7 seconds (effective 273.0 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...
+New upload port: /dev/ttyUSB0 (serial)
+

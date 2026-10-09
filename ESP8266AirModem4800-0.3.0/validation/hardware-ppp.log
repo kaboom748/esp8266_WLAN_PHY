@@ -1,0 +1,4 @@
+RF connected; starting two isolated pppd instances
+PPP IPv4 up on both ESP radio endpoints
+PASS PPP/TCP: 4096 bytes per direction, hashes checked; see separate ICMP loss statistics
+

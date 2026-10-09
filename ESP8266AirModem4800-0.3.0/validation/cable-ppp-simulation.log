@@ -1,0 +1,161 @@
+PASS IPCP over cable handshake and simulated radio
+{
+  "passed": true,
+  "scope": "Linux pppd, PTYs, two C++ modem cores, simulated radio faults; NOT Windows or RF",
+  "interfaces": [
+    [
+      {
+        "ifindex": 1,
+        "ifname": "lo",
+        "flags": [
+          "LOOPBACK",
+          "UP",
+          "LOWER_UP"
+        ],
+        "mtu": 65536,
+        "qdisc": "noqueue",
+        "operstate": "UNKNOWN",
+        "group": "default",
+        "txqlen": 1000,
+        "link_type": "loopback",
+        "address": "00:00:00:00:00:00",
+        "broadcast": "00:00:00:00:00:00",
+        "addr_info": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "ifindex": 2,
+        "ifname": "ppp0",
+        "flags": [
+          "POINTOPOINT",
+          "MULTICAST",
+          "NOARP",
+          "UP",
+          "LOWER_UP"
+        ],
+        "mtu": 296,
+        "qdisc": "fq_codel",
+        "operstate": "UNKNOWN",
+        "group": "default",
+        "txqlen": 3,
+        "link_type": "ppp",
+        "addr_info": [
+          {
+            "family": "inet",
+            "local": "192.0.2.1",
+            "address": "192.0.2.2",
+            "prefixlen": 32,
+            "scope": "global",
+            "label": "ppp0",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "ifindex": 1,
+        "ifname": "lo",
+        "flags": [
+          "LOOPBACK",
+          "UP",
+          "LOWER_UP"
+        ],
+        "mtu": 65536,
+        "qdisc": "noqueue",
+        "operstate": "UNKNOWN",
+        "group": "default",
+        "txqlen": 1000,
+        "link_type": "loopback",
+        "address": "00:00:00:00:00:00",
+        "broadcast": "00:00:00:00:00:00",
+        "addr_info": [
+          {
+            "family": "inet",
+            "local": "127.0.0.1",
+            "prefixlen": 8,
+            "scope": "host",
+            "label": "lo",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          },
+          {
+            "family": "inet6",
+            "local": "::1",
+            "prefixlen": 128,
+            "scope": "host",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      },
+      {
+        "ifindex": 2,
+        "ifname": "ppp0",
+        "flags": [
+          "POINTOPOINT",
+          "MULTICAST",
+          "NOARP",
+          "UP",
+          "LOWER_UP"
+        ],
+        "mtu": 296,
+        "qdisc": "fq_codel",
+        "operstate": "UNKNOWN",
+        "group": "default",
+        "txqlen": 3,
+        "link_type": "ppp",
+        "addr_info": [
+          {
+            "family": "inet",
+            "local": "192.0.2.2",
+            "address": "192.0.2.1",
+            "prefixlen": 32,
+            "scope": "global",
+            "label": "ppp0",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      }
+    ]
+  ],
+  "ping": "PING 192.0.2.2 (192.0.2.2) 56(84) bytes of data.\n64 bytes from 192.0.2.2: icmp_seq=1 ttl=64 time=1087 ms\n64 bytes from 192.0.2.2: icmp_seq=2 ttl=64 time=1327 ms\n64 bytes from 192.0.2.2: icmp_seq=3 ttl=64 time=1008 ms\n\n--- 192.0.2.2 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 4003ms\nrtt min/avg/max/mdev = 1007.519/1140.737/1327.449/135.977 ms\n",
+  "tcp": [
+    {
+      "mode": "client",
+      "received": 4096,
+      "sha256": "83610cd850567b5edf1475eea3766036556aef83b9f6666832986d5bb230c90d"
+    },
+    {
+      "mode": "server",
+      "received": 4096,
+      "sha256": "10e4bf6570e7edce8cda82e7ce700f9b5b24ceafa433a20f8cdf1dbc59927d62"
+    }
+  ],
+  "helper_logs": [
+    "Using interface ppp0\nConnect: ppp0 <--> /dev/pts/2\nlocal  IP address 192.0.2.2\nremote IP address 192.0.2.1\nTerminating on signal 15\nConnect time 1.3 minutes.\nSent 6236 bytes, received 6288 bytes.\n",
+    "Using interface ppp0\nConnect: ppp0 <--> /dev/pts/3\nlocal  IP address 192.0.2.1\nremote IP address 192.0.2.2\nTerminating on signal 15\nConnect time 1.4 minutes.\nSent 6340 bytes, received 6236 bytes.\n"
+  ],
+  "simulation": "SIMULATION cable=1/1 retries=27/27 overflow=0/0\n",
+  "seconds": 86.38428124200436
+}
+

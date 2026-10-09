@@ -1,0 +1,107 @@
+{
+  "passed": true,
+  "scope": "IPCP and exact TCP payload; ICMP loss is reported separately",
+  "ppp_logs": [
+    "Using interface ppp0\nConnect: ppp0 <--> /dev/pts/0\nlocal  IP address 192.0.2.1\nremote IP address 192.0.2.2\n",
+    "Using interface ppp0\nConnect: ppp0 <--> /dev/pts/1\nlocal  IP address 192.0.2.2\nremote IP address 192.0.2.1\n"
+  ],
+  "mode": "transparent cable; Linux userspace flow control; NOT Windows RAS",
+  "ports": [
+    "/dev/ttyUSB0",
+    "/dev/ttyUSB1"
+  ],
+  "boot_bytes": [
+    "8b918db9e73491233318321a91",
+    "7a7393bcb9fff29923731aa61a9137fd"
+  ],
+  "handshake": "PC-generated CLIENT and CLIENTSERVER transported through both ESPs",
+  "interfaces": [
+    [
+      {
+        "ifindex": 2,
+        "ifname": "ppp0",
+        "flags": [
+          "POINTOPOINT",
+          "MULTICAST",
+          "NOARP",
+          "UP",
+          "LOWER_UP"
+        ],
+        "mtu": 296,
+        "qdisc": "fq_codel",
+        "operstate": "UNKNOWN",
+        "group": "default",
+        "txqlen": 3,
+        "link_type": "ppp",
+        "addr_info": [
+          {
+            "family": "inet",
+            "local": "192.0.2.1",
+            "address": "192.0.2.2",
+            "prefixlen": 32,
+            "scope": "global",
+            "label": "ppp0",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "ifindex": 2,
+        "ifname": "ppp0",
+        "flags": [
+          "POINTOPOINT",
+          "MULTICAST",
+          "NOARP",
+          "UP",
+          "LOWER_UP"
+        ],
+        "mtu": 296,
+        "qdisc": "fq_codel",
+        "operstate": "UNKNOWN",
+        "group": "default",
+        "txqlen": 3,
+        "link_type": "ppp",
+        "addr_info": [
+          {
+            "family": "inet",
+            "local": "192.0.2.2",
+            "address": "192.0.2.1",
+            "prefixlen": 32,
+            "scope": "global",
+            "label": "ppp0",
+            "valid_life_time": 4294967295,
+            "preferred_life_time": 4294967295
+          }
+        ]
+      }
+    ]
+  ],
+  "ping": "PING 192.0.2.2 (192.0.2.2) 56(84) bytes of data.\n64 bytes from 192.0.2.2: icmp_seq=1 ttl=64 time=1980 ms\n64 bytes from 192.0.2.2: icmp_seq=2 ttl=64 time=1644 ms\n64 bytes from 192.0.2.2: icmp_seq=3 ttl=64 time=1603 ms\n\n--- 192.0.2.2 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 4000ms\nrtt min/avg/max/mdev = 1602.835/1742.476/1980.180/168.937 ms\n",
+  "ping_returncode": 0,
+  "tcp": [
+    {
+      "mode": "server",
+      "received": 4096,
+      "sha256": "10e4bf6570e7edce8cda82e7ce700f9b5b24ceafa433a20f8cdf1dbc59927d62"
+    },
+    {
+      "mode": "client",
+      "received": 4096,
+      "sha256": "83610cd850567b5edf1475eea3766036556aef83b9f6666832986d5bb230c90d"
+    }
+  ],
+  "flow": [
+    {
+      "xoff": 24,
+      "xon": 61
+    },
+    {
+      "xoff": 21,
+      "xon": 64
+    }
+  ],
+  "seconds": 89.74755133097642
+}

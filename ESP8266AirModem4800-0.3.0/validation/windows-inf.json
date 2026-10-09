@@ -1,0 +1,15 @@
+{
+    "Status":  "PASS",
+    "Checks":  77,
+    "Parser":  "Windows SetupAPI",
+    "DcbCheck":  "Windows BuildCommDCBW",
+    "InfSha256":  "04FFC54F1CED5BE6E93684B44E320F239D00836EF7462EB5F83DC526047AC322",
+    "Baud":  4800,
+    "Framing":  "8N1",
+    "DcbFlags":  "0x00000381",
+    "Models":  1,
+    "Signed":  false,
+    "InstalledByTest":  false,
+    "PortOpened":  false,
+    "NativeRasTested":  false
+}

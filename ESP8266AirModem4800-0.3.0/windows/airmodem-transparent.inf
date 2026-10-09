@@ -1,0 +1,49 @@
+; Boot-transparent firmware 0.3.0. UNSIGNED development profile, not a USB driver.
+[Version]
+Signature="$Windows NT$"
+Class=Modem
+ClassGUID={4D36E96D-E325-11CE-BFC1-08002BE10318}
+Provider=%Provider%
+DriverVer=10/09/2026,0.3.0.0
+
+[Manufacturer]
+%Provider%=AirModem,NTx86,NTamd64
+[AirModem.NTx86]
+%CableName%=Air4800.Cable,AIRMODEM4800_TRANSPARENT_V1
+[AirModem.NTamd64]
+%CableName%=Air4800.Cable,AIRMODEM4800_TRANSPARENT_V1
+[Air4800.Cable]
+AddReg=Air4800.Common,Air4800.Cable.Reg,Air4800.Cable.Responses
+
+[Air4800.Common]
+HKR,,FriendlyDriver,,Unimodem.vxd
+HKR,,DevLoader,,*VCOMM
+HKR,,PortSubClass,1,02
+HKR,,ConfigDialog,,modemui.dll
+HKR,,EnumPropPages,,"modemui.dll,EnumPropPages"
+; 4800 8N1; fBinary + fOutX + fInX + fTXContinueOnXoff.
+; No CTS/DSR/DTR/RTS gating. XON=11, XOFF=13; XonLim=10, XoffLim=128.
+HKR,,DCB,1,1C,00,00,00,C0,12,00,00,81,03,00,00,00,00,0A,00,80,00,08,00,00,11,13,00,00,00,00,00
+
+[Air4800.Cable.Reg]
+HKR,,DeviceType,1,00
+HKR,,Properties,1,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,20,00,00,00,C0,12,00,00,C0,12,00,00
+; A new PC session/listener declares readiness. Do not fake a CLIENTSERVER.
+; Actual Unimodem execution of these strings still needs testing on Windows.
+HKR,Init,1,,"<h11>"
+HKR,Init,2,,"NoResponse"
+HKR,Monitor,1,,"<h11>"
+HKR,Monitor,2,,"None"
+HKR,Answer,1,,"CLIENTSERVER"
+HKR,Answer,2,,"NoResponse"
+HKR,Settings,DialPrefix,,"CLIENT"
+HKR,Settings,FlowControl_Soft,,""
+
+[Air4800.Cable.Responses]
+HKR,Responses,"CLIENT",1,08,00,00,00,00,00,00,00,00,00
+HKR,Responses,"<h00>CLIENT",1,08,00,00,00,00,00,00,00,00,00
+HKR,Responses,"CLIENTSERVER",1,02,00,C0,12,00,00,00,00,00,00
+
+[Strings]
+Provider="AirModem4800 Project"
+CableName="AirModem4800 Transparent 0.3 - 4800 bps XON-XOFF"

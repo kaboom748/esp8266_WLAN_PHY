@@ -1,0 +1,12 @@
+[
+  {
+    "role": "A",
+    "bytes": 296416,
+    "sha256": "21ad1313c3641cb08226a1ad79dd9ef78f5921b2d903514d337cff798b1322ca"
+  },
+  {
+    "role": "B",
+    "bytes": 296416,
+    "sha256": "e019988ff50ceb775b35a053bff476f7646f8702ef801a6f60fdeeaeebe58a0d"
+  }
+]

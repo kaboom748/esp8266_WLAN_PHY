@@ -1,0 +1,12 @@
+[
+  {
+    "port": "/dev/ttyUSB0",
+    "stdout": "esptool.py v3.0\nSerial port /dev/ttyUSB0\nConnecting....\nChip is ESP8266EX\nFeatures: WiFi\nCrystal is 26MHz\nMAC: b4:e6:2d:23:0e:f4\nUploading stub...\nRunning stub...\nStub running...\nChip ID: 0x00230ef4\nHard resetting via RTS pin...\n",
+    "stderr": ""
+  },
+  {
+    "port": "/dev/ttyUSB1",
+    "stdout": "esptool.py v3.0\nSerial port /dev/ttyUSB1\nConnecting....\nChip is ESP8266EX\nFeatures: WiFi\nCrystal is 26MHz\nMAC: 68:c6:3a:d6:0e:e8\nUploading stub...\nRunning stub...\nStub running...\nChip ID: 0x00d60ee8\nHard resetting via RTS pin...\n",
+    "stderr": ""
+  }
+]

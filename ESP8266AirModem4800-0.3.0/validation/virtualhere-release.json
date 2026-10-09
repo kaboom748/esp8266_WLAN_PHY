@@ -1,0 +1,18 @@
+{
+  "released": [
+    {
+      "address": "raspberrypi.113",
+      "stdout": "OK\n",
+      "stderr": ""
+    },
+    {
+      "address": "OpenWrt.22",
+      "stdout": "OK\n",
+      "stderr": ""
+    }
+  ],
+  "after": {
+    "stdout": "VirtualHere Client IPC, below are the available devices:\n(Value in brackets = address, * = Auto-Use)\n\nRaspberry Hub (raspberrypi:7575) \n   --> USB2.0-Serial (raspberrypi.113) \nOpenWRT Hub (OpenWrt:7575) \n   --> USB2.0-Serial (OpenWrt.22) \n   --> HD Pro Webcam C920 (OpenWrt.11) \n\nAuto-Find currently on\nAuto-Use All currently off\nReverse Lookup currently off\nReverse SSL Lookup currently off\nVirtualHere Client not running as a service\n",
+    "stderr": ""
+  }
+}
