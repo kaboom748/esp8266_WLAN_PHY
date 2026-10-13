@@ -1,0 +1,88 @@
+EXPERIMENTAL ESP8266 SERIAL MODEM - NOT CERTIFIED
+
+Source baseline:
+https://github.com/kaboom748/esp8266_WLAN_PHY
+Commit: 89172cebb4bef19d8a1f37cc3e491dbed64c40eb
+Directory: 300bps - FEC MODEM
+The baseline repository is unchanged. generate.py extracts its low-level radio
+backend into standalone FastA/FastB Arduino sketches, then adds fast.h.
+The included backend_seed.ino is byte-identical to the original Master REV7
+sketch in that checkout (verified SHA-256):
+9a0369f1ddbf9f5b0a2e1e9083370e0d69dd9281ddadc92cc3ac84763d854db6
+
+Current configuration (2026-10-13):
+- CPU: 160 MHz, ESP8266 Arduino core 3.1.2.
+- UART: nominal 300 baud, 8N1, no software or hardware flow control.
+  The output divider tracks the peer's measured character cadence, minus an
+  80 us/character guard. Divider updates happen between output characters.
+  This small baud correction prevents clock mismatch from growing a queue.
+- RF: 312500 samples/s, 2 samples/symbol, native binary FSK tones +/-78125 Hz.
+  A->B: channel 3 (2422 MHz). B->A: channel 11 (2462 MHz).
+  Fixed RF gain 0 / BB gain 0. Both ESPs retune between RX and TX.
+  This gain setting was chosen for the current bench, not qualified for range.
+  Hardware IQ accumulation: 64; UART service overlaps the ADC conversion.
+  Capture phase diversity is disabled. The optional --phase-diversity 1 was
+  evaluated but did not improve the long binary test, so is not the default.
+- TDD: 4500 us per direction, 9000 us cycle. RF burst: 1152 us.
+  Channel-switch preparation starts 1400 us before the RF slot.
+- One byte per data frame. RS(18,14) protects the complete header/data/CRC32.
+- CRC32 is checked after FEC; no CRC-guided guessing of payload bits.
+- PN9 whitening on coded data, with a separate synchronization pattern.
+- Sequence numbers, duplicate suppression, session-aware acknowledgements.
+- At most 4 attempts including the initial send: three retries maximum.
+  A packet that cannot meet its deadline is discarded, never deferred to a
+  later deadline. ACK loss can cause expiry even when data was delivered.
+  With the 9 ms cycle, the fourth attempt fits only for some arrival phases.
+  This is a maximum of three retries, not a promise of three for every byte.
+- BOTH receivers calibrate the carrier offset and symbol spacing from each
+  CRC-valid frame. Native RF tones do not use fractional TX frequency dithering.
+  Frequency compensation is digital at reception, not TX LO retuning.
+- Fixed-size buffers; no payload queue growth to hide congestion.
+- Wi-Fi auto-connect and auto-reconnect are disabled. The optional SDK noise
+  timer suppression experiment is disabled; normal SDK maintenance is retained.
+
+Latency contract accepted during the task:
+66.66 ms maximum between the first incoming UART bit and the first outgoing bit.
+This is NOT a measured or certified wire-to-wire bound yet. USB/VM timestamps
+cannot establish that bound. A common-clock logic-analyzer capture is needed.
+The implementation schedules output approximately 29.833 ms after the source
+UART FIFO timestamp, independently of the number of retries. Timestamp encoding
+rounds age upward in 125 us steps. Output lateness is limited to 2000 us;
+the UART shift register is accounted for, and expired output is discarded.
+The absolute output deadline remains 31.833 ms after the reconstructed FIFO
+timestamp. UART timing uses micros(), NOT CPU cycles: channel changes cause
+measured differences between elapsed time and the CPU cycle counter.
+Input observation gaps over 1 ms, UART errors, and multi-byte un-timestamped
+FIFO batches are discarded. Late RF data and missed output deadlines are dropped.
+UART service continues during the interrupt-masked wait before each RF burst.
+Diagnostic UARTIN counters separate observation-gap, batch, and hardware errors;
+these categories may overlap and must not be summed as independent lost bytes.
+No assertion of absolute zero undetected errors is made for finite CRC/FEC codes.
+
+Build on the existing VM:
+python3 build_flash.py --name release --flash
+Defaults select the current configuration above. The optional --source argument
+selects a seed; otherwise the included backend_seed.ino is used. It preserves
+the exact VM REV7 backend used for these builds, derived from the source above.
+Add --flash only when explicitly intending to replace BOTH attached ESP images.
+Ports in this bench: A=/dev/ttyUSB1, B=/dev/ttyUSB0.
+
+Diagnostic builds with --end-report 1 stop at --duration seconds and switch UART
+to 115200 to report counters. They are NOT persistent modem releases.
+The release uses --end-report 0 and does not stop or print application logs.
+ESP ROM boot output is not suppressed by application code; the test waits
+six seconds after opening/resetting the devices before testing binary traffic.
+
+Tests:
+test_codec.cpp: randomized RS/CRC and control/data round trips, plus PN9 inversion,
+tested for both legacy and native-tone packet formats.
+test_binary.py: host framing and accounting regressions.
+binary_test.py: hardware 300-baud transfers A->B, B->A, and simultaneously.
+Raw hexadecimal streams and CRC-framed application results are preserved in JSON.
+Invalid application frames may result from deletion, not RF bit corruption.
+The received-subsequence check is not a proof of a zero bit-error rate.
+
+Not validated: temperature/distance/interference sweeps, sustained multi-hour
+operation, all reset/error combinations, and external electrical latency timing.
+Only 8N1 binary bytes are supported; BREAK, alternate framing, AT commands, and
+telephone modem control signals are not emulated.

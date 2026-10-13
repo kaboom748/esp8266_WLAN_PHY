@@ -1,0 +1,95 @@
+{
+  "baud": 300,
+  "format": "8N1",
+  "flow_control": false,
+  "firmware": "retry3_ch11",
+  "started_utc": "2026-10-13T17:40:28.406150+00:00",
+  "cases": {
+    "A_to_B": {
+      "elapsed_seconds": 8.668453273014165,
+      "host_errors": [],
+      "A_to_B": {
+        "sent_bytes": 200,
+        "received_bytes": 166,
+        "expected_frames": 8,
+        "exact_frames": 0,
+        "missing_frames": 8,
+        "invalid_frames": 8,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": false,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "2967adaa7c5f6c2563c7d8734b06d4183ab46104a50192cbc0d548618e8826d8",
+        "sha256_received": "52219906e5a0e4ddd6db845dbd8f0897343575e65ee0cadc59d4fe852d04d975",
+        "sent_hex": "c0010000000102030405060708090a0b0c0d0e0feae09f2fc0c0010100101112131415161718191a1b1c1d1e1fe449a4fac0c0010200202122232425262728292a2b2c2d2e2fb7b4995ec0c0010300303132333435363738393a3b3c3d3e3fb91da28bc0c0010400404142434445464748494a4b4c4d4e4f504893cdc0c0010500505152535455565758595a5b5c5d5e5f5ee1a818c0c0010600606162636465666768696a6b6c6d6e6f0d1c95bcc0c0010700707172737475767778797a7b7c7d7e7f03b5ae69c0",
+        "received_hex": "c001000000020304050607090a0b0c0d0e0feae09f2fc0c00101001011121314151718191b1c1d1e1f49c0c020232425262728292a2b2c2d2eb7b4995ec0c0010330353638393a3b3c3d3e3fb91da28bc0c00104004041424345464748494a4b4c4d4e4f504893cdc0c0010500505152535455565758595a5b5d5e5fe118c0010600606162636465666e6f0d1cbcc0c001077071727375767778797a7b7c7d7e7f03b5ae69c0"
+      },
+      "unexpected_reverse_bytes": 0
+    },
+    "B_to_A": {
+      "elapsed_seconds": 8.668175079044886,
+      "host_errors": [],
+      "B_to_A": {
+        "sent_bytes": 200,
+        "received_bytes": 197,
+        "expected_frames": 8,
+        "exact_frames": 5,
+        "missing_frames": 3,
+        "invalid_frames": 3,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": false,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "463811deb254bddda0d97050d77d59010f8e9e7d435087d3993406f01531c192",
+        "sha256_received": "463c6b74ba83406999458525a2d07a59f26a597d5d8b3d2a3f2ddd4af42438f3",
+        "sent_hex": "c0020000000102030405060708090a0b0c0d0e0f4366c98cc0c0020100101112131415161718191a1b1c1d1e1f4dcff259c0c0020200202122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c0020600606162636465666768696a6b6c6d6e6fa49ac31fc0c0020700707172737475767778797a7b7c7d7e7faa33f8cac0",
+        "received_hex": "c00200000001020304060708090a0b0c0d0e0f4366c98cc0c0020100101112131415161718191a1b1c1d1e1f4df259c0c0020200202122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c0020600606162636465666768696a6b6c6d6e6fa49ac31fc0c00207007072737475767778797a7b7c7d7e7faa33f8cac0"
+      },
+      "unexpected_reverse_bytes": 0
+    },
+    "simultaneous": {
+      "elapsed_seconds": 8.668654609005898,
+      "host_errors": [],
+      "A_to_B": {
+        "sent_bytes": 200,
+        "received_bytes": 156,
+        "expected_frames": 8,
+        "exact_frames": 0,
+        "missing_frames": 8,
+        "invalid_frames": 8,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": false,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "2967adaa7c5f6c2563c7d8734b06d4183ab46104a50192cbc0d548618e8826d8",
+        "sha256_received": "80f69fcc4a29cf39ecbf4bb17b197b90062b5d1d73f0a2966361a8f18c82b2e0",
+        "sent_hex": "c0010000000102030405060708090a0b0c0d0e0feae09f2fc0c0010100101112131415161718191a1b1c1d1e1fe449a4fac0c0010200202122232425262728292a2b2c2d2e2fb7b4995ec0c0010300303132333435363738393a3b3c3d3e3fb91da28bc0c0010400404142434445464748494a4b4c4d4e4f504893cdc0c0010500505152535455565758595a5b5c5d5e5f5ee1a818c0c0010600606162636465666768696a6b6c6d6e6f0d1c95bcc0c0010700707172737475767778797a7b7c7d7e7f03b5ae69c0",
+        "received_hex": "c00100000001050607090a0b0c0e0feae09f2fc0c0010100101112131415161718191a1b1c1dc0012022232425262728292a2b2c2d2e2fb7b4995ec0c0010300303132333435363738393a3b3c3d3e3fb91da2c0c0010400404142434445464748494a4b4c4d4e93cdc0c001050052535455565758595a5b5d5e5fa818c0c00600606162636465666768bcc0c0010776777a7b7c7d7e7f03b5ae69c0"
+      },
+      "B_to_A": {
+        "sent_bytes": 200,
+        "received_bytes": 196,
+        "expected_frames": 8,
+        "exact_frames": 4,
+        "missing_frames": 4,
+        "invalid_frames": 4,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": false,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "463811deb254bddda0d97050d77d59010f8e9e7d435087d3993406f01531c192",
+        "sha256_received": "3e723c3d053d27f9a397eb2e0861cbb0e7fe5237a382895dd4a1571f24910962",
+        "sent_hex": "c0020000000102030405060708090a0b0c0d0e0f4366c98cc0c0020100101112131415161718191a1b1c1d1e1f4dcff259c0c0020200202122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c0020600606162636465666768696a6b6c6d6e6fa49ac31fc0c0020700707172737475767778797a7b7c7d7e7faa33f8cac0",
+        "received_hex": "c0020000000102030405060708090a0b0c0d0e0f43c98cc0c0020100101112131415161718191a1b1c1d1e1f4dcff259c0c00202002122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c00206606162636465666768696a6b6c6d6e6fa49ac31fc0c00207007071727374757678797a7b7c7d7e7faa33f8cac0"
+      }
+    }
+  },
+  "telemetry": [
+    "FAST_FINAL r=1 fs=312500 tx=6422 rx=6413 ta=0 ra=0 inv=8 cand=10847 fec=23 prep=238 setup=55 restore=34 dsp=1609 late=179 offer=400 out=393 exp=116 retry=1200 ack=284 dup=0 lateRx=6 over=0 missTx=0 cal=6413 off=-19968 unit=22784 tune=0 wrong=0 heap=39624 releaseLate=400 releaseDrop=0 demod=793 filter=97 search=752 uartRx=400 uartErrors=0 uartOverflow=0\nSTAGES r=1 noSync=4 fecReject=7 headerReject=0 crcReject=0 metaReject=0 captureLateMax=8 captureLateCount=0 noSyncLate=0 edgeSync=0 validLate=0\nARQ r=1 attempt1=400 attempt2=400 attempt3=400 attempt4=400 injectedDrops=1200 maxAge=28485\nADC r=1 accumulation=64 maxCycles=545 timeouts=0\nUART r=1 timerDrop=0 shiftDrop=0 fifoDrop=0 pastDrop=0 waitMax=400 periodMin=33014 periodMax=33686 periodSum=13280818 periodCount=398 divider=265800 recoveredPeriod=33305\n",
+    "FAST_FINAL r=2 fs=312500 tx=6427 rx=5953 ta=0 ra=0 inv=476 cand=10200 fec=510 prep=166 setup=58 restore=34 dsp=3140 late=57 offer=400 out=322 exp=88 retry=1200 ack=312 dup=0 lateRx=7 over=0 missTx=0 cal=5953 off=21632 unit=23168 tune=0 wrong=0 heap=39624 releaseLate=542 releaseDrop=0 demod=1650 filter=197 search=1341 uartRx=400 uartErrors=0 uartOverflow=0\nSTAGES r=2 noSync=184 fecReject=410 headerReject=1 crcReject=1 metaReject=0 captureLateMax=12 captureLateCount=0 noSyncLate=0 edgeSync=36 validLate=0\nARQ r=2 attempt1=400 attempt2=400 attempt3=400 attempt4=400 injectedDrops=1180 maxAge=28494\nADC r=2 accumulation=64 maxCycles=421 timeouts=0\nUART r=2 timerDrop=0 shiftDrop=0 fifoDrop=0 pastDrop=0 waitMax=543 periodMin=32976 periodMax=33643 periodSum=13254698 periodCount=398 divider=266280 recoveredPeriod=33365\n"
+  ]
+}

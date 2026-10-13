@@ -1,0 +1,25 @@
+{
+  "project": "ESP8266 Modem300 FEC-ARQ",
+  "version": "1.0.0-reference",
+  "release_date": "2026-10-13",
+  "status": "Reference de banc documentee; latence fil-a-fil non certifiee",
+  "firmware_profile": "release_uart_wait",
+  "firmware_changed_for_this_release": false,
+  "original_repository": "https://github.com/kaboom748/esp8266_WLAN_PHY",
+  "original_commit": "89172cebb4bef19d8a1f37cc3e491dbed64c40eb",
+  "arduino_core": "3.1.2",
+  "fqbn": "esp8266:esp8266:d1_mini:xtal=160,eesz=4M",
+  "cpu_mhz": 160,
+  "uart": {"baud_nominal": 300, "data_bits": 8, "parity": "none", "stop_bits": 1, "flow_control": false},
+  "radio": {"sample_rate_hz": 312500, "samples_per_symbol": 2, "frame_samples": 360, "frame_us": 1152, "slot_us": 4500, "cycle_us": 9000, "forward_channel": 3, "reverse_channel": 11, "forward_center_mhz": 2422, "reverse_center_mhz": 2462, "tone_offset_hz": 78125, "rf_gain_code": 0, "bb_gain_code": 0, "iq_accumulation": 64},
+  "protocol": {"coded_bytes": 18, "header_and_data_bytes": 10, "crc_bytes": 4, "rs_parity_bytes": 4, "user_bytes_per_data_frame": 1, "sync_symbols": 24, "sync_after_coded_bits": 64, "max_attempts": 4, "max_retries": 3},
+  "timing": {"release_target_us": 29833, "release_jitter_budget_us": 2000, "final_limit_us": 31833, "age_quantum_us": 125, "tx_prepare_lead_us": 1400, "rx_early_us": 150, "locked_rx_samples": 486, "search_rx_samples": 1024, "wire_first_bit_limit_ms": 66.66, "wire_first_bit_limit_measured": false},
+  "memory": {"static_ram_bytes": 39108, "static_ram_available_bytes": 80192, "iram_code_bytes": 30911, "iram_code_available_bytes": 32768, "instruction_cache_bytes": 32768},
+  "sha256": {
+    "fast.h": "e1ff7d1b8116b3c62ef61c4d15a9fa7797d48d3c523e845d42832c8573e1bdbf",
+    "firmware/build_A/FastA.ino.bin": "5df7939d1db73b661979bfbb8d02ead580a6845746536b613a9e9db09d8388d3",
+    "firmware/build_B/FastB.ino.bin": "4a3d1921415effa12f2f30405073a370350a0a4e5bbd11bc3175fd96224fe8e6",
+    "backend_seed.ino": "9a0369f1ddbf9f5b0a2e1e9083370e0d69dd9281ddadc92cc3ac84763d854db6"
+  },
+  "measurements": {"persistent": "mesures/release_uart_wait-binary.json", "instrumented": "mesures/split9_uart_wait-binary.json", "summary": "resultats_validation_20261013.json"}
+}

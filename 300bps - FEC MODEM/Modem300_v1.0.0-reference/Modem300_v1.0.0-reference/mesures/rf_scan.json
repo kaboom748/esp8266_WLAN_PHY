@@ -1,0 +1,442 @@
+[
+  {
+    "seconds": 0.319,
+    "port": "/dev/ttyUSB1",
+    "text": "s$\u0000d\ufffd\ufffd<\u0000\ufffdd\ufffd|\u0003\f\u0004\f\ufffd\u0004l\ufffd\fb<\ufffd\ufffd\u0003\ufffd\u001b\ufffd;\ufffd#\ufffd\fb\ufffd\ufffd'g\ufffdlo'\ufffd\ufffd\ufffd\fc\u001cp\ufffd\ufffd$;l;dp\ufffdn\ufffd\u0018\u0003\u0004\f\ufffd\fl\u0004\ufffd\ufffd\u0004\f\u0004c\u0004'\ufffd<\u0003\ufffd\u0004\ufffd\u001c\ufffd\u0004c\ufffd\ufffdgn\ufffd\u0000$\ufffd\ufffd$ \u0003\ufffd\u0012\u001b'o\u0004l`\u0002\u000e\u0003';\ufffd\ufffd\ufffdo\u0004\f#d\ufffd\u0007lp\ufffd'\ufffd\u0018\u0003\f\u0004{\ufffd\ufffd\ufffd\ufffd\u001c\ufffd\ufffd\u0003\fc\u0004o\ufffd|\u0002\u0004\ufffd\u0004#\ufffd\ufffdgo\ufffd\u0000\f\u0004l`\u0003\ufffd\u001b\u0013o'\f$ \u0003\u0007\u0003g{\ufffd\ufffd\ufffd'\f\u0004c\ufffd\ufffd`\u0003\u000fs\ufffd\ufffdg\u0004\u0004#\ufffd\ufffd`\u0003\ufffd\u0003\u0004\f\u0004\ufffd\ufffd\ufffd8\ufffd$`\u0003\ufffd\ufffdg\ufffd\u000e$\ufffd\ufffd\u0003\ufffd\u001b\ufffdn\ufffd\ufffds\ufffd\ufffdo<\ufffd\u0004l\u0004\ufffd\u0004d`\u0002\u001c#\ufffd\u001b\u0003\f\ufffd<\u0003{\ufffd\u0003l\ufffdg\ufffd\f\ufffdo\ufffd\u0000\u0004d`\u0003\ufffd\ufffd{\ufffdd\ufffd$\u0013\ufffd\f\u0004\f\ufffdSCAN r=1 round=0 channel=1 blocks=64 failed=0 meanPower=162 medianPower=66 p95Power=486 maxPower=2358"
+  },
+  {
+    "seconds": 0.367,
+    "port": "/dev/ttyUSB0",
+    "text": "{l\u0000d\ufffd\ufffd|\u0000\ufffdl\ufffd|\u0003\f\u0004\f\ufffd\fd\ufffd\u0004c|\ufffd\ufffd\u0003\ufffd\u0013\ufffdr\ufffdb\ufffd\f#\ufffd\ufffdo'\ufffdlng\ufffd\ufffd\ufffd\u0004c\u001cp\ufffd\ufffd${l{lx\ufffdo\ufffd\u0018\u0003\f\u0004\ufffd\u0004l\u0004\ufffd\ufffd\u0004\f\u0004c\u0004g\ufffd|\u0002\ufffd\f\ufffd\u001c\ufffd\u0004c\ufffd\ufffdgn\ufffd\u0000d\ufffd\ufffdl \u0003\ufffd\u001b\u0013og\u0004l`\u0003\u0007\u0003gs\ufffd\ufffd\ufffdo\u0004\fc$\ufffd\u0007l8\ufffdg\ufffd\u0010\u0002\u0004\fs\ufffd\ufffd\ufffd\ufffd\u001c\ufffd\ufffd\u0003\fb\fn\ufffd|\u0003\f\ufffd\f#\ufffd\ufffdog\ufffd\u0000\f\u0004l \u0003\ufffd\u0013\u001bgo\f$`\u0003\u000f\u0002n;\ufffd\ufffd\ufffd'\f\u0004#\ufffd\ufffd`\u0003\u000fs\ufffd\ufffdn\f\u0004b\ufffd\ufffd \u0003\ufffd\u0003\u0004\u0004\u0004\ufffd\ufffd\ufffd\ufffdl`\u0003\ufffd\ufffdo\ufffd\u0007d\ufffd\ufffd\u0003\ufffd\u0012\ufffdo\ufffd\ufffds\ufffd\ufffd'|\ufffd\f$\f\ufffd\fl`\u0003\u001cc\ufffd\u0013\u0003\f\ufffd<\u0003s\ufffd\u0003$\ufffd'\ufffd\u0004\ufffdn\ufffd\u0000\u0004$`\u0003\ufffd\ufffds\ufffdl\ufffdl\u001b\ufffd\f\u0004\f\ufffdSCAN r=2 round=0 channel=1 blocks=64 failed=0 meanPower=423 medianPower=80 p95Power=3485 maxPower=7661"
+  },
+  {
+    "seconds": 0.478,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=2 blocks=64 failed=0 meanPower=348 medianPower=86 p95Power=1376 maxPower=4895"
+  },
+  {
+    "seconds": 0.525,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=2 blocks=64 failed=0 meanPower=144 medianPower=84 p95Power=248 maxPower=1437"
+  },
+  {
+    "seconds": 0.632,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=3 blocks=64 failed=0 meanPower=117 medianPower=80 p95Power=262 maxPower=695"
+  },
+  {
+    "seconds": 0.682,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=3 blocks=64 failed=0 meanPower=111 medianPower=91 p95Power=285 maxPower=318"
+  },
+  {
+    "seconds": 0.79,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=4 blocks=64 failed=0 meanPower=159 medianPower=90 p95Power=608 maxPower=689"
+  },
+  {
+    "seconds": 0.839,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=4 blocks=64 failed=0 meanPower=131 medianPower=91 p95Power=297 maxPower=625"
+  },
+  {
+    "seconds": 0.947,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=5 blocks=64 failed=0 meanPower=78 medianPower=75 p95Power=157 maxPower=183"
+  },
+  {
+    "seconds": 0.996,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=5 blocks=64 failed=0 meanPower=100 medianPower=90 p95Power=182 maxPower=197"
+  },
+  {
+    "seconds": 1.104,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=6 blocks=64 failed=0 meanPower=93 medianPower=85 p95Power=171 maxPower=247"
+  },
+  {
+    "seconds": 1.153,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=6 blocks=64 failed=0 meanPower=88 medianPower=87 p95Power=126 maxPower=169"
+  },
+  {
+    "seconds": 1.261,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=7 blocks=64 failed=0 meanPower=104 medianPower=66 p95Power=446 maxPower=692"
+  },
+  {
+    "seconds": 1.311,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=7 blocks=64 failed=0 meanPower=103 medianPower=91 p95Power=258 maxPower=317"
+  },
+  {
+    "seconds": 1.418,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=8 blocks=64 failed=0 meanPower=127 medianPower=74 p95Power=501 maxPower=811"
+  },
+  {
+    "seconds": 1.468,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=8 blocks=64 failed=0 meanPower=1153 medianPower=96 p95Power=4458 maxPower=4679"
+  },
+  {
+    "seconds": 1.575,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=9 blocks=64 failed=0 meanPower=107 medianPower=80 p95Power=212 maxPower=561"
+  },
+  {
+    "seconds": 1.626,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=9 blocks=64 failed=0 meanPower=174 medianPower=93 p95Power=1156 maxPower=1305"
+  },
+  {
+    "seconds": 1.732,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=10 blocks=64 failed=0 meanPower=138 medianPower=69 p95Power=583 maxPower=1151"
+  },
+  {
+    "seconds": 1.783,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=10 blocks=64 failed=0 meanPower=153 medianPower=97 p95Power=192 maxPower=1991"
+  },
+  {
+    "seconds": 1.889,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=0 channel=11 blocks=64 failed=0 meanPower=149 medianPower=82 p95Power=643 maxPower=917"
+  },
+  {
+    "seconds": 1.94,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=0 channel=11 blocks=64 failed=0 meanPower=224 medianPower=97 p95Power=1590 maxPower=1743"
+  },
+  {
+    "seconds": 2.047,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=1 blocks=64 failed=0 meanPower=233 medianPower=73 p95Power=1290 maxPower=1643"
+  },
+  {
+    "seconds": 2.098,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=1 blocks=64 failed=0 meanPower=160 medianPower=90 p95Power=239 maxPower=3650"
+  },
+  {
+    "seconds": 2.204,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=2 blocks=64 failed=0 meanPower=388 medianPower=77 p95Power=2781 maxPower=5036"
+  },
+  {
+    "seconds": 2.255,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=2 blocks=64 failed=0 meanPower=218 medianPower=92 p95Power=1270 maxPower=1414"
+  },
+  {
+    "seconds": 2.361,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=3 blocks=64 failed=0 meanPower=86 medianPower=80 p95Power=156 maxPower=171"
+  },
+  {
+    "seconds": 2.412,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=3 blocks=64 failed=0 meanPower=212 medianPower=83 p95Power=273 maxPower=3761"
+  },
+  {
+    "seconds": 2.518,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=4 blocks=64 failed=0 meanPower=151 medianPower=97 p95Power=475 maxPower=700"
+  },
+  {
+    "seconds": 2.57,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=4 blocks=64 failed=0 meanPower=150 medianPower=86 p95Power=530 maxPower=769"
+  },
+  {
+    "seconds": 2.675,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=5 blocks=64 failed=0 meanPower=137 medianPower=82 p95Power=781 maxPower=1229"
+  },
+  {
+    "seconds": 2.727,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=5 blocks=64 failed=0 meanPower=183 medianPower=92 p95Power=181 maxPower=3299"
+  },
+  {
+    "seconds": 2.832,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=6 blocks=64 failed=0 meanPower=189 medianPower=89 p95Power=781 maxPower=2152"
+  },
+  {
+    "seconds": 2.883,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=6 blocks=64 failed=0 meanPower=96 medianPower=94 p95Power=139 maxPower=172"
+  },
+  {
+    "seconds": 2.989,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=7 blocks=64 failed=0 meanPower=88 medianPower=68 p95Power=129 maxPower=585"
+  },
+  {
+    "seconds": 3.041,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=7 blocks=64 failed=0 meanPower=161 medianPower=85 p95Power=274 maxPower=3960"
+  },
+  {
+    "seconds": 3.145,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=8 blocks=64 failed=0 meanPower=105 medianPower=84 p95Power=265 maxPower=294"
+  },
+  {
+    "seconds": 3.199,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=8 blocks=64 failed=0 meanPower=725 medianPower=104 p95Power=4718 maxPower=5359"
+  },
+  {
+    "seconds": 3.303,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=9 blocks=64 failed=0 meanPower=129 medianPower=87 p95Power=427 maxPower=691"
+  },
+  {
+    "seconds": 3.356,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=9 blocks=64 failed=0 meanPower=383 medianPower=207 p95Power=1430 maxPower=2246"
+  },
+  {
+    "seconds": 3.46,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=10 blocks=64 failed=0 meanPower=252 medianPower=75 p95Power=1202 maxPower=1439"
+  },
+  {
+    "seconds": 3.514,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=10 blocks=64 failed=0 meanPower=187 medianPower=93 p95Power=220 maxPower=5571"
+  },
+  {
+    "seconds": 3.617,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=1 channel=11 blocks=64 failed=0 meanPower=116 medianPower=75 p95Power=413 maxPower=801"
+  },
+  {
+    "seconds": 3.671,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=1 channel=11 blocks=64 failed=0 meanPower=129 medianPower=92 p95Power=166 maxPower=1478"
+  },
+  {
+    "seconds": 3.774,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=1 blocks=64 failed=0 meanPower=142 medianPower=62 p95Power=498 maxPower=1311"
+  },
+  {
+    "seconds": 3.829,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=1 blocks=64 failed=0 meanPower=155 medianPower=84 p95Power=492 maxPower=2971"
+  },
+  {
+    "seconds": 3.931,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=2 blocks=64 failed=0 meanPower=383 medianPower=73 p95Power=2817 maxPower=4773"
+  },
+  {
+    "seconds": 3.986,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=2 blocks=64 failed=0 meanPower=183 medianPower=92 p95Power=1190 maxPower=1263"
+  },
+  {
+    "seconds": 4.088,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=3 blocks=64 failed=0 meanPower=117 medianPower=76 p95Power=249 maxPower=589"
+  },
+  {
+    "seconds": 4.143,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=3 blocks=64 failed=0 meanPower=168 medianPower=88 p95Power=365 maxPower=3976"
+  },
+  {
+    "seconds": 4.245,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=4 blocks=64 failed=0 meanPower=151 medianPower=87 p95Power=543 maxPower=689"
+  },
+  {
+    "seconds": 4.301,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=4 blocks=64 failed=0 meanPower=151 medianPower=107 p95Power=517 maxPower=608"
+  },
+  {
+    "seconds": 4.402,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=5 blocks=64 failed=0 meanPower=81 medianPower=77 p95Power=126 maxPower=151"
+  },
+  {
+    "seconds": 4.458,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=5 blocks=64 failed=0 meanPower=149 medianPower=87 p95Power=151 maxPower=3617"
+  },
+  {
+    "seconds": 4.559,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=6 blocks=64 failed=0 meanPower=187 medianPower=90 p95Power=795 maxPower=2165"
+  },
+  {
+    "seconds": 4.615,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=6 blocks=64 failed=0 meanPower=94 medianPower=89 p95Power=126 maxPower=218"
+  },
+  {
+    "seconds": 4.716,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=7 blocks=64 failed=0 meanPower=127 medianPower=72 p95Power=566 maxPower=889"
+  },
+  {
+    "seconds": 4.772,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=7 blocks=64 failed=0 meanPower=102 medianPower=90 p95Power=276 maxPower=301"
+  },
+  {
+    "seconds": 4.873,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=8 blocks=64 failed=0 meanPower=115 medianPower=75 p95Power=274 maxPower=761"
+  },
+  {
+    "seconds": 4.93,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=8 blocks=64 failed=0 meanPower=662 medianPower=85 p95Power=4326 maxPower=4626"
+  },
+  {
+    "seconds": 5.03,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=9 blocks=64 failed=0 meanPower=92 medianPower=77 p95Power=220 maxPower=234"
+  },
+  {
+    "seconds": 5.087,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=9 blocks=64 failed=0 meanPower=179 medianPower=86 p95Power=1082 maxPower=1387"
+  },
+  {
+    "seconds": 5.187,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=10 blocks=64 failed=0 meanPower=184 medianPower=78 p95Power=646 maxPower=1195"
+  },
+  {
+    "seconds": 5.245,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=10 blocks=64 failed=0 meanPower=132 medianPower=90 p95Power=214 maxPower=1575"
+  },
+  {
+    "seconds": 5.346,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=2 channel=11 blocks=64 failed=0 meanPower=164 medianPower=78 p95Power=724 maxPower=1180"
+  },
+  {
+    "seconds": 5.402,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=2 channel=11 blocks=64 failed=0 meanPower=202 medianPower=97 p95Power=714 maxPower=3870"
+  },
+  {
+    "seconds": 5.501,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=1 blocks=64 failed=0 meanPower=251 medianPower=77 p95Power=1609 maxPower=2246"
+  },
+  {
+    "seconds": 5.56,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=1 blocks=64 failed=0 meanPower=121 medianPower=88 p95Power=230 maxPower=696"
+  },
+  {
+    "seconds": 5.658,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=2 blocks=64 failed=0 meanPower=176 medianPower=77 p95Power=987 maxPower=2010"
+  },
+  {
+    "seconds": 5.717,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=2 blocks=64 failed=0 meanPower=223 medianPower=94 p95Power=1256 maxPower=1543"
+  },
+  {
+    "seconds": 5.815,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=3 blocks=64 failed=0 meanPower=105 medianPower=87 p95Power=240 maxPower=263"
+  },
+  {
+    "seconds": 5.875,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=3 blocks=64 failed=0 meanPower=218 medianPower=80 p95Power=334 maxPower=3800"
+  },
+  {
+    "seconds": 5.972,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=4 blocks=64 failed=0 meanPower=129 medianPower=83 p95Power=314 maxPower=851"
+  },
+  {
+    "seconds": 6.032,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=4 blocks=64 failed=0 meanPower=174 medianPower=89 p95Power=569 maxPower=725"
+  },
+  {
+    "seconds": 6.129,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=5 blocks=64 failed=0 meanPower=115 medianPower=73 p95Power=384 maxPower=1075"
+  },
+  {
+    "seconds": 6.189,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=5 blocks=64 failed=0 meanPower=89 medianPower=88 p95Power=146 maxPower=165"
+  },
+  {
+    "seconds": 6.286,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=6 blocks=64 failed=0 meanPower=184 medianPower=85 p95Power=1140 maxPower=2043"
+  },
+  {
+    "seconds": 6.347,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=6 blocks=64 failed=0 meanPower=94 medianPower=90 p95Power=166 maxPower=220"
+  },
+  {
+    "seconds": 6.443,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=7 blocks=64 failed=0 meanPower=90 medianPower=69 p95Power=412 maxPower=450"
+  },
+  {
+    "seconds": 6.504,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=7 blocks=64 failed=0 meanPower=203 medianPower=95 p95Power=307 maxPower=5933"
+  },
+  {
+    "seconds": 6.601,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=8 blocks=64 failed=0 meanPower=131 medianPower=73 p95Power=574 maxPower=833"
+  },
+  {
+    "seconds": 6.662,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=8 blocks=64 failed=0 meanPower=618 medianPower=87 p95Power=4150 maxPower=4523"
+  },
+  {
+    "seconds": 6.757,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=9 blocks=64 failed=0 meanPower=98 medianPower=71 p95Power=439 maxPower=580"
+  },
+  {
+    "seconds": 6.82,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=9 blocks=64 failed=0 meanPower=177 medianPower=89 p95Power=1119 maxPower=1160"
+  },
+  {
+    "seconds": 6.914,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=10 blocks=64 failed=0 meanPower=121 medianPower=70 p95Power=417 maxPower=713"
+  },
+  {
+    "seconds": 6.977,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=10 blocks=64 failed=0 meanPower=173 medianPower=88 p95Power=202 maxPower=3344"
+  },
+  {
+    "seconds": 7.071,
+    "port": "/dev/ttyUSB1",
+    "text": "SCAN r=1 round=3 channel=11 blocks=64 failed=0 meanPower=106 medianPower=79 p95Power=235 maxPower=851"
+  },
+  {
+    "seconds": 7.134,
+    "port": "/dev/ttyUSB0",
+    "text": "SCAN r=2 round=3 channel=11 blocks=64 failed=0 meanPower=107 medianPower=93 p95Power=159 maxPower=443"
+  }
+]

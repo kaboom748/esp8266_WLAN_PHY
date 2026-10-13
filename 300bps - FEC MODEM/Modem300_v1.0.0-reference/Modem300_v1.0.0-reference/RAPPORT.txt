@@ -1,0 +1,123 @@
+MODEM ESP8266 300 BAUDS - VALIDATION DU 13 OCTOBRE 2026
+
+Version persistante : release_uart_wait, sur les DEUX cartes.
+A : /dev/ttyUSB1, MAC b4:e6:2d:23:0e:f4.
+B : /dev/ttyUSB0, MAC 68:c6:3a:d6:0e:e8.
+VM : CODEX-ARDUINO. Arduino ESP8266 core 3.1.2, CPU 160 MHz.
+Les verifications de hash du flash ont reussi pour les deux cartes.
+
+CONFIGURATION RETENUE
+UART nominal 300 bauds, 8N1, binaire, sans RTS/CTS ni XON/XOFF.
+Le diviseur UART suit la cadence mesuree du correspondant, avec une marge
+de 80 us par caractere. Ce n'est pas une augmentation du debit utilisateur.
+Radio FSK native +/-78125 Hz, 312500 echantillons/s, 2 echantillons/symbole.
+A->B : canal 3 (2422 MHz). B->A : canal 11 (2462 MHz).
+TDD : 4500 us par sens, cycle 9000 us. Une emission RF dure 1152 us.
+Gain RF 0 / BB 0, accumulation IQ 64 : reglage du banc, pas une qualification
+de portee. Capacite brute : un octet utilisateur par trame et par cycle.
+RS(18,14), correction de deux octets codes, CRC32 independant apres FEC,
+blanchiment PN9, numeros de sequence, sessions et suppression des doublons.
+Calibration numerique de frequence sur les DEUX recepteurs a chaque trame
+validee par CRC. Pas de suppression de cette calibration pour gagner du CPU.
+Buffers de taille fixe, sans croissance de file pour masquer une congestion.
+
+ESSAI FINAL DES BINAIRES PERSISTANTS LIVRES
+Fichier : mesures/release_uart_wait-binary.json. Aucun defaut injecte.
+                           Envoyes   Recus   Manquants / modifications
+A->B seul                     3219    3219       0 / 0
+B->A seul                     3216    3216       0 / 0
+A->B simultane                3219    3219       0 / 0
+B->A simultane                3216    3216       0 / 0
+Total                        12870   12870       0 / 0
+Les QUATRE flux sont identiques octet pour octet, empreintes SHA-256 comprises.
+512 trames applicatives exactes ; aucun doublon, reordonnancement, defaut CRC
+applicatif ou erreur du banc hote. Duree totale : environ six minutes.
+Taux de perte et de corruption constate sur CET essai : 0 %.
+Ce resultat ne remplace pas les essais precedents et ne garantit pas zero
+erreur dans toutes les conditions, ni la certification de latence fil-a-fil.
+Les cartes restent sur ce firmware, sans processus de test tenant les ports.
+
+ESSAI INSTRUMENTE DE LA CORRECTION
+Fichier : mesures/split9_uart_wait-binary.json. Aucun defaut injecte.
+Trafic continu, toutes les valeurs 0..255 puis donnees pseudo-aleatoires.
+                           Envoyes   Recus   Manquants
+A->B seul                     3219    3219       0
+B->A seul                     3216    3216       0
+A->B simultane                3219    3218       1
+B->A simultane                3216    3216       0
+Total                        12870   12869       1 (0,00777 %)
+Les trois flux sans perte sont identiques octet pour octet, hashes compris.
+Le quatrieme est compatible avec une suppression, pas une mesure de BER RF.
+Pas de doublon, reordonnancement ou trame applicative CRC-valide erronee detecte.
+
+LOCALISATION DES ECHECS DANS CET ESSAI
+UART : 6438 octets recus par A et 6432 par B, aucune erreur, aucun debordement,
+aucun abandon d'entree ni de sortie. Intervalle d'observation maximal : 54 us.
+A a sorti 6432 octets ; B en a sorti 6437. L'octet manquant est donc situe
+dans le transport radio avant la sortie UART, pas perdu par le logiciel PC.
+Radio A : 35 captures invalides, 12 sans synchronisation, 37 rejets FEC.
+Radio B : 393 captures invalides, 149 sans synchronisation, 407 rejets FEC,
+2 rejets d'entete et 1 rejet CRC. Plusieurs candidats sont testes par capture :
+ces categories ne s'additionnent PAS comme des paquets independants.
+FEC : 306 octets codes corriges sur A et 639 sur B dans les trames acceptees.
+Calibration : 41070 validations sur A, 40720 sur B.
+Ces compteurs ne permettent pas d'attribuer l'octet perdu a un candidat precis.
+
+RETRIES ET DELAI
+Quatre tentatives au maximum : initiale + trois retries. Jamais de cinquieme.
+Essai ci-dessus : A = 6438/75/1/0, B = 6432/68/4/0 emissions aux rangs 1/2/3/4.
+Les pertes d'ACK peuvent provoquer une expiration meme si l'octet est deja sorti.
+L'essai artificiel split9_retry3, anterieur au dernier changement de service UART,
+a rejete les trois premieres copies : le rang 4 a ete utilise 57 fois sur A et
+60 fois sur B. Il teste la limite ARQ, pas le taux de perte naturel.
+Avec un cycle de 9 ms, trois retries ne tiennent pas pour toutes les phases
+d'arrivee. Si le temps manque, abandon a l'echeance, sans la repousser.
+
+La borne demandee est 66,66 ms entre premiers bits sur les deux fils UART.
+Elle N'EST PAS CERTIFIEE electriquement par ces essais USB/VM.
+La cible logicielle est 29,833 ms apres l'horodatage FIFO reconstruit ; la limite
+absolue reste 31,833 ms. L'age est arrondi vers le haut par pas de 125 us.
+Retard maximal observe sur la cible : 86 us sur A, 152 us sur B.
+Ce retard interne N'EST PAS une mesure de latence fil-a-fil.
+Il faut une capture avec horloge commune des deux UART pour valider les 66,66 ms.
+
+CAUSES ET CORRECTIONS ETABLIES
+Le compteur de cycles CPU et micros() divergent pendant les changements de
+canal : jusqu'a environ 60 us par operation mesuree. Les echeances UART utilisent
+desormais micros(), sans changer le rythme d'echantillonnage RF.
+L'attente avant emission masquait les interruptions sans servir l'UART ; elle
+appelle maintenant le service UART. La gigue d'horodatage et de sortie a diminue.
+La derniere correction n'est donc pas seulement un changement de canal radio.
+L'origine physique des echecs RF restants n'est PAS identifiee : aucune preuve
+ne permet de nommer Wi-Fi, Bluetooth ou Zigbee. Les essais de desactivation de
+reconnexion et du timer de bruit SDK n'ont pas supprime les rafales observees.
+La suppression experimentale du timer SDK n'est pas retenue dans le firmware.
+Les silences TDD sont normaux et ne prouvent pas a eux seuls une perte de donnees.
+
+RESSOURCES ET TESTS LOGICIELS
+Version persistante : RAM statique 39108 / 80192 octets.
+Code IRAM : 30911 / 32768 octets ; cache d'instructions : 32768 octets de plus.
+Deux variantes du codec : 10000 verifications chacune ; variante native aussi
+testee avec AddressSanitizer/UndefinedBehaviorSanitizer, sans erreur detectee.
+35333 cas d'arithmetique temporelle au rebouclage du compteur passent.
+5 tests du banc binaire et 2 tests numeriques PHY passent.
+Le firmware persistant n'arrete pas le modem pour imprimer ses statistiques.
+Les builds --end-report 1 sont des diagnostics temporaires et s'arretent.
+
+REPRODUCTION ET LIMITES
+Source originale : https://github.com/kaboom748/esp8266_WLAN_PHY
+Commit : 89172cebb4bef19d8a1f37cc3e491dbed64c40eb, licence MIT conservee.
+backend_seed.ino est identique au Master REV7 original, verifie par SHA-256.
+SOURCE.txt decrit la generation. Dans la VM :
+  python3 build_flash.py --name release --flash
+  python3 binary_test.py --frames 128 --firmware release --output essai.json
+La premiere commande remplace les images sur les DEUX ESP connectes.
+Les binaires livres, les logs de flash et les traces brutes figurent dans l'archive.
+Le depot original complet est aussi inclus dans esp8266_WLAN_PHY_original_89172ce.zip.
+Les mesures des anciennes variantes sont conservees, sans etre additionnees au
+taux de la version courante. Aucun de ces essais ne garantit zero erreur future.
+Non qualifies : distance, temperature, brouilleurs controles, fonctionnement
+de plusieurs heures, et tous les cas de reset. Le bruit ROM au boot subsiste ;
+les tests attendent six secondes. BREAK, autres formats serie, AT et signaux
+de controle d'un modem telephonique ne sont pas emules : le contrat porte sur
+le flux binaire 300 bauds 8N1. FEC/CRC finis ne garantissent pas zero erreur absolue.

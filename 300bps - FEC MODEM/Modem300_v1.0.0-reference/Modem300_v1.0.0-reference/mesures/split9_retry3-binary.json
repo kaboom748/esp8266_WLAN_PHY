@@ -1,0 +1,95 @@
+{
+  "baud": 300,
+  "format": "8N1",
+  "flow_control": false,
+  "firmware": "split9_retry3",
+  "started_utc": "2026-10-13T19:29:23.458539+00:00",
+  "cases": {
+    "A_to_B": {
+      "elapsed_seconds": 8.66750689491164,
+      "host_errors": [],
+      "A_to_B": {
+        "sent_bytes": 200,
+        "received_bytes": 19,
+        "expected_frames": 8,
+        "exact_frames": 0,
+        "missing_frames": 8,
+        "invalid_frames": 1,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": false,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "2967adaa7c5f6c2563c7d8734b06d4183ab46104a50192cbc0d548618e8826d8",
+        "sha256_received": "97388557f914c1c3b4d4497ab3d7b2ddba64ed7382e36976dce00c9f4894287e",
+        "sent_hex": "c0010000000102030405060708090a0b0c0d0e0feae09f2fc0c0010100101112131415161718191a1b1c1d1e1fe449a4fac0c0010200202122232425262728292a2b2c2d2e2fb7b4995ec0c0010300303132333435363738393a3b3c3d3e3fb91da28bc0c0010400404142434445464748494a4b4c4d4e4f504893cdc0c0010500505152535455565758595a5b5c5d5e5f5ee1a818c0c0010600606162636465666768696a6b6c6d6e6f0d1c95bcc0c0010700707172737475767778797a7b7c7d7e7f03b5ae69c0",
+        "received_hex": "00e000e402250134c0434ac0525961686f777e"
+      },
+      "unexpected_reverse_bytes": 0
+    },
+    "B_to_A": {
+      "elapsed_seconds": 8.667441398953088,
+      "host_errors": [],
+      "B_to_A": {
+        "sent_bytes": 200,
+        "received_bytes": 18,
+        "expected_frames": 8,
+        "exact_frames": 0,
+        "missing_frames": 8,
+        "invalid_frames": 0,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": false,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "463811deb254bddda0d97050d77d59010f8e9e7d435087d3993406f01531c192",
+        "sha256_received": "2a064f586af5eb86e44d70ca8d780a98eeeeb2ad8e8d4eb0f7ffe1adccc61367",
+        "sent_hex": "c0020000000102030405060708090a0b0c0d0e0f4366c98cc0c0020100101112131415161718191a1b1c1d1e1f4dcff259c0c0020200202122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c0020600606162636465666768696a6b6c6d6e6fa49ac31fc0c0020700707172737475767778797a7b7c7d7e7faa33f8cac0",
+        "received_hex": "040e001959242e3610414bc056f761c3737d"
+      },
+      "unexpected_reverse_bytes": 0
+    },
+    "simultaneous": {
+      "elapsed_seconds": 8.667717635049485,
+      "host_errors": [],
+      "A_to_B": {
+        "sent_bytes": 200,
+        "received_bytes": 20,
+        "expected_frames": 8,
+        "exact_frames": 0,
+        "missing_frames": 8,
+        "invalid_frames": 3,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": false,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "2967adaa7c5f6c2563c7d8734b06d4183ab46104a50192cbc0d548618e8826d8",
+        "sha256_received": "3201b9c31efac2f3021b333ce30f23ecb23c90b4dc6550db8d276d363aa8e080",
+        "sent_hex": "c0010000000102030405060708090a0b0c0d0e0feae09f2fc0c0010100101112131415161718191a1b1c1d1e1fe449a4fac0c0010200202122232425262728292a2b2c2d2e2fb7b4995ec0c0010300303132333435363738393a3b3c3d3e3fb91da28bc0c0010400404142434445464748494a4b4c4d4e4f504893cdc0c0010500505152535455565758595a5b5c5d5e5f5ee1a818c0c0010600606162636465666768696a6b6c6d6e6f0d1c95bcc0c0010700707172737475767778797a7b7c7d7e7f03b5ae69c0",
+        "received_hex": "c003c0121921282f373ec043c0525961686f777e"
+      },
+      "B_to_A": {
+        "sent_bytes": 200,
+        "received_bytes": 20,
+        "expected_frames": 8,
+        "exact_frames": 0,
+        "missing_frames": 8,
+        "invalid_frames": 0,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": false,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "463811deb254bddda0d97050d77d59010f8e9e7d435087d3993406f01531c192",
+        "sha256_received": "4071dcd771416fcbe5663c88cabdb5024064b08a0113f2dbfa642017f2e1fb88",
+        "sent_hex": "c0020000000102030405060708090a0b0c0d0e0f4366c98cc0c0020100101112131415161718191a1b1c1d1e1f4dcff259c0c0020200202122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c0020600606162636465666768696a6b6c6d6e6fa49ac31fc0c0020700707172737475767778797a7b7c7d7e7faa33f8cac0",
+        "received_hex": "000ac0151f202732323c0247ce525cbb646e0079"
+      }
+    }
+  },
+  "telemetry": [
+    "FAST_FINAL r=1 fs=312500 tx=4995 rx=4992 ta=0 ra=0 inv=2 cand=8568 fec=18 prep=238 setup=797 restore=647 dsp=1174 late=91 offer=400 out=38 exp=400 retry=857 ack=0 dup=0 lateRx=22 over=0 missTx=0 cal=4992 off=-19968 unit=24576 tune=0 wrong=0 heap=38992 releaseLate=1934 releaseDrop=0 demod=796 filter=98 search=317 uartRx=400 uartErrors=0 uartOverflow=0\nSTAGES r=1 noSync=2 fecReject=0 headerReject=0 crcReject=0 metaReject=0 captureLateMax=10 captureLateCount=0 noSyncLate=0 edgeSync=0 validLate=0\nARQ r=1 attempt1=400 attempt2=400 attempt3=400 attempt4=57 injectedDrops=1200 maxAge=29634\nADC r=1 accumulation=64 maxCycles=455 timeouts=0\nUART r=1 timerDrop=0 shiftDrop=0 fifoDrop=0 pastDrop=0 waitMax=1935 periodMin=32815 periodMax=33935 periodSum=13287444 periodCount=398 divider=265896 recoveredPeriod=33325\nWIFI r=1 reconnectBefore=1 reconnectNow=0 autoConnect=0 channel=11 quietSdk=0\nCLOCK r=1 setupDeficitUs=60 restoreDeficitUs=54\nBAD100 r=1 first=0 counts=0000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\r\nBAD100 r=1 first=50 counts=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\r\nBAD100 r=1 first=100 counts=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000=150 counts=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\r\nBAD100 r=1 first=200 counts=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\r\nBAD100 r=1 first=250 counts=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\r\nBAD100 r=1 first=300 counts=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\r\nBAD100 r0000000000000000000000000\r\nBAD10r=1 first=400 counts=0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\r\n",
+    "FAST_FINAL r=2 fs=312500 tx=4998 rx=4956 ta=0 ra=0 inv=45 cand=8292 fec=68 prep=162 setup=888 restore=654 dsp=3052 late=91 offer=400 out=39 exp=400 retry=860 ack=0 dup=0 lateRx=15 over=0 missTx=0 cal=4956 off=20608 unit=24576 tune=0 wrong=0 heap=38992 releaseLate=2008 releaseDrop=2 demod=1543 filter=200 search=1321 uartRx=400 uartErrors=0 uartOverflow=0\nSTAGES r=2 noSync=20 fecReject=38 headerReject=0 crcReject=0 metaReject=0 captureLateMax=13 captureLateCount=0 noSyncLate=0 edgeSync=173 validLate=0\nARQ r=2 attempt1=400 attempt2=400 attempt3=400 attempt4=60 injectedDrops=1185 maxAge=29679\nADC r=2 accumulation=64 maxCycles=455 timeouts=0\nUART r=2 timerDrop=2 shiftDrop=0 fifoDrop=0 pastDrop=0 waitMax=1907 periodMin=32709 periodMax=33900 periodSum=13256942 periodCount=398 divider=266440 recoveredPeriod=33385\nWIFI r=2 reconnectBefore=1 reconnectNow=0 autoConnect=0 channel=3 quietSdk=0\nCLOCK r=2 setupDeficitUs=58 restoreDeficitUs=55\nBAD100 r=2 first=0 counts=0001000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\r\nBAD100 r=2 first=50 counts=0000000001000001000000000000000000000000000000000000000000000000000000000000010000000000000000000000\r\nBAD100 r=2 first=100 counts=0000000000000000000000000000000000000000000000000100000000000000000000000000010000010000000000000100\r\nBAD100 r=2 first=150 counts=0000000000000000000\nBAD100 r=2 first=200 counts=0000000000000000000000000000000000000000000000000000000000000000000000000100000100000000000000000001\r\nBAD100 r=2 first=250 counts=0000000000010000000000000000000000000000000000000000000000010000010000000000020000000100010101010101\r\nBAD100 r=2 first=300 counts=0000000000010000000000000000000100000000000000000000000000000001000000000000010000000000000000000000\r\nBAD100 r=2 first=350 counts=0000000000000000010000010100000000000001000000000000000000000000000000000000000000000000000000000100\r\nBAD100 r=2 first=400 counts=0000000000000000000000010000000000000000000100000100000000000000000000000000000000000000000000000000\r\n"
+  ]
+}

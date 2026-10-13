@@ -1,0 +1,95 @@
+{
+  "baud": 300,
+  "format": "8N1",
+  "flow_control": false,
+  "firmware": "phase4",
+  "started_utc": "2026-10-13T18:40:57.484386+00:00",
+  "cases": {
+    "A_to_B": {
+      "elapsed_seconds": 8.668014876078814,
+      "host_errors": [],
+      "A_to_B": {
+        "sent_bytes": 200,
+        "received_bytes": 200,
+        "expected_frames": 8,
+        "exact_frames": 8,
+        "missing_frames": 0,
+        "invalid_frames": 0,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": true,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "2967adaa7c5f6c2563c7d8734b06d4183ab46104a50192cbc0d548618e8826d8",
+        "sha256_received": "2967adaa7c5f6c2563c7d8734b06d4183ab46104a50192cbc0d548618e8826d8",
+        "sent_hex": "c0010000000102030405060708090a0b0c0d0e0feae09f2fc0c0010100101112131415161718191a1b1c1d1e1fe449a4fac0c0010200202122232425262728292a2b2c2d2e2fb7b4995ec0c0010300303132333435363738393a3b3c3d3e3fb91da28bc0c0010400404142434445464748494a4b4c4d4e4f504893cdc0c0010500505152535455565758595a5b5c5d5e5f5ee1a818c0c0010600606162636465666768696a6b6c6d6e6f0d1c95bcc0c0010700707172737475767778797a7b7c7d7e7f03b5ae69c0",
+        "received_hex": "c0010000000102030405060708090a0b0c0d0e0feae09f2fc0c0010100101112131415161718191a1b1c1d1e1fe449a4fac0c0010200202122232425262728292a2b2c2d2e2fb7b4995ec0c0010300303132333435363738393a3b3c3d3e3fb91da28bc0c0010400404142434445464748494a4b4c4d4e4f504893cdc0c0010500505152535455565758595a5b5c5d5e5f5ee1a818c0c0010600606162636465666768696a6b6c6d6e6f0d1c95bcc0c0010700707172737475767778797a7b7c7d7e7f03b5ae69c0"
+      },
+      "unexpected_reverse_bytes": 0
+    },
+    "B_to_A": {
+      "elapsed_seconds": 8.667590350029059,
+      "host_errors": [],
+      "B_to_A": {
+        "sent_bytes": 200,
+        "received_bytes": 200,
+        "expected_frames": 8,
+        "exact_frames": 8,
+        "missing_frames": 0,
+        "invalid_frames": 0,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": true,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "463811deb254bddda0d97050d77d59010f8e9e7d435087d3993406f01531c192",
+        "sha256_received": "463811deb254bddda0d97050d77d59010f8e9e7d435087d3993406f01531c192",
+        "sent_hex": "c0020000000102030405060708090a0b0c0d0e0f4366c98cc0c0020100101112131415161718191a1b1c1d1e1f4dcff259c0c0020200202122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c0020600606162636465666768696a6b6c6d6e6fa49ac31fc0c0020700707172737475767778797a7b7c7d7e7faa33f8cac0",
+        "received_hex": "c0020000000102030405060708090a0b0c0d0e0f4366c98cc0c0020100101112131415161718191a1b1c1d1e1f4dcff259c0c0020200202122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c0020600606162636465666768696a6b6c6d6e6fa49ac31fc0c0020700707172737475767778797a7b7c7d7e7faa33f8cac0"
+      },
+      "unexpected_reverse_bytes": 0
+    },
+    "simultaneous": {
+      "elapsed_seconds": 8.667362142005004,
+      "host_errors": [],
+      "A_to_B": {
+        "sent_bytes": 200,
+        "received_bytes": 200,
+        "expected_frames": 8,
+        "exact_frames": 8,
+        "missing_frames": 0,
+        "invalid_frames": 0,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": true,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "2967adaa7c5f6c2563c7d8734b06d4183ab46104a50192cbc0d548618e8826d8",
+        "sha256_received": "2967adaa7c5f6c2563c7d8734b06d4183ab46104a50192cbc0d548618e8826d8",
+        "sent_hex": "c0010000000102030405060708090a0b0c0d0e0feae09f2fc0c0010100101112131415161718191a1b1c1d1e1fe449a4fac0c0010200202122232425262728292a2b2c2d2e2fb7b4995ec0c0010300303132333435363738393a3b3c3d3e3fb91da28bc0c0010400404142434445464748494a4b4c4d4e4f504893cdc0c0010500505152535455565758595a5b5c5d5e5f5ee1a818c0c0010600606162636465666768696a6b6c6d6e6f0d1c95bcc0c0010700707172737475767778797a7b7c7d7e7f03b5ae69c0",
+        "received_hex": "c0010000000102030405060708090a0b0c0d0e0feae09f2fc0c0010100101112131415161718191a1b1c1d1e1fe449a4fac0c0010200202122232425262728292a2b2c2d2e2fb7b4995ec0c0010300303132333435363738393a3b3c3d3e3fb91da28bc0c0010400404142434445464748494a4b4c4d4e4f504893cdc0c0010500505152535455565758595a5b5c5d5e5f5ee1a818c0c0010600606162636465666768696a6b6c6d6e6f0d1c95bcc0c0010700707172737475767778797a7b7c7d7e7f03b5ae69c0"
+      },
+      "B_to_A": {
+        "sent_bytes": 200,
+        "received_bytes": 200,
+        "expected_frames": 8,
+        "exact_frames": 8,
+        "missing_frames": 0,
+        "invalid_frames": 0,
+        "crc_valid_wrong_payload": 0,
+        "duplicates": 0,
+        "reordered": 0,
+        "exact_stream": true,
+        "received_is_subsequence_of_sent": true,
+        "sha256_sent": "463811deb254bddda0d97050d77d59010f8e9e7d435087d3993406f01531c192",
+        "sha256_received": "463811deb254bddda0d97050d77d59010f8e9e7d435087d3993406f01531c192",
+        "sent_hex": "c0020000000102030405060708090a0b0c0d0e0f4366c98cc0c0020100101112131415161718191a1b1c1d1e1f4dcff259c0c0020200202122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c0020600606162636465666768696a6b6c6d6e6fa49ac31fc0c0020700707172737475767778797a7b7c7d7e7faa33f8cac0",
+        "received_hex": "c0020000000102030405060708090a0b0c0d0e0f4366c98cc0c0020100101112131415161718191a1b1c1d1e1f4dcff259c0c0020200202122232425262728292a2b2c2d2e2f1e32cffdc0c0020300303132333435363738393a3b3c3d3e3f109bf428c0c0020400404142434445464748494a4b4c4d4e4ff9cec56ec0c0020500505152535455565758595a5b5c5d5e5ff767febbc0c0020600606162636465666768696a6b6c6d6e6fa49ac31fc0c0020700707172737475767778797a7b7c7d7e7faa33f8cac0"
+      }
+    }
+  },
+  "telemetry": [
+    "FAST_FINAL r=1 fs=312500 tx=6422 rx=6406 ta=0 ra=0 inv=15 cand=10750 fec=31 prep=241 setup=54 restore=33 dsp=1584 late=62 offer=400 out=400 exp=0 retry=9 ack=400 dup=6 lateRx=0 over=0 missTx=0 cal=6406 off=-19072 unit=22528 tune=0 wrong=0 heap=39624 releaseLate=311 releaseDrop=0 demod=788 filter=98 search=721 uartRx=400 uartErrors=0 uartOverflow=0\nSTAGES r=1 noSync=13 fecReject=4 headerReject=0 crcReject=0 metaReject=0 captureLateMax=9 captureLateCount=0 noSyncLate=0 edgeSync=89 validLate=0\nARQ r=1 attempt1=400 attempt2=9 attempt3=0 attempt4=0 injectedDrops=0 maxAge=13845\nADC r=1 accumulation=64 maxCycles=428 timeouts=0\nUART r=1 timerDrop=0 shiftDrop=0 fifoDrop=0 pastDrop=0 waitMax=312 periodMin=33064 periodMax=33736 periodSum=13291558 periodCount=398 divider=265800 recoveredPeriod=33305\n",
+    "FAST_FINAL r=2 fs=312500 tx=6416 rx=6250 ta=0 ra=0 inv=181 cand=10597 fec=90 prep=163 setup=55 restore=32 dsp=3255 late=67 offer=400 out=400 exp=0 retry=6 ack=400 dup=0 lateRx=0 over=0 missTx=0 cal=6250 off=20992 unit=24064 tune=0 wrong=0 heap=39624 releaseLate=434 releaseDrop=0 demod=1619 filter=197 search=1453 uartRx=400 uartErrors=0 uartOverflow=0\nSTAGES r=2 noSync=103 fecReject=110 headerReject=0 crcReject=0 metaReject=0 captureLateMax=9 captureLateCount=0 noSyncLate=0 ed64 maxCycles=428 timeouts=0\nUARThiftDrop=0 fifoDrop=0 pastDrop=0 waitMax=435 periodMin=33002 periodMax=33598 periodSum=13256178 periodCount=398 divider=266536 recoveredPeriod=33397\n"
+  ]
+}

@@ -1,0 +1,23 @@
+MESURES DU BANC, SANS MELANGER LES VERSIONS
+
+Version livree et laissee sur les cartes : release_uart_wait.
+  release_uart_wait-binary.json : test des binaires persistants livres.
+  split9_uart_wait-binary.json : meme correction, build instrumente temporaire.
+
+Comparaisons et essais anterieurs :
+  split9_micros-binary.json : essai court, apres conversion des temps UART.
+  split9_micros_long-binary.json : essai long avant service UART dans l'attente RF.
+  release_final-binary.json : ancien candidat, NON livre comme version finale.
+  split9-binary.json : deux canaux, ancien temps UART base sur cycles CPU.
+  split9_release_window-binary.json : ancienne fenetre, encore en cycles CPU.
+  split9_retry3-binary.json : pertes des trois premieres copies provoquees.
+  retry3_ch11-binary.json, retry4_ch11-binary.json : anciens tests forces,
+    canal commun et cycle 7 ms, pas le profil radio final a deux canaux.
+
+Les autres fichiers sont des essais exploratoires de canaux, gains, fonctions
+SDK ou echantillonnage. Ils ne constituent pas le resultat de la version livree.
+Les traces contiennent les flux hexadecimaux et les empreintes SHA-256.
+Un champ de diagnostic absent ou tronque signifie inconnu, pas zero.
+Un ecart de longueur n'est pas un taux d'erreur binaire radio.
+Les fichiers anciens restent disponibles pour comparaison, sans les additionner
+aux statistiques finales. Les noms historiques ne sont pas des certifications.
