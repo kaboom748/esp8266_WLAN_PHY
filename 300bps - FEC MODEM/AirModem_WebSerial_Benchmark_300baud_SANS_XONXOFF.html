@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>AirModem — Banc d’essai 300 bauds · sans XON/XOFF</title><style>:root{color-scheme:dark;--bg:#07121f;--panel:#102238;--panel2:#0b1d31;--line:#294660;--txt:#edf5ff;--muted:#a2bbd2;--blue:#5caeff;--amber:#ffb76a;--mint:#57d4b2;--red:#ff7690}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{max-width:1450px;margin:0 auto;padding:22px 22px 60px;background:radial-gradient(circle at top right,#122943 0,#07121f 48%);font-family:system-ui,Segoe UI,Arial,sans-serif;color:var(--txt);font-size:14px}h1{font-size:clamp(22px,2.5vw,32px);letter-spacing:-.03em;margin:0}h2{font-size:18px;margin:0 0 14px}h3{font-size:15px;margin:0 0 9px}p{line-height:1.52;color:var(--muted)}small,.subtle{color:var(--muted)}.subtitle{margin:7px 0 22px}.panel{background:rgba(16,34,56,.96);border:1px solid var(--line);border-radius:14px;padding:17px;margin:13px 0;box-shadow:0 6px 24px #00000018}.note{border-left:4px solid var(--amber);background:#272735;padding:12px 16px;border-radius:10px;font-size:13px;line-height:1.55}.note strong{color:white}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.connect-panel{min-height:160px}.port-top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.port-top h2{margin:0}.port-badge{display:inline-block;padding:4px 9px;border:1px solid #476987;border-radius:22px;color:var(--muted);font-size:12px}.port-badge.ok{color:var(--mint);border-color:#347c70}.port-badge.pause{color:var(--amber);border-color:#947049}.port-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:13px}.mini{background:#09182a;border-radius:8px;padding:10px}.mini b{display:block;font-size:16px;font-variant-numeric:tabular-nums;margin:4px 0}.mini span{color:var(--muted);font-size:11px}.buttons{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.buttons button{margin-top:12px}button{appearance:none;background:#236fb8;border:1px solid #468bca;color:white;border-radius:9px;padding:10px 14px;font-size:13px;font-weight:650;cursor:pointer}button:hover:not(:disabled){filter:brightness(1.13)}button.secondary{background:#273b53;border-color:#506984}button.danger{background:#803549;border-color:#aa5269}button:disabled{opacity:.4;cursor:not-allowed}input,select{font-size:14px;background:#081829;color:white;border:1px solid #54718d;padding:8px 9px;border-radius:8px;min-width:0}input[type=number]{width:90px}select{max-width:250px}.controls{display:flex;flex-wrap:wrap;align-items:end;gap:11px 16px}.controls label{display:flex;flex-direction:column;gap:5px;color:var(--muted);font-size:12px}.controls label>input,.controls label>select{color:white}.state-line{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--muted)}.meter-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.meter{border:1px solid #2a4966;background:linear-gradient(145deg,#0a1a2d,#0e2541);border-radius:12px;text-align:center;padding:12px 10px;min-width:0}.meter h3{font-size:13px;font-weight:700;margin:0;color:#d9e6f5}.meter canvas{display:block;width:100%;height:158px;max-width:310px;margin:auto}.reading{font-weight:750;font-size:clamp(19px,2vw,27px);font-variant-numeric:tabular-nums;line-height:1}.reading span{font-size:13px;color:var(--muted);font-weight:500}.detail{font-size:12px;color:var(--muted);min-height:2.8em;margin-top:8px;line-height:1.42}.directionTitle{font-size:19px;margin:0 0 12px}.directionTitle.AB{color:var(--blue)}.directionTitle.BA{color:var(--amber)}.diagnose-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:13px}.mini-table{width:100%;border-collapse:collapse;font-size:13px}.mini-table th,.mini-table td{padding:8px 6px;border-bottom:1px solid #29435f}.mini-table th{text-align:left;color:var(--muted);font-weight:600}.mini-table td{text-align:right;font-variant-numeric:tabular-nums}.mini-table td:nth-child(2){color:var(--blue)}.mini-table td:nth-child(3){color:var(--amber)}.diag{padding:12px;background:#08192c;border-radius:9px;white-space:pre-line;line-height:1.6;min-height:140px;color:#dbe9fa}.chart-holder{position:relative}.chart-holder canvas{display:block;width:100%;height:225px;background:#07192b;border:1px solid #284b69;border-radius:10px}.leg{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:8px 0}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.report{height:165px;overflow:auto;background:#071625;color:#cee3f5;border:1px solid #294660;border-radius:9px;padding:11px;white-space:pre-wrap;font:12px ui-monospace,SFMono-Regular,Consolas,monospace} .low{color:var(--mint)}.warn{color:var(--amber)}.err{color:var(--red)}.status-area{font-size:14px;margin:7px 0 1px;color:#dce9f9}.progress-track{height:8px;background:#081827;border-radius:6px;overflow:hidden;margin-top:10px}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#3696dd,#62d8b8)}#btnStop{border:1px solid #dc667d}a{color:#8dc5ff}footer{margin:22px 0;color:var(--muted);font-size:12px;line-height:1.6}.inline-note{font-size:12px;color:var(--muted);margin:6px 0 0}.pill{padding:4px 8px;border:1px solid #476381;border-radius:9px;font-size:11px;color:var(--muted)}.hourglass-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.hg-card{border:1px solid #2a4966;background:linear-gradient(145deg,#09182a,#0d223c);border-radius:12px;padding:12px;min-width:0}.hg-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.hg-top h3{margin:0;font-size:16px}.hg-wrap{display:grid;grid-template-columns:minmax(250px,320px) 1fr;gap:14px;align-items:center}.hg-wrap canvas{display:block;width:100%;height:320px;max-width:320px;margin:auto}.hg-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.hg-stat{background:#09182a;border:1px solid #27425c;border-radius:10px;padding:10px}.hg-stat span{display:block;color:var(--muted);font-size:11px}.hg-stat b{display:block;font-size:17px;font-variant-numeric:tabular-nums;margin-top:4px}.hg-status{margin-top:8px;padding:10px;border-radius:10px;background:#07192b;border:1px solid #24435f;color:#dbe7f5;line-height:1.45}.hg-help{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.5}.fineprint{font-size:12px;color:var(--muted)}@media(max-width:900px){.diagnose-grid,.grid2,.hourglass-grid{grid-template-columns:1fr}.meter-row{grid-template-columns:repeat(3,minmax(0,1fr))}.hg-wrap{grid-template-columns:1fr}}@media(max-width:650px){body{padding:12px}.meter-row{grid-template-columns:1fr}.port-stats{grid-template-columns:repeat(3,1fr)}.panel{padding:13px}.hg-stats{grid-template-columns:1fr 1fr}}
+
+.budgetAlert{border-left-color:var(--red);background:#302330}.mini-table tr:last-child td{border-bottom:0}.raw-reading{font-size:13px!important;line-height:1.7;white-space:normal;word-break:break-word}.buttons{row-gap:1px}@media(max-width:640px){.controls label{min-width:140px}}</style></head><body><header><h1>AirModem <span style="color:var(--blue)">WebSerial</span> — Test 300 bauds</h1><p class="subtitle">Fiabilité du transfert binaire transparent, pertes de paquets, corruption, délai, jitter applicatif et débit utile réel — en A→B, B→A ou simultanément.</p></header>
+<div class="note"><strong>Modem cible :</strong> 2 × ESP8266 REV6/REV7 · radio 2-FSK avec FEC · <strong>UART 300 bauds, 8N1, sans XON/XOFF</strong>. Pour le test, activer le mode <strong>TRANSPARENT</strong> avec <code>AIRMODEM_DIAGNOSTICS=0</code> sur les deux modems. Fermer PuTTY/Arduino avant connexion. Utiliser Chrome/Edge sur <code>localhost</code> ou HTTPS. Chaque paquet du benchmark porte un CRC32 et un numéro de séquence <em>dans les données utilisateur</em>, sans modifier le firmware. Les nombres « perdu » ne sont définitifs qu’après la vidange.</div>
+<section class="grid2">
+<div class="panel connect-panel"><div class="port-top"><h2 style="color:var(--blue)">Modem A · port COM</h2><span class="port-badge" id="badgeA">Déconnecté</span></div><div class="buttons"><button id="connectA">Connecter A</button><button class="secondary" disabled="" id="closeA">Déconnecter</button></div><div class="port-stats">
+<div class="mini"><span>Octets bruts reçus</span><b id="rawInA">0 o</b></div>
+<div class="mini"><span>Octets remis à l’USB</span><b id="rawOutA">0 o</b></div>
+<div class="mini"><span>Trames/segments invalides</span><b id="rawBadA">0</b></div>
+</div><div class="inline-note" id="flowA">Sans contrôle de flux · 8N1 · données 0x11/0x13 normales</div></div>
+<div class="panel connect-panel"><div class="port-top"><h2 style="color:var(--amber)">Modem B · port COM</h2><span class="port-badge" id="badgeB">Déconnecté</span></div><div class="buttons"><button id="connectB">Connecter B</button><button class="secondary" disabled="" id="closeB">Déconnecter</button></div><div class="port-stats">
+<div class="mini"><span>Octets bruts reçus</span><b id="rawInB">0 o</b></div>
+<div class="mini"><span>Octets remis à l’USB</span><b id="rawOutB">0 o</b></div>
+<div class="mini"><span>Trames/segments invalides</span><b id="rawBadB">0</b></div>
+</div><div class="inline-note" id="flowB">Sans contrôle de flux · 8N1 · données 0x11/0x13 normales</div></div>
+</section>
+<section class="panel"><h2>Configuration du test</h2><div class="controls">
+<label>Sens à tester<select id="mode"><option value="AB">A → B uniquement</option><option value="BA">B → A uniquement</option><option selected="" value="both">A ↔ B simultanément</option><option value="pingAB">Ping A → B → A</option><option value="pingBA">Ping B → A → B</option></select></label>
+<label>Charge utile demandée (o/s/sens)<input id="rate" max="30" min="1" step="1" type="number" value="12"/></label>
+<label>Données par paquet (octets)<select id="size"><option value="1">1 — petit caractère</option><option value="2">2 — latence</option><option value="4">4 — latence</option><option value="8">8</option><option value="12">12</option><option value="16">16</option><option selected="" value="24">24 — équilibré</option><option value="32">32</option><option value="48">48</option><option value="64">64 — débit</option><option value="96">96 — stress</option></select></label>
+<label>Motif transmis<select id="profile"><option selected="" value="random">Binaire pseudo-aléatoire</option><option value="all">0–255 (balayage)</option><option value="control">0x00, 0x11, 0x13, 0x7D, 0x7E, etc.</option><option value="ascii">Texte ASCII</option></select></label>
+<label>Paquets non résolus autorisés<select id="window"><option value="1">1 — latence sans file</option><option value="2">2</option><option selected="" value="4">4 — régulier</option><option value="8">8 — stress</option></select></label>
+<label>Durée d’injection (s)<input id="duration" max="3600" min="10" type="number" value="120"/></label>
+<label>Vidange après injection (s)<input id="drain" max="120" min="5" type="number" value="30"/></label>
+<label>Seuil de retard (s)<input id="timeout" max="120" min="10" type="number" value="25"/></label>
+<label>Graduation du débit<select id="scale"><option selected="" value="auto">Automatique</option><option value="5">5 o/s</option><option value="10">10 o/s</option><option value="20">20 o/s</option><option value="30">30 o/s</option><option value="50">50 o/s</option></select></label>
+</div><div class="buttons"><button disabled="" id="btnStart">Démarrer le benchmark</button>
+<button class="danger" disabled="" id="btnStop">Arrêter</button>
+<button class="secondary" id="btnCSV">CSV · évolution</button>
+<button class="secondary" id="btnPackets">CSV · chaque paquet</button>
+<button class="secondary" id="btnJSON">Rapport JSON</button>
+<button class="secondary" id="btnSelf">Autotest logiciel</button>
+<button class="secondary" id="btnReset">Réinitialiser</button></div><div class="note" id="budget" style="margin-top:14px;">Calcul du budget série à 300 bauds…</div>
+<div class="buttons" style="margin-top:0"><button class="secondary" id="presetLatency">Réglage latence</button>
+<button class="secondary" id="presetQuality">Réglage fiabilité (10 min)</button>
+<button class="secondary" id="presetStress">Réglage charge</button>
+<button class="secondary" id="presetControl">Réglage octets 0x11/0x13</button></div><div class="status-area" id="runState">Prêt : connecte les ports A et B. Pas d’attente de XON.</div><div class="progress-track"><div class="progress-fill" id="progress"></div></div><div class="inline-note">Cadence limitée à 30 octets physiques/s par COM, encadrement compris. Chaque écriture Web Serial n’est qu’une remise au pilote : cela ne prouve pas que l’ESP a physiquement reçu chaque octet.</div></section>
+<section class="panel" id="rawPanel">
+<h2>Test complémentaire — flux brut transparent proche de 30 octets/s</h2>
+<p>Sans paquet applicatif, sans CRC32 ajouté à chaque bloc et sans XON/XOFF. Une unique amorce de 16 octets aligne un flux binaire pseudo-aléatoire connu du navigateur. Ce test sert à éprouver les tampons UART lorsque la liaison approche son débit maximal physique.</p>
+<div class="controls">
+<label>Sens brut<select id="rawMode"><option value="AB">A → B</option><option value="BA">B → A</option><option selected="" value="both">A ↔ B simultanément</option></select></label>
+<label>Débit brut demandé (o/s/sens)<input id="rawRate" max="30" min="1" type="number" value="30"/></label>
+<label>Durée d’injection (s)<input id="rawDuration" max="3600" min="10" type="number" value="120"/></label>
+<label>Vidange (s)<input id="rawDrain" max="120" min="5" type="number" value="30"/></label>
+</div>
+<div class="buttons"><button disabled="" id="btnRawStart">Démarrer le test BRUT</button><button class="danger" disabled="" id="btnRawStop">Arrêter le brut</button><button class="secondary" id="btnRawCSV">Exporter bilan brut CSV</button></div>
+<div class="status-area" id="rawState">En attente du flux brut.</div>
+<div class="grid2" style="margin-top:12px"><div class="mini"><span>Brut A → B</span><b class="raw-reading" id="rawAB">—</b></div><div class="mini"><span>Brut B → A</span><b class="raw-reading" id="rawBA">—</b></div></div>
+<div class="inline-note">Les compteurs « manquants » et « altérés » du flux brut sont <strong>des estimations par corrélation</strong> avec un motif pseudo-aléatoire, pas des erreurs RF localisées. Un marqueur de démarrage perdu, un long trou ou un bruit intense peuvent fausser l’estimation. Pour compter rigoureusement les paquets applicatifs, utilise le benchmark CRC32 plus haut.</div>
+</section><section class="panel"><h2>Direction A → B</h2><div class="meter-row">
+<div class="meter"><h3>Débit reçu vérifié</h3><canvas height="174" id="gRateAB" width="300"></canvas><div class="reading" id="vRateAB">0,0 <span>o/s</span></div><div class="detail" id="subRateAB">Moyenne 5 s · échelle auto</div></div>
+<div class="meter"><h3>Latence applicative</h3><canvas height="174" id="gLatAB" width="300"></canvas><div class="reading" id="vLatAB">— <span>ms</span></div><div class="detail" id="subLatAB">Médiane · p95 —</div></div>
+<div class="meter"><h3>Jitter de livraison</h3><canvas height="174" id="gJitAB" width="300"></canvas><div class="reading" id="vJitAB">— <span>ms</span></div><div class="detail" id="subJitAB">Médiane |Δlatence| · p95 —</div></div>
+</div></section>
+<section class="panel"><h2>Direction B → A</h2><div class="meter-row">
+<div class="meter"><h3>Débit reçu vérifié</h3><canvas height="174" id="gRateBA" width="300"></canvas><div class="reading" id="vRateBA">0,0 <span>o/s</span></div><div class="detail" id="subRateBA">Moyenne 5 s · échelle auto</div></div>
+<div class="meter"><h3>Latence applicative</h3><canvas height="174" id="gLatBA" width="300"></canvas><div class="reading" id="vLatBA">— <span>ms</span></div><div class="detail" id="subLatBA">Médiane · p95 —</div></div>
+<div class="meter"><h3>Jitter de livraison</h3><canvas height="174" id="gJitBA" width="300"></canvas><div class="reading" id="vJitBA">— <span>ms</span></div><div class="detail" id="subJitBA">Médiane |Δlatence| · p95 —</div></div>
+</div></section>
+<section class="panel"><h2>Sabliers temps réel — visualisation des octets</h2><div class="fineprint"><strong>Sabliers indicatifs :</strong> un grain = un octet <em>utile</em> associé à un paquet du benchmark validé par CRC32. Le haut = charge utile de trames confiées au pilote, le bas = charge utile vérifiée au port distant. Le col est une estimation, <strong>pas</strong> une lecture des buffers ESP. Les TX/RX sur une seconde n’ont pas forcément la même phase temporelle.</div><div class="hourglass-grid">
+<div class="hg-card"><div class="hg-top"><h3 style="color:var(--blue)">Flux A → B</h3><span class="pill">source A · destination B</span></div><div class="hg-wrap"><canvas height="360" id="hgAB" width="320"></canvas><div><div class="hg-stats"><div class="hg-stat"><span>TX utile · 1 s</span><b id="hgTxAB">0 o</b></div><div class="hg-stat"><span>RX utile · 1 s</span><b id="hgRxAB">0 o</b></div><div class="hg-stat"><span>Débit utile · 5 s</span><b id="hgRateAB">0,0 o/s</b></div><div class="hg-stat"><span>Latence médiane</span><b id="hgLatAB">— ms</b></div><div class="hg-stat"><span>Jitter médian</span><b id="hgJitAB">— ms</b></div><div class="hg-stat"><span>Octets en transit</span><b id="hgInflightAB">0 o</b></div><div class="hg-stat"><span>Grains visibles</span><b id="hgGrainsAB">haut 0 · bas 0</b></div><div class="hg-stat"><span>Écart TX−RX · 1 s</span><b id="hgGapAB">0 o</b></div></div><div class="hg-status" id="hgStatusAB">En attente de données A → B.</div><p class="hg-help">Attention : les octets visibles sont comptés par paquet complet. Des écarts instantanés TX−RX ne sont PAS des pertes; consulter le bilan après la vidange.</p></div></div></div>
+<div class="hg-card"><div class="hg-top"><h3 style="color:var(--amber)">Flux B → A</h3><span class="pill">source B · destination A</span></div><div class="hg-wrap"><canvas height="360" id="hgBA" width="320"></canvas><div><div class="hg-stats"><div class="hg-stat"><span>TX utile · 1 s</span><b id="hgTxBA">0 o</b></div><div class="hg-stat"><span>RX utile · 1 s</span><b id="hgRxBA">0 o</b></div><div class="hg-stat"><span>Débit utile · 5 s</span><b id="hgRateBA">0,0 o/s</b></div><div class="hg-stat"><span>Latence médiane</span><b id="hgLatBA">— ms</b></div><div class="hg-stat"><span>Jitter médian</span><b id="hgJitBA">— ms</b></div><div class="hg-stat"><span>Octets en transit</span><b id="hgInflightBA">0 o</b></div><div class="hg-stat"><span>Grains visibles</span><b id="hgGrainsBA">haut 0 · bas 0</b></div><div class="hg-stat"><span>Écart TX−RX · 1 s</span><b id="hgGapBA">0 o</b></div></div><div class="hg-status" id="hgStatusBA">En attente de données B → A.</div><p class="hg-help">Attention : les octets visibles sont comptés par paquet complet. Des écarts instantanés TX−RX ne sont PAS des pertes; consulter le bilan après la vidange.</p></div></div></div>
+</div></section><section class="grid2"><div class="panel"><h2>RTT · ping en boucle</h2><div class="meter-row" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)"><div class="meter"><h3>Aller-retour mesuré</h3><canvas height="174" id="gRTT" width="300"></canvas><div class="reading" id="vRTT">— <span>ms</span></div><div class="detail" id="subRTT">Mode ping requis</div></div><div class="meter"><h3>Variation RTT</h3><canvas height="174" id="gRTTJit" width="300"></canvas><div class="reading" id="vRTTJit">— <span>ms</span></div><div class="detail" id="subRTTJit">Jitter RTT</div></div></div></div>
+<div class="panel"><h2>Où ça ralentit ?</h2><div class="diag" id="diagnosis">Connecte A et B puis lance un essai. Le test n’utilise jamais XON/XOFF.</div></div></section>
+<section class="panel"><h2>Débit exploitable (moyenne glissante 5 s)</h2><div class="chart-holder"><canvas height="240" id="chartRate" width="1150"></canvas></div><div class="leg"><span><i class="dot" style="background:var(--blue)"></i>A → B</span><span><i class="dot" style="background:var(--amber)"></i>B → A</span><span>Courbes mises à jour chaque seconde ; adaptées aux paquets rares</span></div></section>
+<section class="panel"><h2>Latence des paquets validés</h2><div class="chart-holder"><canvas height="220" id="chartLat" width="1150"></canvas></div><div class="leg"><span><i class="dot" style="background:var(--blue)"></i>A → B</span><span><i class="dot" style="background:var(--amber)"></i>B → A</span><span>Horodatage avec <code>performance.now()</code>, horloge commune du navigateur</span><span>Latence du <strong>paquet complet</strong> (navigateur → UART → radio → UART → navigateur), pas le délai d’un caractère isolé.</span></div></section>
+<section class="panel"><h2>TX versus RX — mesures de la même application</h2><div style="overflow-x:auto"><table class="mini-table"><thead><tr><th>Mesure</th><th>A → B</th><th>B → A</th></tr></thead><tbody>
+<tr><th>Charge utile préparée</th><td id="queuedAB">0 o</td><td id="queuedBA">0 o</td></tr>
+<tr><th>Charge utile confiée au pilote USB*</th><td id="writtenAB">0 o</td><td id="writtenBA">0 o</td></tr>
+<tr><th>Charge utile reçue + CRC + contenu vérifiés</th><td id="receivedAB">0 o</td><td id="receivedBA">0 o</td></tr>
+<tr><th>Débit moyen reçu</th><td id="avgAB">—</td><td id="avgBA">—</td></tr>
+<tr><th>Paquets non résolus / manquants après vidange</th><td id="pendingAB">0 / 0</td><td id="pendingBA">0 / 0</td></tr>
+<tr><th>Paquets hors délai / récupérés tardivement</th><td id="timeoutAB">0 / 0</td><td id="timeoutBA">0 / 0</td></tr>
+<tr><th>Doublons / réordonnés / contenu différent</th><td id="badAB">0 / 0 / 0</td><td id="badBA">0 / 0 / 0</td></tr>
+<tr><th>Latence médiane / p95</th><td id="latSummaryAB">—</td><td id="latSummaryBA">—</td></tr>
+<tr><th>Taux manquant après vidange</th><td id="xoffFractionAB">—</td><td id="xoffFractionBA">—</td></tr>
+<tr><th>Si aucune perte : borne haute approximative 95 %</th><td id="confidenceAB">—</td><td id="confidenceBA">—</td></tr>
+<tr><th>Écriture Web Serial p95 / octets série totaux</th><td id="writeP95AB">—</td><td id="writeP95BA">—</td></tr>
+</tbody></table></div><div class="inline-note">* writer.write() a terminé : le pilote USB peut encore avoir des octets en cours d’émission. Le test temporise aussi chaque paquet selon 300 bauds. Un paquet manquant après vidange signale une perte sur la chaîne complète, pas forcément une erreur RF.</div></section>
+<section class="panel"><h2>Journal et autotest</h2><div aria-live="polite" class="report" id="log"></div></section>
+<footer><strong>Interprétation :</strong> les « pertes de paquets » sont les trames applicatives confiées au pilote USB mais non retrouvées et vérifiées après la vidange. La chaîne PC/USB/UART/ESP/radio est indissociable sans diagnostics internes séparés. CRC faux ne signifie pas automatiquement erreur RF. Le jitter présenté est la variation des latences des paquets complets, pas le jitter des bits UART. Aucun paquet n’est renvoyé par ce banc d’essai. Tests en mode transparent uniquement, diagnostics modem désactivés. Le navigateur peut ralentir les temporisations si son onglet est en arrière-plan. Aucune mesure ne peut garantir 0 % d’erreurs pour toutes les conditions futures.</footer>
+<script>'use strict';
+// AirModem 300 baud 8N1, no XON/XOFF, byte-transparent. No external services.
+const $=id=>document.getElementById(id);
+const BAUD=300, BYTES_PER_SECOND=BAUD/10, FLAG=0x7e, ESC=0x7d;
+const MAGIC1=0xa8, MAGIC2=0x55, VERSION=2;
+const KIND_AB=1,KIND_BA=2,KIND_PING=3,KIND_PONG=4;
+const MAX_PAYLOAD=256, MAX_DECODED=MAX_PAYLOAD+18, MAX_WIRE=2*MAX_DECODED+2;
+const BAUD_GUARD_MS=25;
+const ports={A:newPort('A'), B:newPort('B')};
+let test=null,samples=[],lastPaint=0,lastSample=0;
+const color={AB:'#5caeff',BA:'#ffb76a',RTT:'#57d4b2'};
+const now=()=>performance.now();
+function newPort(name){return {name,port:null,reader:null,writer:null,connected:false,readerTask:null,
+  txQueue:[],busy:false,wireReadyAt:0,byteIn:0,byteOut:0,writeTimes:[],
+  framesOK:0,badCRC:0,badLength:0,badMagic:0,desync:0,writeFailure:0,
+  decoding:false,escaped:false,packet:[],onFrame:null};}
+function appendLog(s){const el=$('log');el.textContent+='['+new Date().toLocaleTimeString('fr-FR')+'] '+s+'\n';
+ if(el.textContent.length>33000)el.textContent=el.textContent.slice(-26000);el.scrollTop=el.scrollHeight;}
+function sNum(n,dec=0){return Number.isFinite(n)?n.toLocaleString('fr-FR',{minimumFractionDigits:dec,maximumFractionDigits:dec}):'—';}
+function nfmt(n){return sNum(n,1);}
+function quantile(a,q){if(!a.length)return NaN;const b=[...a].sort((x,y)=>x-y),u=(b.length-1)*q,i=Math.floor(u);return b[i]+(b[Math.min(i+1,b.length-1)]-b[i])*(u-i);}
+function jitter(a,q=.5){if(a.length<2)return NaN;let z=[];for(let i=1;i<a.length;i++)z.push(Math.abs(a[i]-a[i-1]));return quantile(z,q);}
+function put32(out,x){out.push(x&255,(x>>>8)&255,(x>>>16)&255,(x>>>24)&255);}
+function get32(a,i){return (a[i]|(a[i+1]<<8)|(a[i+2]<<16)|(a[i+3]<<24))>>>0;}
+function crc32(data){let c=0xffffffff;for(const b of data){c^=b;for(let j=0;j<8;j++)c=(c>>>1)^((c&1)?0xedb88320:0);}return (c^0xffffffff)>>>0;}
+function payloadFor(kind,seq,length,profile='random'){
+ const v=new Uint8Array(length),pattern=[0,17,19,125,126,255,13,10,0x55,0xaa];
+ let x=(seq^(kind===KIND_AB?0x81a504b9:kind===KIND_BA?0x3fc80271:0x39f705a4))>>>0;
+ for(let i=0;i<length;i++){
+  if(profile==='all')v[i]=(seq*length+i)&255;
+  else if(profile==='control')v[i]=pattern[(i+seq)%pattern.length];
+  else if(profile==='ascii')v[i]=32+((seq*length+i)%95);
+  else{x^=x<<13;x^=x>>>17;x^=x<<5;v[i]=x&255;}
+ }return v;
+}
+function pack(kind,id,seq,payload){let b=[MAGIC1,MAGIC2,VERSION,kind];put32(b,id);put32(b,seq);b.push(payload.length&255,(payload.length>>>8)&255);for(let x of payload)b.push(x);put32(b,crc32(b));return Uint8Array.from(b);}
+// Important: XON (0x11) and XOFF (0x13) are now ordinary data, not controls and not escaped.
+function escapePacket(raw){const a=[FLAG];for(const b of raw){if(b===FLAG||b===ESC)a.push(ESC,b^0x20);else a.push(b);}a.push(FLAG);return Uint8Array.from(a);}
+function checkRaw(a){if(a.length<18||a[0]!==MAGIC1||a[1]!==MAGIC2||a[2]!==VERSION)return {ok:false,reason:'magic'};
+ const len=a[12]|a[13]<<8;if(len>MAX_PAYLOAD||a.length!==18+len)return {ok:false,reason:'length'};
+ if(crc32(a.subarray(0,a.length-4))!==get32(a,a.length-4))return {ok:false,reason:'crc'};
+ return {ok:true,kind:a[3],runId:get32(a,4),seq:get32(a,8),pay:a.slice(14,14+len)};
+}
+function parseFrame(p){const result=checkRaw(Uint8Array.from(p.packet));
+ if(!result.ok){if(result.reason==='crc')p.badCRC++;else if(result.reason==='length')p.badLength++;else p.badMagic++;}
+ else {p.framesOK++;if(p.onFrame)p.onFrame(result);else onFrame(p.name,result);}
+}
+function feedBytes(p,raw){p.byteIn+=raw.length;
+ if(rawTest?.active){rawReceive(p.name,raw);return;}
+ for(const b of raw){
+  if(b===FLAG){if(p.decoding&&p.packet.length){if(p.escaped){p.desync++;}else parseFrame(p);}
+   p.decoding=true;p.escaped=false;p.packet.length=0;continue;}
+  if(!p.decoding)continue;
+  if(p.escaped){p.packet.push(b^0x20);p.escaped=false;}
+  else if(b===ESC)p.escaped=true;
+  else p.packet.push(b);
+  if(p.packet.length>MAX_DECODED){p.desync++;p.decoding=false;p.escaped=false;p.packet.length=0;}
+ }
+}
+async function connectPort(name){const p=ports[name];if(p.connected)return;
+ if(!navigator.serial||!window.isSecureContext){appendLog('Web Serial exige Chrome/Edge en contexte sécurisé : localhost ou HTTPS.');return;}
+ try{
+  const port=await navigator.serial.requestPort();
+  if(Object.values(ports).some(q=>q.connected&&q.port===port))throw Error('Port déjà utilisé par l’autre modem');
+  await port.open({baudRate:300,dataBits:8,stopBits:1,parity:'none',flowControl:'none',bufferSize:8192});
+  Object.assign(p,{port,writer:port.writable.getWriter(),connected:true,txQueue:[],busy:false,wireReadyAt:0,byteIn:0,byteOut:0,
+    writeTimes:[],framesOK:0,badCRC:0,badLength:0,badMagic:0,desync:0,writeFailure:0,
+    decoding:false,escaped:false,packet:[],onFrame:null});
+  appendLog('Port '+name+' ouvert : 300 bauds 8N1, flowControl=none, octets 0x11/0x13 transparents.');
+  p.readerTask=readLoop(p);updateConnectionUI();
+ }catch(e){appendLog('Connexion '+name+' impossible : '+e.message);updateConnectionUI();}
+}
+async function readLoop(p){try{
+ while(p.connected&&p.port?.readable){const reader=p.port.readable.getReader();p.reader=reader;
+  try{while(p.connected){const r=await reader.read();if(r.done)break;if(r.value)feedBytes(p,r.value);}}
+  finally{try{reader.releaseLock();}catch{}p.reader=null;}
+  if(!p.connected)break;await new Promise(r=>setTimeout(r,100));
+ }
+ }catch(e){if(p.connected)appendLog('Erreur lecture '+p.name+' : '+e.message);}
+ if(p.connected){appendLog('Lecture '+p.name+' terminée.');await disconnectPort(p.name);}
+}
+async function disconnectPort(name){const p=ports[name];if(!p.connected)return;
+ if(test?.active)stopTest(true);
+ if(rawTest?.active)stopRaw(true);
+ p.connected=false;p.txQueue=[];
+ try{await p.reader?.cancel();}catch{}
+ try{p.writer?.releaseLock();}catch{}p.writer=null;
+ try{await p.port?.close();}catch(e){appendLog('Fermeture '+name+' : '+e.message);}
+ p.port=null;p.reader=null;p.wireReadyAt=0;updateConnectionUI();appendLog('Port '+name+' fermé.');
+}
+function enqueue(p,item){if(!p.connected||p.txQueue.length>=2)return false;p.txQueue.push(item);trySend(p);return true;}
+function trySend(p){if(!p.connected||p.busy||!p.txQueue.length||now()<p.wireReadyAt)return;
+ const item=p.txQueue.shift();if(!item.live())return;
+ p.busy=true;const started=now(),serialMs=1000*item.bytes.length/BYTES_PER_SECOND;
+ item.startedAt=started;p.wireReadyAt=started+serialMs+BAUD_GUARD_MS;
+ Promise.resolve().then(()=>p.writer.write(item.bytes)).then(()=>{
+  const ended=now();p.byteOut+=item.bytes.length;p.writeTimes.push(ended-started);
+  if(p.writeTimes.length>800)p.writeTimes.shift();p.wireReadyAt=Math.max(p.wireReadyAt,ended+BAUD_GUARD_MS);
+  item.onWritten?.(started,ended,p.wireReadyAt);
+ }).catch(e=>{
+  p.writeFailure++;item.onAborted?.('Échec écriture USB');appendLog('Erreur écriture '+p.name+' : '+e.message);
+  if(test?.active)stopTest(true);
+ }).finally(()=>{p.busy=false;});
+}
+function mkDir(){return {seq:0,issued:0,accepted:0,rxPayload:0,rxFrames:0,duplicates:0,reordered:0,
+ badContent:0,unknown:0,timedOut:0,late:0,lost:0,notSent:0,lastSeq:-1,
+ records:new Map(),token:0,tokenAt:now(),txEvents:[],rxEvents:[],latencies:[],rxPoints:[],wireBytes:0};}
+function pendingCount(d){let n=0;for(const r of d.records.values())if(!r.received&&!r.finalLost&&!r.notSent&&!r.timedOut)n++;return n;}
+function makeTest(){let rate=Number($('rate').value),size=Number($('size').value),win=Number($('window').value),duration=Number($('duration').value),drain=Number($('drain').value),timeout=Number($('timeout').value);
+ if(!Number.isFinite(rate)||rate<1||rate>30||![1,2,4,8,12,16,24,32,48,64,96].includes(size)||win<1||win>8||duration<10||duration>3600||drain<5||drain>120||timeout<10||timeout>120){appendLog('Paramètres hors limites.');return null;}
+ const rand=new Uint32Array(1);crypto.getRandomValues(rand);const t=now();
+ return {id:rand[0],mode:$('mode').value,profile:$('profile').value,rate,size,win,duration,drain,timeout,
+ startedAt:t,sendEnd:t+1000*duration,stopAt:t+1000*(duration+drain),active:true,phase:'send',
+ d:{AB:mkDir(),BA:mkDir()},pings:new Map(),pingSeq:0,rtts:[],pingTimeout:0,pingLate:0,
+ basePorts:{A:portSnapshot(ports.A),B:portSnapshot(ports.B)},stoppedAt:null};
+}
+function portSnapshot(p){return {byteIn:p.byteIn,byteOut:p.byteOut,framesOK:p.framesOK,badCRC:p.badCRC,badLength:p.badLength,badMagic:p.badMagic,desync:p.desync,writeFailure:p.writeFailure};}
+function portDelta(port,key){if(!test)return 0;const p=ports[port];return Math.max(0,(p[key]||0)-(test.basePorts[port]?.[key]||0));}
+function beginTest(){if(test?.active||rawTest?.active||!ports.A.connected||!ports.B.connected)return;
+ // Ignore old frames by runId; do not erase bytes physically in flight.
+ test=makeTest();if(!test)return;samples=[];lastSample=now();lastPaint=0;
+ appendLog('Début '+test.mode+' | '+test.rate+' o/s UTILES demandés/sens | '+test.size+' o/paquet | '+test.profile+' | pas de XON/XOFF.');
+ const estimate=estimateWire(test.size,test.profile);
+ if(test.rate>estimate.effectiveMax*1.01)appendLog('ATTENTION : '+test.rate+' o/s dépasse le plafond série estimé '+nfmt(estimate.effectiveMax)+' o/s pour ce format. Une saturation du banc est attendue.');
+ $('btnStop').disabled=false;updateConnectionUI();paint();
+}
+function stopTest(interrupted=false){if(!test?.active)return;
+ test.active=false;test.phase=interrupted?'interrupted':'finished';test.stoppedAt=now();
+ for(const p of Object.values(ports)){
+  for(const item of p.txQueue){item.onAborted?.('Test arrêté avant écriture');}p.txQueue=[];
+ }
+ for(const d of Object.values(test.d)){
+  for(const r of d.records.values()){
+   if(r.received||r.notSent)continue;
+   if(r.writeEnd==null){r.notSent=true;d.notSent++;}
+   else if(!r.finalLost){r.finalLost=true;d.lost++;}
+  }
+ }
+ appendLog((interrupted?'Test interrompu':'Test terminé')+' : A→B '+test.d.AB.rxFrames+'/'+test.d.AB.accepted+' paquets, B→A '+test.d.BA.rxFrames+'/'+test.d.BA.accepted+' paquets.');
+ updateConnectionUI();paint();
+}
+function recordTimeouts(){if(!test?.active)return;const t=now();
+ for(const d of Object.values(test.d))for(const r of d.records.values()){
+  if(!r.received&&!r.timedOut&&!r.notSent&&r.writeStarted&&t-r.startedAt>test.timeout*1000){r.timedOut=true;d.timedOut++;}
+ }
+ for(const ping of test.pings.values())if(!ping.done&&!ping.timedOut&&ping.startedAt&&t-ping.startedAt>test.timeout*1000){ping.timedOut=true;test.pingTimeout++;}
+}
+function inject(dir){if(!test?.active||test.phase!=='send')return;
+ const p=ports[dir==='AB'?'A':'B'],d=test.d[dir],t=now();
+ d.token=Math.min(test.size*1.15,d.token+test.rate*Math.max(0,t-d.tokenAt)/1000);d.tokenAt=t;
+ if(!p.connected||p.busy||p.txQueue.length||t<p.wireReadyAt||pendingCount(d)>=test.win||d.token<test.size)return;
+ const seq=d.seq++,kind=dir==='AB'?KIND_AB:KIND_BA,pay=payloadFor(kind,seq,test.size,test.profile);
+ const bytes=escapePacket(pack(kind,test.id,seq,pay));const rec={seq,kind,payload:test.size,wireBytes:bytes.length,
+   queuedAt:t,writeStarted:false,writeEnd:null,startedAt:null,estimatedEnd:null,rxAt:null,
+   received:false,timedOut:false,finalLost:false,notSent:false,profile:test.profile};
+ const runId=test.id,item={bytes,runId,live:()=>!!test?.active&&test.id===runId,
+  onWritten:(started,ended,airEnd)=>{if(!test||test.id!==runId)return;rec.writeEnd=ended;rec.startedAt=started;rec.estimatedEnd=airEnd;d.accepted++;d.wireBytes+=bytes.length;
+   d.txEvents.push({t:ended,bytes:rec.payload});if(d.txEvents.length>3000)d.txEvents.splice(0,1500);},
+  onAborted:()=>{if(!rec.notSent){rec.notSent=true;d.notSent++;}}
+ };
+ d.records.set(seq,rec);rec.writeStarted=true;rec.startedAt=t;d.token-=test.size;d.issued++;
+ if(!enqueue(p,item)){rec.notSent=true;d.notSent++;}else rec.startedAt=item.startedAt??t;
+}
+function schedulePing(){if(!test?.active||test.phase!=='send'||![...test.pings.values()].every(p=>p.done||p.timedOut))return;
+ const source=test.mode==='pingAB'?'A':'B',p=ports[source];if(!p.connected||p.busy||p.txQueue.length||now()<p.wireReadyAt)return;
+ const seq=test.pingSeq++,kind=KIND_PING,pay=payloadFor(KIND_AB,seq,4,'control'),runId=test.id;
+ const ping={seq,startedAt:null,done:false,timedOut:false,latency:null};
+ const item={bytes:escapePacket(pack(kind,runId,seq,pay)),runId,live:()=>!!test?.active&&test.id===runId,
+  onWritten:(start)=>{ping.startedAt=start;},onAborted:()=>{ping.done=true;}};
+ test.pings.set(seq,ping);enqueue(p,item);
+}
+function onFrame(which,f){if(!test||f.runId!==test.id)return;const t=now();
+ if(f.kind===KIND_PING){const dest=test.mode==='pingAB'?'B':'A';if(!test.mode.startsWith('ping')||which!==dest||!test.active)return;
+  const p=ports[which],runId=test.id;
+  enqueue(p,{bytes:escapePacket(pack(KIND_PONG,runId,f.seq,f.pay)),runId,live:()=>!!test?.active&&test.id===runId,onWritten:()=>{},onAborted:()=>{}});return;
+ }
+ if(f.kind===KIND_PONG){const source=test.mode==='pingAB'?'A':'B',ping=test.pings.get(f.seq);
+  if(which===source&&ping&&!ping.done&&ping.startedAt&&f.pay.length===4&&f.pay.every((v,i)=>v===payloadFor(KIND_AB,f.seq,4,'control')[i])){
+   ping.done=true;ping.latency=t-ping.startedAt;test.rtts.push(ping.latency);if(test.rtts.length>2000)test.rtts.shift();if(ping.timedOut)test.pingLate++;
+  }return;
+ }
+ const dir=f.kind===KIND_AB?'AB':f.kind===KIND_BA?'BA':null;if(!dir||which!==(dir==='AB'?'B':'A'))return;
+ const d=test.d[dir],rec=d.records.get(f.seq);if(!rec){d.unknown++;return;}
+ if(rec.received){d.duplicates++;return;}
+ const expected=payloadFor(f.kind,f.seq,rec.payload,rec.profile);
+ if(f.pay.length!==rec.payload||!f.pay.every((v,i)=>v===expected[i])){d.badContent++;return;}
+ rec.received=true;rec.rxAt=t;d.rxFrames++;d.rxPayload+=f.pay.length;
+ if(rec.timedOut||rec.finalLost){d.late++;if(rec.finalLost){rec.finalLost=false;d.lost--;}}
+ if(f.seq<d.lastSeq){d.reordered++;rec.reordered=true;}d.lastSeq=Math.max(d.lastSeq,f.seq);
+ const L=t-(rec.startedAt??rec.queuedAt);d.latencies.push(L);if(d.latencies.length>2500)d.latencies.shift();
+ d.rxEvents.push({t,bytes:f.pay.length});if(d.rxEvents.length>3000)d.rxEvents.splice(0,1500);
+ d.rxPoints.push({t,lat:L});if(d.rxPoints.length>1500)d.rxPoints.shift();
+}
+function recentBytes(events,t,ms=1000){let sum=0;for(let i=events.length-1;i>=0;i--){if(events[i].t<t-ms)break;sum+=events[i].bytes;}return sum;}
+function windowRate(d,t,ms=5000){if(!test)return 0;return recentBytes(d.rxEvents,t,ms)/(Math.min(ms,Math.max(500,t-test.startedAt))/1000);}
+function estimateWire(size,profile='random'){
+ // Enumerate deterministic examples; envelope varies slightly with escaped 0x7d/0x7e bytes.
+ let total=0,min=Infinity,max=0;for(let seq=0;seq<32;seq++){
+  const n=escapePacket(pack(KIND_AB,123456,seq,payloadFor(KIND_AB,seq,size,profile))).length;
+  total+=n;min=Math.min(min,n);max=Math.max(max,n);
+ }
+ const avg=total/32;return {averageWire:avg,min,max,airtimeMs:avg*1000/BYTES_PER_SECOND,effectiveMax:BYTES_PER_SECOND*size/avg};
+}
+function updateBudget(){const size=Number($('size').value),profile=$('profile').value;
+ const b=estimateWire(size,profile),r=Number($('rate').value),txt=$('budget');
+ txt.textContent='Paquet : '+size+' o utiles + 20 o d’encadrement, parfois + échappements · ~'+nfmt(b.averageWire)+' o sur RS232 · ~'+nfmt(b.airtimeMs/1000)+' s par port · plafond ~'+nfmt(b.effectiveMax)+' o utiles/s par sens.';
+ txt.className='note'+(r>b.effectiveMax?' budgetAlert':'');
+ if(r>b.effectiveMax)txt.textContent+=' ATTENTION : consigne supérieure à la capacité physique 300 bauds; injection plafonnée.';
+}
+
+// Visuals adapted from the original v5 benchmark
+function paintHourglass(id,opt){const can=$(id),ctx=can.getContext('2d'),w=can.width,h=can.height;ctx.clearRect(0,0,w,h);const topPath=new Path2D(),botPath=new Path2D();topPath.moveTo(82,44);topPath.quadraticCurveTo(160,16,238,44);topPath.lineTo(180,151);topPath.quadraticCurveTo(160,170,140,151);topPath.closePath();botPath.moveTo(140,209);botPath.quadraticCurveTo(160,191,180,209);botPath.lineTo(238,318);botPath.quadraticCurveTo(160,345,82,318);botPath.closePath();ctx.save();ctx.fillStyle='#08192c';ctx.strokeStyle='#7eb8ff33';ctx.lineWidth=10;ctx.beginPath();ctx.moveTo(82,44);ctx.quadraticCurveTo(160,16,238,44);ctx.lineTo(180,151);ctx.quadraticCurveTo(160,170,140,151);ctx.closePath();ctx.moveTo(140,209);ctx.quadraticCurveTo(160,191,180,209);ctx.lineTo(238,318);ctx.quadraticCurveTo(160,345,82,318);ctx.closePath();ctx.fill();ctx.stroke();ctx.strokeStyle='#cfe6ff';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(82,44);ctx.quadraticCurveTo(160,16,238,44);ctx.lineTo(180,151);ctx.quadraticCurveTo(160,170,140,151);ctx.closePath();ctx.moveTo(140,209);ctx.quadraticCurveTo(160,191,180,209);ctx.lineTo(238,318);ctx.quadraticCurveTo(160,345,82,318);ctx.closePath();ctx.stroke();ctx.beginPath();ctx.moveTo(144,152);ctx.lineTo(176,152);ctx.lineTo(176,208);ctx.lineTo(144,208);ctx.closePath();ctx.stroke();ctx.restore();ctx.fillStyle='#ffffff18';ctx.fillRect(83,42,16,278);const drawBulb=(path,count,top,tint)=>{ctx.save();ctx.clip(path);ctx.fillStyle=tint;const cols=12,stepX=11,stepY=11,r=3.3;for(let i=0;i<count;i++){const row=Math.floor(i/cols),col=i%cols;const x=101+col*stepX+((row%2)?5:0);let y; if(top){y=145-row*stepY; if(y<34) break;} else {y=307-row*stepY; if(y<212) break;} ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}ctx.restore();};const topCount=Math.max(0,Math.min(96,opt.topGrains|0)),botCount=Math.max(0,Math.min(96,opt.bottomGrains|0));drawBulb(topPath,topCount,true,opt.tint);drawBulb(botPath,botCount,false,opt.tint);const tt=now()/1000;const neckCount=Math.max(0,Math.min(18,opt.neckGrains|0));ctx.fillStyle=opt.tint;for(let i=0;i<neckCount;i++){const phase=(tt*1.3+i*0.19)%1;const y=162+phase*38;const spread=(i%3-1)*4;ctx.beginPath();ctx.arc(160+spread,y,3.1,0,Math.PI*2);ctx.fill();}ctx.fillStyle='#d9ecff';ctx.font='700 13px system-ui';ctx.textAlign='center';ctx.fillText(opt.title||'',160,16);ctx.font='12px system-ui';ctx.fillStyle='#a8bfd6';ctx.fillText('haut = TX 1 s · bas = RX 1 s',160,336);ctx.fillText('1 grain = 1 octet utile',160,352)}
+function pickScale(v,minimum=25){for(const s of [25,50,100,250,500,1000,2000,5000])if(v<=s)return Math.max(s,minimum);return 10000}
+function paintGauge(id,value,limit,tint){const can=$(id),ctx=can.getContext('2d'),w=can.width,h=can.height;
+ ctx.clearRect(0,0,w,h);const cx=w/2,cy=133,r=95,start=Math.PI*.9,end=Math.PI*2.1;
+ ctx.lineCap='round';ctx.lineWidth=16;ctx.strokeStyle='#233d59';ctx.beginPath();ctx.arc(cx,cy,r,start,end);ctx.stroke();
+ // Guard against presenting lack of data as a measurement of zero.
+ if(Number.isFinite(value)){ctx.strokeStyle=tint;ctx.beginPath();ctx.arc(cx,cy,r,start,start+(end-start)*Math.max(0,Math.min(1,value/limit)));ctx.stroke()}
+ ctx.lineWidth=1;ctx.font='12px system-ui';ctx.textAlign='center';ctx.fillStyle='#a6bbd1';
+ for(let i=0;i<=5;i++){const a=start+(end-start)*i/5;
+  const x1=cx+Math.cos(a)*(r-24),y1=cy+Math.sin(a)*(r-24),x2=cx+Math.cos(a)*(r-14),y2=cy+Math.sin(a)*(r-14);
+  ctx.strokeStyle='#6d8ba7';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  const lx=cx+Math.cos(a)*(r-41),ly=cy+Math.sin(a)*(r-41);
+  ctx.fillText(sNum(limit*i/5,limit<100?0:0),lx,ly+4)
+ }
+ if(Number.isFinite(value)){
+  const a=start+(end-start)*Math.max(0,Math.min(1,value/limit));ctx.strokeStyle='#fff';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*62,cy+Math.sin(a)*62);ctx.stroke();
+ }
+ ctx.fillStyle=tint;ctx.beginPath();ctx.arc(cx,cy,5,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle='#8aa5c0';ctx.font='11px system-ui';ctx.fillText('0',cx-r-8,162);ctx.fillText(sNum(limit),cx+r+8,162);
+}
+function drawChart(id,points,keyA,keyB,scale,unit){const c=$(id),ctx=c.getContext('2d'),w=c.width,h=c.height,left=62,right=w-18,top=18,bottom=h-28;
+ ctx.clearRect(0,0,w,h);ctx.fillStyle='#07192b';ctx.fillRect(0,0,w,h);
+ ctx.strokeStyle='#28475f';ctx.lineWidth=1;ctx.font='12px system-ui';ctx.fillStyle='#a4bad0';ctx.textAlign='left';
+ for(let k=0;k<=4;k++){const y=top+(bottom-top)*k/4;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(right,y);ctx.stroke();ctx.fillText(sNum(scale*(1-k/4))+' '+unit,5,y+4)}
+ const pts=points.slice(-90);if(!pts.length)return;
+ const recent=pts[pts.length-1].t;const minT=Math.max(pts[0].t,recent-90000),maxT=minT+Math.max(10000,recent-minT+1000);
+ for(const [key,tint] of [[keyA,color.AB],[keyB,color.BA]]){ctx.strokeStyle=tint;ctx.lineWidth=2.4;ctx.beginPath();let begun=false;
+ for(const p of pts){const v=p[key];if(!Number.isFinite(v)){begun=false;continue}
+  const x=left+(right-left)*Math.max(0,(p.t-minT)/(maxT-minT)),y=bottom-Math.min(scale,Math.max(0,v))/scale*(bottom-top);
+  if(!begun)ctx.moveTo(x,y);else ctx.lineTo(x,y);begun=true;
+ }ctx.stroke()}
+ ctx.fillStyle='#9bb8cf';ctx.fillText('90 dernières secondes',left,bottom+18);
+}
+
+function updateConnectionUI(){for(const n of ['A','B']){
+ const p=ports[n],b=$('badge'+n);b.className='port-badge'+(p.connected?' ok':'');
+ b.textContent=p.connected?'Connecté · 300 bauds':'Déconnecté';
+ $('connect'+n).disabled=p.connected;$('close'+n).disabled=!p.connected;
+ $('rawIn'+n).textContent=sNum(p.byteIn)+' o';$('rawOut'+n).textContent=sNum(p.byteOut)+' o';
+ $('rawBad'+n).textContent=sNum(p.badCRC+p.badLength+p.badMagic+p.desync);
+ $('flow'+n).textContent=p.connected?'Sans XON/XOFF · données 0x11/0x13 conservées · file USB '+p.txQueue.length+' · écriture '+(p.busy?'en cours':'libre'):'Attente de connexion';
+ }
+ $('btnStart').disabled=!(ports.A.connected&&ports.B.connected)||!!test?.active||!!rawTest?.active;
+ $('btnStop').disabled=!test?.active;
+}
+function updateHourglass(dir,d,t){const tx1=recentBytes(d?.txEvents||[],t,1000),rx1=recentBytes(d?.rxEvents||[],t,1000),
+ rate5=d?windowRate(d,t):0,lat=d?quantile(d.latencies,.5):NaN,jit=d?jitter(d.latencies):NaN;
+ const pendingBytes=d?pendingCount(d)*(test?.size||0):0,
+ inflight=Math.max(pendingBytes,Math.max(0,tx1-rx1));
+ const topCount=Math.round(Math.min(96,tx1)),botCount=Math.round(Math.min(96,rx1)),neck=Math.min(18,Math.round(inflight/3));
+ paintHourglass('hg'+dir,{title:dir==='AB'?'A → B':'B → A',topGrains:topCount,bottomGrains:botCount,neckGrains:neck,tint:color[dir]});
+ $('hgTx'+dir).textContent=sNum(tx1)+' o';$('hgRx'+dir).textContent=sNum(rx1)+' o';
+ $('hgRate'+dir).textContent=nfmt(rate5)+' o/s';$('hgLat'+dir).textContent=nfmt(lat)+' ms';$('hgJit'+dir).textContent=nfmt(jit)+' ms';
+ $('hgInflight'+dir).textContent=sNum(inflight)+' o estimés';
+ $('hgGrains'+dir).textContent='haut '+topCount+' · bas '+botCount;
+ $('hgGap'+dir).textContent=(tx1-rx1>=0?'+':'')+sNum(tx1-rx1)+' o';
+ $('hgStatus'+dir).textContent=!test?'En attente du benchmark.':
+ (tx1===0&&rx1===0?'Aucun paquet vérifié/écrit sur la dernière seconde.':
+ 'TX et RX sont comptés à des instants différents : leur écart instantané ne prouve PAS une perte. '+
+ (pendingBytes?'Paquets non résolus : '+sNum(pendingCount(d))+'.':''));
+}
+function lossPct(d){return d.accepted>0?100*d.lost/d.accepted:NaN;}
+function upperLoss95(d){return d.accepted>0&&d.lost===0?100*(1-Math.pow(.05,1/d.accepted)):NaN;}
+function diagnosticText(){
+ if(!test)return 'Prêt. Faire d’abord A → B à 8–12 o/s pendant 2 minutes, puis B → A, puis bidirectionnel. Les erreurs CRC et les pertes concernent la chaîne complète, pas exclusivement la RF.';
+ const t=now(),msgs=[];
+ for(const dir of ['AB','BA']){
+  if((test.mode==='AB'&&dir==='BA')||(test.mode==='BA'&&dir==='AB')||test.mode.startsWith('ping'))continue;
+  const d=test.d[dir],src=dir==='AB'?'A':'B',dst=src==='A'?'B':'A',cap=estimateWire(test.size,test.profile).effectiveMax;
+  msgs.push((dir==='AB'?'A → B':'B → A')+' : '+d.accepted+' paquets confiés au pilote · '+d.rxFrames+' reçus et vérifiés · '+pendingCount(d)+' en attente · '+d.lost+' non retrouvés après vidange.');
+  if(test.rate>cap*1.01)msgs.push('• Consigne '+test.rate+' o/s > capacité de l’encadrement à 300 bauds (~'+nfmt(cap)+' o/s). Ce test mesure une saturation côté application/série, pas seulement la radio.');
+  if(d.timedOut)msgs.push('• '+d.timedOut+' paquet(s) dépassent '+test.timeout+' s ; ce sont des retards potentiels tant que la vidange n’est pas terminée.');
+  if(d.duplicates||d.reordered)msgs.push('• Doublons '+d.duplicates+' ; réordonnancements '+d.reordered+'.');
+  if(d.badContent)msgs.push('• '+d.badContent+' trames CRC correct mais contenu différent : anomalie de transport ou bug du banc.');
+  const bad=portDelta(dst,'badCRC')+portDelta(dst,'badLength')+portDelta(dst,'badMagic')+portDelta(dst,'desync');
+  if(bad)msgs.push('• Sur port '+dst+' : '+bad+' trames/segments invalides. Certains peuvent venir de résidus, bruit série ou messages non transparents.');
+  if(d.rxFrames===0&&d.accepted>0&&t-test.startedAt>7000)msgs.push('• Aucun paquet reçu validé : vérifier transparent, ports, RF, RX et le débit réellement remis au pilote.');
+  if(test.phase==='finished'&&d.accepted&&d.lost===0)msgs.push('• Aucune perte OBSERVÉE. Borne supérieure statistique 95 % (essais supposés indépendants) : '+nfmt(upperLoss95(d))+' % ; pas une garantie zéro perte.');
+ }
+ if(test.mode.startsWith('ping'))msgs.push('Ping : le navigateur du port distant reçoit puis RENVOIE la requête. RTT inclut USB/UART, RF deux fois et temps de traitement navigateur.');
+ if(test.active&&test.phase==='drain')msgs.push('Vidange en cours : ne déclare pas les paquets en attente « perdus » avant la fin.');
+ msgs.push('Limite de mesure : une perte observée peut venir du PC/USB/UART, des buffers ESP, du TDD ou de la RF. Sans compteurs internes modem séparés, l’origine exacte n’est pas démontrable.');
+ return msgs.join('\n');
+}
+function paint(){const t=now(),ab=test?.d.AB,ba=test?.d.BA;
+ updateConnectionUI();
+ if(!test)$('runState').textContent='Connecte A et B, puis démarre. Série 300 bauds 8N1, sans contrôle de flux.';
+ else if(test.active)$('runState').textContent=(test.phase==='send'?'Injection en cours':'Vidange / attente des paquets déjà injectés')+' · '+nfmt((t-test.startedAt)/1000)+' / '+(test.duration+test.drain)+' s · '+test.mode;
+ else $('runState').textContent='Terminé : '+(test.phase==='interrupted'?'interrompu':'vidange terminée')+'. Les paquets manquants sont listés dans le CSV détaillé.';
+ $('progress').style.width=test?Math.min(100,100*(t-test.startedAt)/(test.stopAt-test.startedAt))+'%':'0%';
+ const totalSec=test?Math.max(.5,((test.stoppedAt||t)-test.startedAt)/1000):1;
+ const rAB=ab?(test.active?windowRate(ab,t):ab.rxPayload/totalSec):0,
+ rBA=ba?(test.active?windowRate(ba,t):ba.rxPayload/totalSec):0;
+ const chosen=$('scale').value,lim=chosen==='auto'?pickScale(Math.max(rAB,rBA)*1.3,25):Number(chosen);
+ for(const [dir,d,rate] of [['AB',ab,rAB],['BA',ba,rBA]]){
+  const L=d?quantile(d.latencies,.5):NaN,J=d?jitter(d.latencies):NaN,
+   L95=d?quantile(d.latencies,.95):NaN,J95=d?jitter(d.latencies,.95):NaN;
+  paintGauge('gRate'+dir,rate,lim,color[dir]);
+  paintGauge('gLat'+dir,L,pickScale(Math.max(Number.isFinite(L95)?L95*1.2:2000,1000),1000),color[dir]);
+  paintGauge('gJit'+dir,J,pickScale(Math.max(Number.isFinite(J95)?J95*1.2:250,250),250),color[dir]);
+  $('vRate'+dir).innerHTML=nfmt(rate)+' <span>o/s</span>';
+  $('vLat'+dir).innerHTML=nfmt(L)+' <span>ms</span>';
+  $('vJit'+dir).innerHTML=nfmt(J)+' <span>ms</span>';
+  $('subRate'+dir).textContent=(test?.active?'Glissant 5 s':'Moyenne injection + vidange')+' · échelle '+sNum(lim)+' o/s';
+  $('subLat'+dir).textContent='Médiane · p95 '+nfmt(L95)+' ms · '+(d?.rxFrames||0)+' paquets';
+  $('subJit'+dir).textContent='Médiane |Δlatence| · p95 '+nfmt(J95)+' ms';
+  $('queued'+dir).textContent=sNum((d?.issued||0)*(test?.size||0))+' o';
+  $('written'+dir).textContent=sNum((d?.accepted||0)*(test?.size||0))+' o';
+  $('received'+dir).textContent=sNum(d?.rxPayload||0)+' o';
+  $('avg'+dir).textContent=d?nfmt(d.rxPayload/totalSec)+' o/s':'—';
+  $('pending'+dir).textContent=d?sNum(pendingCount(d))+' / '+sNum(d.lost):'0 / 0';
+  $('timeout'+dir).textContent=d?sNum(d.timedOut)+' / '+sNum(d.late):'0 / 0';
+  $('bad'+dir).textContent=d?sNum(d.duplicates)+' / '+sNum(d.reordered)+' / '+sNum(d.badContent):'0 / 0 / 0';
+  $('latSummary'+dir).textContent=d?nfmt(L)+' / '+nfmt(L95)+' ms':'—';
+  $('xoffFraction'+dir).textContent=d?nfmt(lossPct(d))+' % ('+d.lost+' paq.)':'—';
+  const portName=dir==='AB'?'A':'B';
+  $('writeP95'+dir).textContent=d?nfmt(quantile(ports[portName].writeTimes,.95))+' ms / '+sNum(d.wireBytes)+' o':'—';
+  $('confidence'+dir).textContent=d&&d.accepted>0?(d.lost===0?'Borne haute 95 % ≈ '+nfmt(upperLoss95(d))+' %':'Pertes confirmées après vidange : '+d.lost):'—';
+ }
+ updateHourglass('AB',ab,t);updateHourglass('BA',ba,t);
+ const m=quantile(test?.rtts||[],.5),j=jitter(test?.rtts||[]);
+ paintGauge('gRTT',m,pickScale(Number.isFinite(m)?m*1.3:2000,1000),color.RTT);
+ paintGauge('gRTTJit',j,pickScale(Number.isFinite(j)?j*1.3:250,250),color.RTT);
+ $('vRTT').innerHTML=nfmt(m)+' <span>ms</span>';$('vRTTJit').innerHTML=nfmt(j)+' <span>ms</span>';
+ $('subRTT').textContent=test?.rtts.length?test.rtts.length+' aller(s)-retour validés':'Mode ping requis';
+ $('subRTTJit').textContent='Variation médiane entre RTT successifs';
+ drawChart('chartRate',samples,'ab','ba',pickScale(Math.max(25,...samples.map(x=>Math.max(x.ab,x.ba)))*1.15,25),'o/s');
+ drawChart('chartLat',samples,'la','lb',pickScale(Math.max(500,...samples.map(x=>Math.max(Number.isFinite(x.la)?x.la:0,Number.isFinite(x.lb)?x.lb:0)))*1.25,500),'ms');
+ $('diagnosis').textContent=diagnosticText();updateRawUI();
+}
+function recordSample(){if(!test)return;const t=now();samples.push({t,ab:windowRate(test.d.AB,t),ba:windowRate(test.d.BA,t),
+ la:quantile(test.d.AB.latencies.slice(-20),.5),lb:quantile(test.d.BA.latencies.slice(-20),.5),
+ payloadA:test.d.AB.accepted*test.size,payloadB:test.d.BA.accepted*test.size,
+ rxA:test.d.AB.rxPayload,rxB:test.d.BA.rxPayload,
+ lostA:test.d.AB.lost,lostB:test.d.BA.lost,waitingA:pendingCount(test.d.AB),waitingB:pendingCount(test.d.BA),
+ timeoutsA:test.d.AB.timedOut,timeoutsB:test.d.BA.timedOut,corruptA:portDelta('B','badCRC'),corruptB:portDelta('A','badCRC'),
+ latA:quantile(test.d.AB.latencies,.5),latB:quantile(test.d.BA.latencies,.5),
+ jitA:jitter(test.d.AB.latencies),jitB:jitter(test.d.BA.latencies),rtt:quantile(test.rtts,.5)});
+ if(samples.length>4000)samples.splice(0,samples.length-3900);
+}
+function tick(){const t=now();
+ if(test?.active){
+  if(test.phase==='send'&&t>=test.sendEnd){test.phase='drain';appendLog('Injection terminée : attente de '+test.drain+' s pour la vidange du trajet.');}
+  if(t>=test.stopAt)stopTest(false);
+  else{
+   recordTimeouts();if(test.phase==='send'){
+    if(['AB','both'].includes(test.mode))inject('AB');
+    if(['BA','both'].includes(test.mode))inject('BA');
+    if(test.mode.startsWith('ping'))schedulePing();
+   }
+  }
+ }
+ if(rawTest?.active){if(rawTest.phase==='send'&&t>=rawTest.sendEnd){rawTest.phase='drain';appendLog('Flux brut : injection terminée, vidange '+rawTest.drain+' s.');}
+  if(t>=rawTest.stopAt)stopRaw(false);else if(rawTest.phase==='send')for(const dir of rawTest.dirs)rawSend(dir);}
+ for(const p of Object.values(ports))trySend(p);
+ if(test?.active&&t-lastSample>=1000){recordSample();lastSample=t;}
+ if(t-lastPaint>=300){paint();lastPaint=t;}
+}
+function downloadText(filename,data,type){const blob=new Blob([data],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+function exportCSV(){if(!test){appendLog('Aucun test à exporter.');return;}
+ const cols=['temps_s','rx_AB_o_s_glissant_5s','rx_BA_o_s_glissant_5s','TX_USB_AB_o_cum','TX_USB_BA_o_cum',
+  'RX_AB_o_cum','RX_BA_o_cum','non_resolus_AB','non_resolus_BA','pertes_apres_vidange_AB','pertes_apres_vidange_BA',
+  'timeout_AB','timeout_BA','CRC_port_B','CRC_port_A','latence_AB_p50_ms','latence_BA_p50_ms','jitter_AB_ms','jitter_BA_ms','RTT_p50_ms'];
+ let lines=[cols.join(';')];for(const r of samples){const values=[(r.t-test.startedAt)/1000,r.ab,r.ba,r.payloadA,r.payloadB,r.rxA,r.rxB,
+ r.waitingA,r.waitingB,r.lostA,r.lostB,r.timeoutsA,r.timeoutsB,r.corruptA,r.corruptB,r.latA,r.latB,r.jitA,r.jitB,r.rtt];
+ lines.push(values.map(x=>Number.isFinite(x)?String(x):'').join(';'));}
+ downloadText('AirModem_300baud_mesures.csv','\ufeff'+lines.join('\r\n'),'text/csv;charset=utf-8');appendLog('Export CSV mesures : '+samples.length+' échantillons.');
+}
+function exportPackets(){if(!test){appendLog('Aucun test à exporter.');return;}
+ const cols=['sens','sequence','etat','octets_utiles','octets_sur_serie','debut_ecriture_ms','fin_writer_ms','arrivee_ms','latence_ms','delai_depasse','ordre_inverse','profil'];
+ let lines=[cols.join(';')];for(const dir of ['AB','BA']){
+  const d=test.d[dir];for(const r of d.records.values()){
+   const status=r.received?'valide':r.notSent?'non_envoye':r.finalLost?'non_retrouve_apres_vidange':r.timedOut?'hors_delai':'en_attente';
+   lines.push([dir,r.seq,status,r.payload,r.wireBytes,r.startedAt===null?'':(r.startedAt-test.startedAt).toFixed(2),
+    r.writeEnd===null?'':(r.writeEnd-test.startedAt).toFixed(2),r.rxAt===null?'':(r.rxAt-test.startedAt).toFixed(2),
+    r.rxAt===null||r.startedAt===null?'':(r.rxAt-r.startedAt).toFixed(2),r.timedOut?1:0,r.reordered?1:0,r.profile].join(';'));
+  }
+ }
+ downloadText('AirModem_300baud_paquets.csv','\ufeff'+lines.join('\r\n'),'text/csv;charset=utf-8');
+ appendLog('Export CSV paquets : historique complet, y compris les manquants.');
+}
+function exportJSON(){if(!test){appendLog('Aucun résultat à exporter.');return;}
+ const d={version:'AirModem300_v1',note:'Mesures application/USB/UART/radio indissociables sans journaux firmware; aucun retry de benchmark.',
+  params:{mode:test.mode,profile:test.profile,rateUsefulBytesPerSecond:test.rate,payloadBytes:test.size,window:test.win,
+   durationSeconds:test.duration,drainSeconds:test.drain,timeoutSeconds:test.timeout,
+   serial:{baud:300,bits:8,parity:'none',stopBits:1,flowControl:'none'},estimate:estimateWire(test.size,test.profile)},
+  results:Object.fromEntries(['AB','BA'].map(dir=>{const x=test.d[dir];return [dir,{attempts:x.accepted,received:x.rxFrames,missingAfterDrain:x.lost,
+   timeouts:x.timedOut,late:x.late,duplicate:x.duplicates,reorder:x.reordered,contentErrors:x.badContent,
+   latencyMedianMs:quantile(x.latencies,.5),latencyP95Ms:quantile(x.latencies,.95),jitterMedianMs:jitter(x.latencies),
+   sentWireBytes:x.wireBytes,receivedPayloadBytes:x.rxPayload}];})),
+  invalidFramesAtPorts:{A:{crc:portDelta('A','badCRC'),length:portDelta('A','badLength'),magic:portDelta('A','badMagic'),framing:portDelta('A','desync')},
+   B:{crc:portDelta('B','badCRC'),length:portDelta('B','badLength'),magic:portDelta('B','badMagic'),framing:portDelta('B','desync')}},
+  rttMs:test.rtts,samples,packets:Object.fromEntries(['AB','BA'].map(dir=>[dir,[...test.d[dir].records.values()]]))};
+ downloadText('AirModem_300baud_rapport.json',JSON.stringify(d,null,2),'application/json');appendLog('Rapport JSON exporté.');
+}
+function selfTest(){const out=[];const payload=Uint8Array.from([0,17,19,125,126,255,0,1,2,3]);
+ const raw=pack(KIND_AB,0x12345678,27,payload),encoded=escapePacket(raw),received=[],p=newPort('TEST');
+ p.onFrame=f=>received.push(f);
+ for(let i=0;i<encoded.length;i+=1)feedBytes(p,encoded.subarray(i,i+1));
+ out.push(['Décodage octet par octet',received.length===1&&received[0].pay.every((v,i)=>v===payload[i])]);
+ out.push(['0x11/0x13 conservés, sans XON/XOFF',encoded.includes(0x11)&&encoded.includes(0x13)&&received[0].pay[1]===0x11&&received[0].pay[2]===0x13]);
+ out.push(['0x7D/0x7E échappés',encoded.includes(ESC)&&received[0].pay[3]===0x7d&&received[0].pay[4]===0x7e]);
+ const changed=raw.slice();changed[15]^=0x01;out.push(['CRC32 détecte 1 bit faux',!checkRaw(changed).ok]);
+ const all=new Uint8Array(256);for(let i=0;i<256;i++)all[i]=i;const big=escapePacket(pack(KIND_BA,44,99,all)),p2=newPort('TEST2'),got=[];
+ p2.onFrame=f=>got.push(f);for(let i=0;i<big.length;i+=7)feedBytes(p2,big.subarray(i,i+7));
+ out.push(['256 valeurs binaires transmises, fragments de 7 o',got.length===1&&got[0].pay.length===256&&got[0].pay.every((x,i)=>x===i)]);
+ const corrupt=escapePacket(changed),p3=newPort('TEST3');feedBytes(p3,corrupt);
+ out.push(['Corruption CRC comptabilisée',p3.badCRC===1&&p3.framesOK===0]);
+ const est=estimateWire(24,'random');out.push(['Budget 300 bauds cohérent',est.effectiveMax>10&&est.effectiveMax<30&&est.airtimeMs>1000]);
+ out.push(['Encadrement de trame valide',checkRaw(raw).ok&&checkRaw(raw).seq===27]);
+ const rd=mkRawDir(0x76543,'AB'),seqRaw=Array.from({length:96},(_,i)=>rawAt(rd,i));
+ seqRaw.splice(18,2);seqRaw[48]^=0x80;
+ rd.buffer.push(...rd.marker,...seqRaw);rawProcess(rd,true);
+ out.push(['Flux brut : 2 octets manquants détectés',rd.markerReceived&&rd.missing===2]);
+ out.push(['Flux brut : 1 octet altéré détecté',rd.corrupt===1&&rd.good===93&&rd.expectedIndex===96]);
+
+ for(const [name,ok] of out)appendLog((ok?'PASS':'ÉCHEC')+' — '+name);
+ appendLog(out.every(x=>x[1])?'Autotest logiciel réussi (PAS une mesure sur les ESP ou RF).':'Autotest en échec : ne pas mesurer avant correction.');
+ return out.every(x=>x[1]);
+}
+// Complementary near-line-rate raw stream test: no per-packet framing overhead.
+// One unique 16-byte marker starts a deterministic pseudorandom stream in each direction.
+// Lost/altered-byte estimates use 6-byte look-ahead; this cannot prove bit-level RF errors.
+let rawTest=null;
+function rawMarker(id,dir){const b=[0xd4,0xb6,0x90,0xfe];put32(b,id);
+ put32(b,(~id)>>>0);b.push(dir==='AB'?0x41:0x42,0xa5,0x5a,0xc3);return Uint8Array.from(b);}
+function mkRawDir(id,dir){return {dir,marker:rawMarker(id,dir),markerQueued:false,markerReceived:false,
+ token:0,tokenAt:now(),txCount:0,good:0,corrupt:0,missing:0,extra:0,skippedBeforeSync:0,
+ expectedIndex:0,buffer:[],prbs:[],state:(id^(dir==='AB'?0x98653ac7:0x4269e572))>>>0,
+ txEvents:[],rxEvents:[],lastEstimate:0};}
+function rawAt(d,index){while(d.prbs.length<=index){let s=d.state;s^=s<<13;s^=s>>>17;s^=s<<5;d.state=s>>>0;d.prbs.push(s&255);}return d.prbs[index];}
+function rawWindowEquals(d,rawAtIndex,expectedAtIndex,n=6){if(d.buffer.length<rawAtIndex+n)return false;
+ for(let k=0;k<n;k++)if(d.buffer[rawAtIndex+k]!==rawAt(d,expectedAtIndex+k))return false;
+ return true;}
+function rawProcess(d,final=false){
+ if(!d.markerReceived){
+  let at=-1;for(let i=0;i<=d.buffer.length-d.marker.length;i++){
+   let match=true;for(let j=0;j<d.marker.length;j++)if(d.buffer[i+j]!==d.marker[j]){match=false;break;}
+   if(match){at=i;break;}
+  }
+  if(at<0){const cut=Math.max(0,d.buffer.length-(d.marker.length-1));d.skippedBeforeSync+=cut;d.buffer.splice(0,cut);return;}
+  d.skippedBeforeSync+=at;d.buffer.splice(0,at+d.marker.length);d.markerReceived=true;
+ }
+ while(d.buffer.length>=8){
+  if(d.buffer[0]===rawAt(d,d.expectedIndex)){
+   d.good++;d.expectedIndex++;d.buffer.shift();continue;
+  }
+  // One duplicated/inserted byte in front of a verified 6-byte sequence.
+  if(rawWindowEquals(d,1,d.expectedIndex,6)){
+   d.extra++;d.buffer.shift();continue;
+  }
+  // One corrupted byte, followed by six correct bytes at the correct positions.
+  if(rawWindowEquals(d,1,d.expectedIndex+1,6)){
+   d.corrupt++;d.expectedIndex++;d.buffer.shift();continue;
+  }
+  // Search a unique 6-byte anchor further in the known source stream.
+  let jump=0;for(let delta=1;delta<=512;delta++){
+   if(rawWindowEquals(d,0,d.expectedIndex+delta,6)){jump=delta;break;}
+  }
+  if(jump){d.missing+=jump;d.expectedIndex+=jump;continue;}
+  // No convincing alignment. Classify the next byte as erroneous provisionally.
+  d.corrupt++;d.expectedIndex++;d.buffer.shift();
+ }
+ if(final&&d.markerReceived){
+  while(d.buffer.length){const b=d.buffer.shift();if(b===rawAt(d,d.expectedIndex))d.good++;else d.corrupt++;
+   d.expectedIndex++;
+  }
+ }
+}
+function rawReceive(which,bytes){if(!rawTest?.active)return;
+ const t=now();for(const dir of ['AB','BA']){
+  if(!rawTest.dirs.includes(dir))continue;
+  const dest=dir==='AB'?'B':'A';if(which!==dest)continue;
+  const d=rawTest.d[dir];for(const b of bytes)d.buffer.push(b);
+  const oldGood=d.good;rawProcess(d);
+  if(d.good>oldGood)d.rxEvents.push({t,bytes:d.good-oldGood});
+ }
+}
+function beginRaw(){if(test?.active||rawTest?.active||!ports.A.connected||!ports.B.connected)return;
+ const mode=$('rawMode').value,rate=Number($('rawRate').value),duration=Number($('rawDuration').value),drain=Number($('rawDrain').value);
+ if(rate<1||rate>30||duration<10||duration>3600||drain<5||drain>120){appendLog('Test brut : paramètres incorrects.');return;}
+ const idArr=new Uint32Array(1);crypto.getRandomValues(idArr);const t=now(),dirs=mode==='both'?['AB','BA']:mode==='AB'?['AB']:['BA'];
+ rawTest={id:idArr[0],mode,dirs,rate,duration,drain,startedAt:t,sendEnd:t+duration*1000,stopAt:t+(duration+drain)*1000,active:true,phase:'send',d:{AB:mkRawDir(idArr[0],'AB'),BA:mkRawDir(idArr[0],'BA')}};
+ appendLog('FLUX BRUT : '+mode+' · '+rate+' octets physiques/s/sens · '+duration+' s · amorce de 16 octets une seule fois.');
+ updateConnectionUI();updateRawUI();
+}
+function stopRaw(interrupted=false){if(!rawTest?.active)return;rawTest.active=false;rawTest.phase=interrupted?'interrupted':'finished';rawTest.stoppedAt=now();
+ for(const p of Object.values(ports))p.txQueue=p.txQueue.filter(item=>!item.raw);
+ for(const dir of rawTest.dirs){const d=rawTest.d[dir];rawProcess(d,true);
+  const tail=d.markerReceived?Math.max(0,d.txCount-d.expectedIndex):0;d.lastEstimate=d.missing+tail;
+  appendLog('BRUT '+dir+' : '+d.txCount+' o écrits, '+d.good+' o corrects, '+d.corrupt+' o divergents, '+d.lastEstimate+' o potentiellement manquants'+(d.markerReceived?'':' ; amorce NON retrouvée'));
+ }
+ updateConnectionUI();updateRawUI();
+}
+function rawSend(dir){if(!rawTest?.active||rawTest.phase!=='send'||!rawTest.dirs.includes(dir))return;
+ const d=rawTest.d[dir],p=ports[dir==='AB'?'A':'B'],t=now();
+ d.token=Math.min(90,d.token+rawTest.rate*Math.max(0,t-d.tokenAt)/1000);d.tokenAt=t;
+ if(!p.connected||p.busy||p.txQueue.length||t<p.wireReadyAt)return;
+ const runId=rawTest.id;
+ if(!d.markerQueued){const item={raw:true,bytes:d.marker,live:()=>!!rawTest?.active&&rawTest.id===runId,
+  onWritten:()=>{},onAborted:()=>{d.markerQueued=false;}};
+  if(enqueue(p,item))d.markerQueued=true;return;
+ }
+ // 60-byte batches approach the 30 bytes/s physical limit, minimizing browser scheduling overhead.
+ const n=Math.min(60,Math.floor(d.token));
+ if(n<60&&rawTest.sendEnd-t>2000)return;
+ if(n<=0)return;
+ const startIndex=d.txCount,bytes=Uint8Array.from({length:n},(_,i)=>rawAt(d,startIndex+i));
+ const item={raw:true,bytes,live:()=>!!rawTest?.active&&rawTest.id===runId,
+  onWritten:()=>{d.txCount+=n;d.txEvents.push({t:now(),bytes:n});},onAborted:()=>{}};
+ if(enqueue(p,item))d.token-=n;
+}
+function exportRawCSV(){if(!rawTest){appendLog('Aucun test brut à exporter.');return;}
+ const cols=['sens','amorce_detectee','octets_Tx_USB','octets_corrects','octets_divergents','octets_inseres_estimes','octets_manquants_estimes','octets_ignores_avant_amorce'];
+ const data=[cols.join(';')];for(const dir of rawTest.dirs){const d=rawTest.d[dir];data.push([dir,d.markerReceived?1:0,d.txCount,d.good,d.corrupt,d.extra,rawTest.active?d.missing:d.lastEstimate,d.skippedBeforeSync].join(';'));}
+ downloadText('AirModem_300baud_flux_brut.csv','\ufeff'+data.join('\r\n'),'text/csv;charset=utf-8');}
+function updateRawUI(){const state=$('rawState');
+ if(!rawTest){state.textContent='Aucun essai brut lancé. Les métriques par paquet ci-dessus restent indépendantes.';}
+ else state.textContent=(rawTest.active?(rawTest.phase==='send'?'Injection':'Vidange'):'Terminé')+
+   ' · '+nfmt(((rawTest.stoppedAt||now())-rawTest.startedAt)/1000)+' s · débit demandé '+rawTest.rate+' octets/s/sens.';
+ $('btnRawStart').disabled=!ports.A.connected||!ports.B.connected||!!test?.active||!!rawTest?.active;
+ $('btnRawStop').disabled=!rawTest?.active;
+ for(const dir of ['AB','BA']){const d=rawTest?.d[dir],has=!!rawTest?.dirs.includes(dir),tail=d?.markerReceived?Math.max(0,d.txCount-d.expectedIndex):0;
+  const status=!has?'Inactif':!d.markerReceived?'Amorce non reconnue': 'Aligné';
+  $('raw'+dir).textContent=!d?'—':status+' | TX '+d.txCount+' o | corrects '+d.good+
+   ' | divergents '+d.corrupt+' | insérés '+d.extra+' | manquants estimés '+(rawTest.active?'≥ '+d.missing:d.lastEstimate)+' | préambule ignoré '+d.skippedBeforeSync+' o';
+ }
+}
+
+$('connectA').onclick=()=>connectPort('A');$('connectB').onclick=()=>connectPort('B');
+$('closeA').onclick=()=>disconnectPort('A');$('closeB').onclick=()=>disconnectPort('B');
+$('btnStart').onclick=beginTest;$('btnStop').onclick=()=>stopTest(true);
+$('btnRawStart').onclick=beginRaw;$('btnRawStop').onclick=()=>stopRaw(true);$('btnRawCSV').onclick=exportRawCSV;
+$('btnCSV').onclick=exportCSV;$('btnPackets').onclick=exportPackets;$('btnJSON').onclick=exportJSON;
+$('btnSelf').onclick=selfTest;$('btnReset').onclick=()=>{if(test?.active){appendLog('Arrêter le test avant de réinitialiser.');return;}test=null;samples=[];appendLog('Mesures réinitialisées. Les deux ports restent ouverts.');paint();};
+for(const key of ['rate','size','profile'])$(key).addEventListener('change',updateBudget);
+const setPreset=(mode,rate,size,win,duration,drain,profile)=>{if(test?.active){appendLog('Arrête le test pour changer le préréglage.');return;}
+ $('mode').value=mode;$('rate').value=rate;$('size').value=size;$('window').value=win;$('duration').value=duration;$('drain').value=drain;$('profile').value=profile;updateBudget();appendLog('Préréglage chargé : '+mode+', '+rate+' o/s, '+size+' o/paquet, '+duration+' s. Clique Démarrer.');};
+$('presetLatency').onclick=()=>setPreset('AB',2,2,1,120,30,'control');
+$('presetQuality').onclick=()=>setPreset('both',12,24,4,600,45,'random');
+$('presetStress').onclick=()=>setPreset('both',25,64,8,180,60,'all');
+$('presetControl').onclick=()=>setPreset('both',8,16,4,180,40,'control');
+$('scale').onchange=paint;
+window.addEventListener('beforeunload',e=>{if(ports.A.connected||ports.B.connected)e.preventDefault();});
+setInterval(tick,50);updateBudget();paint();
+window.AirModemBenchmarkTest={pack,escapePacket,checkRaw,feedBytes,newPort,selfTest,payloadFor,estimateWire,getRun:()=>test,getRaw:()=>rawTest,getPorts:()=>ports};
+</script></body></html>
