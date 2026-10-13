@@ -1,0 +1,85 @@
+{
+  "version": "1.0.0-reference",
+  "basis": "Calculated firmware schedule, not an RF measurement",
+  "frame": [
+    {
+      "name": "bordure_initiale",
+      "first_sample": 0,
+      "last_sample": 10,
+      "samples": 11,
+      "start_us": 0.0,
+      "end_us": 35.2,
+      "duration_us": 35.2
+    },
+    {
+      "name": "w0_w7",
+      "first_sample": 11,
+      "last_sample": 139,
+      "samples": 129,
+      "start_us": 35.2,
+      "end_us": 448.0,
+      "duration_us": 412.8
+    },
+    {
+      "name": "sync",
+      "first_sample": 140,
+      "last_sample": 187,
+      "samples": 48,
+      "start_us": 448.0,
+      "end_us": 601.6,
+      "duration_us": 153.6
+    },
+    {
+      "name": "w8_w9",
+      "first_sample": 188,
+      "last_sample": 219,
+      "samples": 32,
+      "start_us": 601.6,
+      "end_us": 704.0,
+      "duration_us": 102.4
+    },
+    {
+      "name": "crc32",
+      "first_sample": 220,
+      "last_sample": 283,
+      "samples": 64,
+      "start_us": 704.0,
+      "end_us": 908.8,
+      "duration_us": 204.8
+    },
+    {
+      "name": "rs",
+      "first_sample": 284,
+      "last_sample": 347,
+      "samples": 64,
+      "start_us": 908.8,
+      "end_us": 1113.6,
+      "duration_us": 204.8
+    },
+    {
+      "name": "bordure_finale",
+      "first_sample": 348,
+      "last_sample": 359,
+      "samples": 12,
+      "start_us": 1113.6,
+      "end_us": 1152.0,
+      "duration_us": 38.4
+    }
+  ],
+  "rf_frame_us": 1152,
+  "uart_bit_us": 3333.3333333333335,
+  "uart_character_us": 33333.333333333336,
+  "favorable_attempts_us": [
+    1500,
+    10500,
+    19500,
+    28500
+  ],
+  "unfavorable_attempts_us": [
+    4500,
+    13500,
+    22500,
+    31500
+  ],
+  "wire_latency_measured": false
+}
