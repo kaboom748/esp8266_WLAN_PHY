@@ -1,0 +1,1275 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>AirModem 300</title>
+<style>
+*{box-sizing:border-box}html{background:#f3f6f8;color:#1e2936;font-family:"Segoe UI",Arial,sans-serif;font-size:14px;letter-spacing:0}body{margin:0}button,input,select{font:inherit}button,select{color:inherit}button{cursor:pointer;border:1px solid #c9d2dd;background:#fff;border-radius:4px;min-height:34px;padding:6px 12px;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}button:hover:not(:disabled){background:#ecf4fe;border-color:#7eacd9}button:disabled{opacity:.48;cursor:default}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #1684ed;outline-offset:3px}button.primary{background:#117de3;color:#fff;border-color:#117de3}button.primary:hover:not(:disabled){background:#0768c5}.icon{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}.icon-button{width:36px;height:34px;padding:6px}.bare{background:transparent;border-color:transparent}.hidden{display:none!important}.app{max-width:1450px;margin:0 auto;background:#fff;min-height:100vh;padding:0 26px}header{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid #d7dee6}h1{display:flex;align-items:center;gap:12px;font-size:26px;font-weight:650;margin:0}h1 .icon{width:28px;height:28px;color:#297dc6}.config{display:flex;align-items:center;gap:16px;color:#526175;font-size:13px}.config span+span{border-left:1px solid #d6dde5;padding-left:16px}.connection-row{min-height:62px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #dbe2e9}.connection-label{font-size:16px;font-weight:600;display:flex;align-items:center;gap:10px}.status{display:inline-flex;align-items:center;gap:7px;color:#657487;font-size:13px;min-width:0}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#99a4b1;flex:none}.status.online{color:#138556}.status.online .dot{background:#13b975;box-shadow:0 0 0 3px #15bb7412}.status.waiting{color:#956812}.status.waiting .dot{background:#e5a525}.head-actions{margin-left:auto;display:flex;gap:8px}.gauges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding-top:18px}.gauge{min-width:0;padding:0 26px;border-right:1px solid #dfe5eb}.gauge:first-child{padding-left:0}.gauge:last-child{padding-right:0;border:0}.gauge h2{font-size:17px;text-align:center;font-weight:600;margin:0 0 2px}.dial{width:100%;height:190px;display:block}.readout{display:flex;align-items:baseline;justify-content:center;gap:9px;min-height:51px;font-variant-numeric:tabular-nums;white-space:nowrap}.readout strong{font-size:38px;font-weight:650;line-height:1.15}.unit{color:#526175;font-size:19px}.metric-caption{color:#647184;text-align:center;font-size:12px;min-height:28px}.history{width:100%;height:72px;display:block}.chart-labels{display:flex;justify-content:space-between;color:#718096;font-size:10px;margin:3px 0 0 24px}.last-ack{display:flex;justify-content:space-between;gap:15px;color:#657386;font-size:12px;margin:18px 0 12px;font-variant-numeric:tabular-nums}.terminal{position:relative;background:#171b23;color:#d3dce8;border:1px solid #111821;border-radius:4px;height:140px;overflow:hidden;outline:none}.terminal:focus-within{box-shadow:0 0 0 2px #1684ed55}.terminal-output{height:100%;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;padding:13px 16px;font:13px/1.65 Consolas,"Cascadia Mono",monospace}.terminal-output .rx{color:#8de2b7}.terminal-output .tx{color:#81bdfa}.terminal-output .sys{color:#9daabd}.terminal-input{position:absolute;width:1px;height:1px;opacity:0;bottom:0;left:0;padding:0;border:0}.terminal-tools{display:flex;align-items:center;gap:20px;padding:12px 0 17px;border-bottom:1px solid #dbe2e9;font-size:12px}.segmented{display:inline-flex;flex:none}.segmented button{border-radius:0;min-height:31px;padding:5px 16px}.segmented button:first-child{border-radius:4px 0 0 4px}.segmented button:last-child{border-radius:0 4px 4px 0;border-left:0}.segmented button[aria-pressed=true]{background:#e8f2ff;border-color:#94bbe5;color:#1266bd}.check-label,.entry-label{display:flex;align-items:center;gap:7px;white-space:nowrap}.check-label input{accent-color:#1481eb}.entry-label select{border:1px solid #cbd6e0;border-radius:3px;background:#fff;padding:4px 8px}.keyboard-state{margin-left:auto;white-space:nowrap;display:flex;align-items:center;gap:7px;color:#718096}.keyboard-state.active{color:#18865d}.keyboard-state.active .dot{background:#16bb7b}.keyboard-state.busy{color:#9b711a}.keyboard-state.busy .dot{background:#e6ab30}.transfer-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin:20px 0 16px}.transfer-head h2{font-size:18px;font-weight:600;margin:0}.protocol{font-size:12px;color:#677589}.protocol span{color:#2c8161}.mode-row{display:flex;align-items:center;gap:18px;min-height:39px}.mode-row .segmented button{min-height:35px;padding:6px 22px}.mode-row .segmented button[aria-pressed=true]{background:#167fe0;color:white;border-color:#167fe0}.picker{display:flex;align-items:center;gap:8px;min-width:0}.picker span{color:#526478;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.transfer-status{display:flex;align-items:center;gap:9px;font-weight:600;min-height:49px;font-size:14px;overflow-wrap:anywhere}.transfer-status.waiting .dot{background:#dea425}.transfer-status.active .dot{background:#1788e9}.transfer-status.success{color:#16805b}.transfer-status.success .dot{background:#16b97a}.transfer-status.error{color:#bb3e45}.transfer-status.error .dot{background:#d8535a}.file-row{display:grid;grid-template-columns:minmax(150px,1.1fr) minmax(200px,2fr) auto;gap:20px;align-items:center;border-top:1px solid #dfe5ed;border-bottom:1px solid #dfe5ed;padding:16px 0;min-height:79px}.file-label{display:flex;align-items:center;gap:11px;min-width:0}.file-label>.icon{color:#617790;width:23px;height:23px}.file-label>div{min-width:0}.file-name{display:block;font-size:13px;overflow-wrap:anywhere}.file-size{display:block;color:#7a8899;font-size:11px;margin-top:5px}.progress-track{position:relative;height:21px;background:#f2f5f8;border:1px solid #d5dfe9;border-radius:3px;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#cbe8ff,#54b6f5)}.progress-text{position:absolute;inset:0;text-align:center;color:#34526e;line-height:19px;font-size:11px;font-variant-numeric:tabular-nums}.progress-info{display:flex;justify-content:space-between;color:#748094;font-size:11px;margin-top:6px;font-variant-numeric:tabular-nums}.file-state{font-size:12px;color:#53677d;display:flex;flex-direction:column;gap:8px;min-width:135px}.integrity.good{color:#16805b}.bottom-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 0}.journal-actions{display:flex;gap:4px}.journal-actions button{font-size:12px}footer{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;border-top:1px solid #e0e6ee;padding:13px 0 17px;color:#7a8898;font-size:11px;min-height:46px}footer>span:first-child{overflow-wrap:anywhere}footer>span:last-child{white-space:nowrap}.error-banner{background:#fff3f2;border-bottom:1px solid #f3cec9;color:#a73d39;padding:12px 0;font-size:13px;display:flex;align-items:center;gap:12px}.error-banner span{flex:1}dialog{border:1px solid #c9d5e0;border-radius:6px;padding:22px;width:min(880px,calc(100% - 24px));max-height:85vh;color:#233044}dialog::backdrop{background:#14203466}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:16px}.dialog-head h2{font-size:18px;margin:0}.settings{display:flex;gap:20px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid #dce3eb}.settings label{display:flex;align-items:center;gap:8px;font-size:12px}.settings input{width:66px;border:1px solid #b8c7d6;border-radius:3px;padding:5px}#journal-log{max-height:45vh;overflow:auto;font:12px/1.65 Consolas,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.empty-hint{color:#65758a}
+@media(min-width:1500px){.app{padding:0 36px}.dial{height:202px}}
+@media(max-width:800px){.app{padding:0 16px}header{min-height:69px;flex-wrap:wrap;gap:8px;padding:14px 0}h1{font-size:23px}.config{font-size:11px;gap:10px}.config span+span{padding-left:10px}.gauge{padding:0 12px}.dial{height:147px}.gauge h2{font-size:15px}.readout strong{font-size:30px}.readout{min-height:43px}.unit{font-size:16px}.metric-caption{font-size:10px}.terminal-tools{gap:12px}.file-row{grid-template-columns:minmax(120px,1fr) minmax(180px,1.5fr);gap:12px}.file-state{grid-column:1/-1;flex-direction:row;justify-content:flex-end;gap:22px}.transfer-head{align-items:flex-start}.protocol{text-align:right;line-height:1.5}.protocol span{display:block}.connection-row{gap:10px}.status{font-size:12px}.connection-label{font-size:14px}}
+@media(max-width:500px){.app{padding:0 12px}.config{width:100%}.connection-row{flex-wrap:wrap;padding:12px 0;gap:10px}.connection-label{width:100%}.head-actions{position:absolute;right:12px;margin-top:-24px}.gauges{padding-top:17px}.gauge{padding:0 5px}.gauge h2{font-size:12px}.dial{height:105px}.readout{min-height:38px;gap:4px}.readout strong{font-size:24px}.unit{font-size:12px}.metric-caption{font-size:9px;min-height:31px;line-height:1.4}.history{height:61px}.chart-labels{font-size:8px;margin-left:14px}.terminal{height:175px}.terminal-output{font-size:12px;padding:10px}.terminal-tools{flex-wrap:wrap;gap:10px}.terminal-tools .segmented button{padding:4px 10px}.keyboard-state{margin-left:0;flex:1 0 100%;justify-content:flex-end}.transfer-head h2{font-size:16px}.protocol{font-size:10px}.mode-row{flex-wrap:wrap;gap:9px}.picker{max-width:100%}.mode-row .segmented button{padding:6px 20px}.transfer-status{font-size:12px;padding:13px 0;min-height:51px}.file-row{grid-template-columns:1fr;padding:13px 0}.file-state{grid-column:auto;justify-content:space-between;font-size:11px}.bottom-row{gap:6px}.bottom-row>button{font-size:12px;padding:6px 9px}.journal-actions button{padding:5px 7px}.journal-actions .icon-button{width:31px}footer{font-size:10px;gap:8px}.readout{overflow:hidden}}
+</style></head><body>
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"><symbol id="i-square-terminal" viewBox="0 0 24 24"><path d="m7 11 2-2-2-2"/><path d="M11 13h4"/><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></symbol><symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M15 8V2"/><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z"/><path d="M9 8V2"/></symbol><symbol id="i-unplug" viewBox="0 0 24 24"><path d="m19 5 3-3"/><path d="m2 22 3-3"/><path d="M6.3 20.3a2.4 2.4 0 0 0 3.4 0L12 18l-6-6-2.3 2.3a2.4 2.4 0 0 0 0 3.4Z"/><path d="M7.5 13.5 10 11"/><path d="M10.5 16.5 13 14"/><path d="m12 6 6 6 2.3-2.3a2.4 2.4 0 0 0 0-3.4l-2.6-2.6a2.4 2.4 0 0 0-3.4 0Z"/></symbol><symbol id="i-trash-2" viewBox="0 0 24 24"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol><symbol id="i-square" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/></symbol><symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m17 8-5-5-5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></symbol><symbol id="i-folder-open" viewBox="0 0 24 24"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/></symbol><symbol id="i-file-down" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-circle-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol></svg>
+<main class="app">
+<header><h1><svg class="icon"><use href="#i-square-terminal"/></svg>AirModem 300</h1><div class="config"><span>300 bauds</span><span>8N1</span><span>Sans contrôle de flux</span></div></header>
+<div class="error-banner hidden" id="error-banner" role="alert"><svg class="icon"><use href="#i-circle-alert"/></svg><span id="error-message"></span><button class="icon-button bare" id="dismiss-error" aria-label="Fermer le message" title="Fermer"><svg class="icon"><use href="#i-x"/></svg></button></div>
+<section class="connection-row" aria-label="Connexion série"><div class="connection-label"><svg class="icon"><use href="#i-plug"/></svg>Connexion série</div><span class="status" id="connection"><i class="dot"></i><span id="connection-text">Déconnecté</span></span><div class="head-actions"><button id="connect" class="primary" title="Choisir un port série"><svg class="icon"><use href="#i-plug"/></svg><span id="connect-label">Connecter</span></button><button class="icon-button bare" id="clear" aria-label="Effacer le terminal" title="Effacer le terminal"><svg class="icon"><use href="#i-trash-2"/></svg></button></div></section>
+<section class="gauges" aria-label="Mesures de la liaison">
+<div class="gauge" data-metric="rate" title="Octets observés sur ce port, protocole compris. Fenêtre glissante d’une seconde. 300 bauds 8N1 = 30 octets/s nominaux."><h2 id="rate-title">Débit reçu</h2><canvas class="dial" aria-hidden="true"></canvas><div class="readout"><strong id="rate">—</strong><span class="unit">o/s</span></div><div class="metric-caption" id="rate-caption">RX série · fenêtre 1 s</div><canvas class="history" aria-hidden="true"></canvas><div class="chart-labels"><span>30 s</span><span>maintenant</span></div></div>
+<div class="gauge" data-metric="latency" title="Mesure côté émetteur uniquement : première écriture du bloc vers USB jusqu’à réception de son ACK. Inclut sérialisation et reprises. Ce n’est pas une mesure de la seule latence radio."><h2>Latence ACK</h2><canvas class="dial" aria-hidden="true"></canvas><div class="readout"><strong id="latency">—</strong><span class="unit">s</span></div><div class="metric-caption">Début du bloc → ACK</div><canvas class="history" aria-hidden="true"></canvas><div class="chart-labels"><span>30 s</span><span>maintenant</span></div></div>
+<div class="gauge" data-metric="jitter" title="Écart absolu entre les latences de deux blocs acquittés consécutifs, côté émetteur. Valeur réelle ; l’aiguille sature au maximum du cadran."><h2>Jitter ACK</h2><canvas class="dial" aria-hidden="true"></canvas><div class="readout"><strong id="jitter">—</strong><span class="unit">ms</span></div><div class="metric-caption">Variation de latence</div><canvas class="history" aria-hidden="true"></canvas><div class="chart-labels"><span>30 s</span><span>maintenant</span></div></div>
+</section>
+<div class="last-ack"><span id="last-ack">Dernier ACK : —</span><span id="rx-count">RX : 0 o</span></div>
+<div class="terminal" id="terminal"><div class="terminal-output" id="console" aria-label="Terminal série"></div><textarea class="terminal-input" id="keyboard-input" aria-label="Clavier du terminal série" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea></div>
+<div class="terminal-tools"><div class="segmented" aria-label="Affichage du terminal"><button id="text" aria-pressed="true">Texte</button><button id="hex" aria-pressed="false" title="Affichage hexadécimal ; clavier UTF-8">Hex</button></div><label class="check-label"><input type="checkbox" id="echo" checked>Écho local</label><label class="entry-label">Entrée : <select id="eol" aria-label="Fin de ligne"><option>CRLF</option><option>CR</option><option>LF</option></select></label><span class="keyboard-state" id="keyboard-state"><i class="dot"></i><span>Hors ligne</span></span></div>
+<section aria-labelledby="transfer-title"><div class="transfer-head"><h2 id="transfer-title">Transfert de fichier</h2><div class="protocol">YMODEM-CRC · 128 octets <span>| Retransmissions activées</span></div></div>
+<div class="mode-row"><div class="segmented" aria-label="Mode de transfert"><button id="mode-send" aria-pressed="true"><svg class="icon"><use href="#i-upload"/></svg>Envoyer</button><button id="mode-receive" aria-pressed="false"><svg class="icon"><use href="#i-download"/></svg>Recevoir</button></div><div class="picker"><button class="icon-button" id="choose" title="Choisir le fichier à envoyer" aria-label="Choisir le fichier à envoyer"><svg class="icon"><use href="#i-folder-open"/></svg></button><span id="picker-label">Aucun fichier sélectionné</span></div><input type="file" id="file-input" class="hidden"></div>
+<div class="transfer-status" id="transfer-status" role="status"><i class="dot"></i><span id="transfer-text">Prêt à envoyer</span></div>
+<div class="file-row"><div class="file-label"><svg class="icon"><use href="#i-file"/></svg><div><span class="file-name" id="file-name">Aucun fichier</span><span class="file-size" id="file-size">—</span></div></div><div><div class="progress-track" id="progress" role="progressbar" aria-label="Avancement du fichier" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div><span class="progress-text" id="progress-text">0 %</span></div><div class="progress-info"><span id="byte-progress">0 / 0 o</span><span id="elapsed">00:00</span></div></div><div class="file-state"><span id="retries" title="Reprises YMODEM observées ici ; pas les tentatives radio internes des ESP">Reprises : 0</span><span class="integrity" id="integrity">Intégrité : —</span></div></div>
+<div class="bottom-row"><button class="primary" id="start" disabled><svg class="icon"><use id="start-icon" href="#i-upload"/></svg><span id="start-label">Envoyer le fichier</span></button><div class="journal-actions"><button class="bare" id="journal"><svg class="icon"><use href="#i-chevron-right"/></svg>Journal</button><button class="icon-button bare" id="export" title="Exporter le journal JSON" aria-label="Exporter le journal JSON"><svg class="icon"><use href="#i-file-down"/></svg></button></div></div>
+</section>
+<footer><span id="footer-state">Connexion série requise</span><span>Horodatage PC / USB</span></footer>
+</main>
+<dialog id="journal-dialog"><div class="dialog-head"><h2>Journal de liaison</h2><button class="icon-button bare" id="close-journal" title="Fermer le journal" aria-label="Fermer le journal"><svg class="icon"><use href="#i-x"/></svg></button></div><div class="settings"><label>Reprises / bloc <input type="number" id="retry-setting" min="1" max="99" value="20"></label><label>Délai ACK (s) <input type="number" id="timeout-setting" min="10" max="120" value="20"></label></div><pre id="journal-log"></pre></dialog>
+<!--
+AirModem 300 - local dual-port test terminal, 2026-10-13.
+
+XMODEM-CRC state machine adapted to asynchronous JavaScript from:
+https://github.com/tehmaze/xmodem/tree/0.4.7 (send/recv, MIT).
+This adaptation adds duplicate-block recovery, exact known length, bounded
+queues, cancellable I/O, EOT re-ACK, and the optional AirModem MUX envelope.
+Standard mode is 128-byte CRC XMODEM. MUX is NOT standard XMODEM on the wire.
+Both endpoints are controlled by the same page; filename and exact size are
+local metadata, not a YMODEM header. Binary padding is trimmed by exact size.
+The hash.js SHA-256 padding is patched to encode the full 64-bit bit count
+instead of truncating it at 32 bits for files of 512 MiB and larger.
+
+Copyright (c) 2010 Wijnand Modderman-Lenstra
+Copyright (c) 1981 Chuck Forsberg
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+YMODEM adaptation: https://github.com/alexwoo1900/ymodem
+MIT License
+
+Copyright (c) 2018 Alex Woo
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+hash.js
+
+
+This software is licensed under the MIT License.
+
+Copyright Fedor Indutny, 2014.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to the
+following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+inherits
+The ISC License
+
+Copyright (c) Isaac Z. Schlueter
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+
+
+
+minimalistic-assert
+Copyright 2015 Calvin Metcalf
+
+Permission to use, copy, modify, and/or distribute this software for any purpose
+with or without fee is hereby granted, provided that the above copyright notice
+and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE
+OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+
+lucide
+ISC License
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+- --
+
+The following Lucide icons are derived from the Feather project:
+
+airplay, alert-circle, alert-octagon, alert-triangle, aperture, arrow-down-circle, arrow-down-left, arrow-down-right, arrow-down, arrow-left-circle, arrow-left, arrow-right-circle, arrow-right, arrow-up-circle, arrow-up-left, arrow-up-right, arrow-up, at-sign, calendar, cast, check, chevron-down, chevron-left, chevron-right, chevron-up, chevrons-down, chevrons-left, chevrons-right, chevrons-up, circle, clipboard, clock, code, columns, command, compass, corner-down-left, corner-down-right, corner-left-down, corner-left-up, corner-right-down, corner-right-up, corner-up-left, corner-up-right, crosshair, database, divide-circle, divide-square, dollar-sign, download, external-link, feather, frown, hash, headphones, help-circle, info, italic, key, layout, life-buoy, link-2, link, loader, lock, log-in, log-out, maximize, meh, minimize, minimize-2, minus-circle, minus-square, minus, monitor, moon, more-horizontal, more-vertical, move, music, navigation-2, navigation, octagon, pause-circle, percent, plus-circle, plus-square, plus, power, radio, rss, search, server, share, shopping-bag, sidebar, smartphone, smile, square, table-2, tablet, target, terminal, trash-2, trash, triangle, tv, type, upload, x-circle, x-octagon, x-square, x, zoom-in, zoom-out
+
+The MIT License (MIT) (for the icons listed above)
+
+Copyright (c) 2013-present Cole Bemis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--><script>window.SHA256=(function(){const m={0:function(module,exports,require){
+'use strict';
+
+var utils = require(1);
+var common = require(4);
+var shaCommon = require(5);
+var assert = require(2);
+
+var sum32 = utils.sum32;
+var sum32_4 = utils.sum32_4;
+var sum32_5 = utils.sum32_5;
+var ch32 = shaCommon.ch32;
+var maj32 = shaCommon.maj32;
+var s0_256 = shaCommon.s0_256;
+var s1_256 = shaCommon.s1_256;
+var g0_256 = shaCommon.g0_256;
+var g1_256 = shaCommon.g1_256;
+
+var BlockHash = common.BlockHash;
+
+var sha256_K = [
+  0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
+  0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+  0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+  0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+  0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
+  0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+  0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
+  0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+  0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+  0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+  0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3,
+  0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+  0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
+  0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+  0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+  0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
+];
+
+function SHA256() {
+  if (!(this instanceof SHA256))
+    return new SHA256();
+
+  BlockHash.call(this);
+  this.h = [
+    0x6a09e667, 0xbb67ae85, 0x3c6ef372, 0xa54ff53a,
+    0x510e527f, 0x9b05688c, 0x1f83d9ab, 0x5be0cd19
+  ];
+  this.k = sha256_K;
+  this.W = new Array(64);
+}
+utils.inherits(SHA256, BlockHash);
+module.exports = SHA256;
+
+SHA256.blockSize = 512;
+SHA256.outSize = 256;
+SHA256.hmacStrength = 192;
+SHA256.padLength = 64;
+
+SHA256.prototype._update = function _update(msg, start) {
+  var W = this.W;
+
+  for (var i = 0; i < 16; i++)
+    W[i] = msg[start + i];
+  for (; i < W.length; i++)
+    W[i] = sum32_4(g1_256(W[i - 2]), W[i - 7], g0_256(W[i - 15]), W[i - 16]);
+
+  var a = this.h[0];
+  var b = this.h[1];
+  var c = this.h[2];
+  var d = this.h[3];
+  var e = this.h[4];
+  var f = this.h[5];
+  var g = this.h[6];
+  var h = this.h[7];
+
+  assert(this.k.length === W.length);
+  for (i = 0; i < W.length; i++) {
+    var T1 = sum32_5(h, s1_256(e), ch32(e, f, g), this.k[i], W[i]);
+    var T2 = sum32(s0_256(a), maj32(a, b, c));
+    h = g;
+    g = f;
+    f = e;
+    e = sum32(d, T1);
+    d = c;
+    c = b;
+    b = a;
+    a = sum32(T1, T2);
+  }
+
+  this.h[0] = sum32(this.h[0], a);
+  this.h[1] = sum32(this.h[1], b);
+  this.h[2] = sum32(this.h[2], c);
+  this.h[3] = sum32(this.h[3], d);
+  this.h[4] = sum32(this.h[4], e);
+  this.h[5] = sum32(this.h[5], f);
+  this.h[6] = sum32(this.h[6], g);
+  this.h[7] = sum32(this.h[7], h);
+};
+
+SHA256.prototype._digest = function digest(enc) {
+  if (enc === 'hex')
+    return utils.toHex32(this.h, 'big');
+  else
+    return utils.split32(this.h, 'big');
+};
+
+},
+1:function(module,exports,require){
+'use strict';
+
+var assert = require(2);
+var inherits = require(3);
+
+exports.inherits = inherits;
+
+function isSurrogatePair(msg, i) {
+  if ((msg.charCodeAt(i) & 0xFC00) !== 0xD800) {
+    return false;
+  }
+  if (i < 0 || i + 1 >= msg.length) {
+    return false;
+  }
+  return (msg.charCodeAt(i + 1) & 0xFC00) === 0xDC00;
+}
+
+function toArray(msg, enc) {
+  if (Array.isArray(msg))
+    return msg.slice();
+  if (!msg)
+    return [];
+  var res = [];
+  if (typeof msg === 'string') {
+    if (!enc) {
+      // Inspired by stringToUtf8ByteArray() in closure-library by Google
+      // https://github.com/google/closure-library/blob/8598d87242af59aac233270742c8984e2b2bdbe0/closure/goog/crypt/crypt.js#L117-L143
+      // Apache License 2.0
+      // https://github.com/google/closure-library/blob/master/LICENSE
+      var p = 0;
+      for (var i = 0; i < msg.length; i++) {
+        var c = msg.charCodeAt(i);
+        if (c < 128) {
+          res[p++] = c;
+        } else if (c < 2048) {
+          res[p++] = (c >> 6) | 192;
+          res[p++] = (c & 63) | 128;
+        } else if (isSurrogatePair(msg, i)) {
+          c = 0x10000 + ((c & 0x03FF) << 10) + (msg.charCodeAt(++i) & 0x03FF);
+          res[p++] = (c >> 18) | 240;
+          res[p++] = ((c >> 12) & 63) | 128;
+          res[p++] = ((c >> 6) & 63) | 128;
+          res[p++] = (c & 63) | 128;
+        } else {
+          res[p++] = (c >> 12) | 224;
+          res[p++] = ((c >> 6) & 63) | 128;
+          res[p++] = (c & 63) | 128;
+        }
+      }
+    } else if (enc === 'hex') {
+      msg = msg.replace(/[^a-z0-9]+/ig, '');
+      if (msg.length % 2 !== 0)
+        msg = '0' + msg;
+      for (i = 0; i < msg.length; i += 2)
+        res.push(parseInt(msg[i] + msg[i + 1], 16));
+    }
+  } else {
+    for (i = 0; i < msg.length; i++)
+      res[i] = msg[i] | 0;
+  }
+  return res;
+}
+exports.toArray = toArray;
+
+function toHex(msg) {
+  var res = '';
+  for (var i = 0; i < msg.length; i++)
+    res += zero2(msg[i].toString(16));
+  return res;
+}
+exports.toHex = toHex;
+
+function htonl(w) {
+  var res = (w >>> 24) |
+            ((w >>> 8) & 0xff00) |
+            ((w << 8) & 0xff0000) |
+            ((w & 0xff) << 24);
+  return res >>> 0;
+}
+exports.htonl = htonl;
+
+function toHex32(msg, endian) {
+  var res = '';
+  for (var i = 0; i < msg.length; i++) {
+    var w = msg[i];
+    if (endian === 'little')
+      w = htonl(w);
+    res += zero8(w.toString(16));
+  }
+  return res;
+}
+exports.toHex32 = toHex32;
+
+function zero2(word) {
+  if (word.length === 1)
+    return '0' + word;
+  else
+    return word;
+}
+exports.zero2 = zero2;
+
+function zero8(word) {
+  if (word.length === 7)
+    return '0' + word;
+  else if (word.length === 6)
+    return '00' + word;
+  else if (word.length === 5)
+    return '000' + word;
+  else if (word.length === 4)
+    return '0000' + word;
+  else if (word.length === 3)
+    return '00000' + word;
+  else if (word.length === 2)
+    return '000000' + word;
+  else if (word.length === 1)
+    return '0000000' + word;
+  else
+    return word;
+}
+exports.zero8 = zero8;
+
+function join32(msg, start, end, endian) {
+  var len = end - start;
+  assert(len % 4 === 0);
+  var res = new Array(len / 4);
+  for (var i = 0, k = start; i < res.length; i++, k += 4) {
+    var w;
+    if (endian === 'big')
+      w = (msg[k] << 24) | (msg[k + 1] << 16) | (msg[k + 2] << 8) | msg[k + 3];
+    else
+      w = (msg[k + 3] << 24) | (msg[k + 2] << 16) | (msg[k + 1] << 8) | msg[k];
+    res[i] = w >>> 0;
+  }
+  return res;
+}
+exports.join32 = join32;
+
+function split32(msg, endian) {
+  var res = new Array(msg.length * 4);
+  for (var i = 0, k = 0; i < msg.length; i++, k += 4) {
+    var m = msg[i];
+    if (endian === 'big') {
+      res[k] = m >>> 24;
+      res[k + 1] = (m >>> 16) & 0xff;
+      res[k + 2] = (m >>> 8) & 0xff;
+      res[k + 3] = m & 0xff;
+    } else {
+      res[k + 3] = m >>> 24;
+      res[k + 2] = (m >>> 16) & 0xff;
+      res[k + 1] = (m >>> 8) & 0xff;
+      res[k] = m & 0xff;
+    }
+  }
+  return res;
+}
+exports.split32 = split32;
+
+function rotr32(w, b) {
+  return (w >>> b) | (w << (32 - b));
+}
+exports.rotr32 = rotr32;
+
+function rotl32(w, b) {
+  return (w << b) | (w >>> (32 - b));
+}
+exports.rotl32 = rotl32;
+
+function sum32(a, b) {
+  return (a + b) >>> 0;
+}
+exports.sum32 = sum32;
+
+function sum32_3(a, b, c) {
+  return (a + b + c) >>> 0;
+}
+exports.sum32_3 = sum32_3;
+
+function sum32_4(a, b, c, d) {
+  return (a + b + c + d) >>> 0;
+}
+exports.sum32_4 = sum32_4;
+
+function sum32_5(a, b, c, d, e) {
+  return (a + b + c + d + e) >>> 0;
+}
+exports.sum32_5 = sum32_5;
+
+function sum64(buf, pos, ah, al) {
+  var bh = buf[pos];
+  var bl = buf[pos + 1];
+
+  var lo = (al + bl) >>> 0;
+  var hi = (lo < al ? 1 : 0) + ah + bh;
+  buf[pos] = hi >>> 0;
+  buf[pos + 1] = lo;
+}
+exports.sum64 = sum64;
+
+function sum64_hi(ah, al, bh, bl) {
+  var lo = (al + bl) >>> 0;
+  var hi = (lo < al ? 1 : 0) + ah + bh;
+  return hi >>> 0;
+}
+exports.sum64_hi = sum64_hi;
+
+function sum64_lo(ah, al, bh, bl) {
+  var lo = al + bl;
+  return lo >>> 0;
+}
+exports.sum64_lo = sum64_lo;
+
+function sum64_4_hi(ah, al, bh, bl, ch, cl, dh, dl) {
+  var carry = 0;
+  var lo = al;
+  lo = (lo + bl) >>> 0;
+  carry += lo < al ? 1 : 0;
+  lo = (lo + cl) >>> 0;
+  carry += lo < cl ? 1 : 0;
+  lo = (lo + dl) >>> 0;
+  carry += lo < dl ? 1 : 0;
+
+  var hi = ah + bh + ch + dh + carry;
+  return hi >>> 0;
+}
+exports.sum64_4_hi = sum64_4_hi;
+
+function sum64_4_lo(ah, al, bh, bl, ch, cl, dh, dl) {
+  var lo = al + bl + cl + dl;
+  return lo >>> 0;
+}
+exports.sum64_4_lo = sum64_4_lo;
+
+function sum64_5_hi(ah, al, bh, bl, ch, cl, dh, dl, eh, el) {
+  var carry = 0;
+  var lo = al;
+  lo = (lo + bl) >>> 0;
+  carry += lo < al ? 1 : 0;
+  lo = (lo + cl) >>> 0;
+  carry += lo < cl ? 1 : 0;
+  lo = (lo + dl) >>> 0;
+  carry += lo < dl ? 1 : 0;
+  lo = (lo + el) >>> 0;
+  carry += lo < el ? 1 : 0;
+
+  var hi = ah + bh + ch + dh + eh + carry;
+  return hi >>> 0;
+}
+exports.sum64_5_hi = sum64_5_hi;
+
+function sum64_5_lo(ah, al, bh, bl, ch, cl, dh, dl, eh, el) {
+  var lo = al + bl + cl + dl + el;
+
+  return lo >>> 0;
+}
+exports.sum64_5_lo = sum64_5_lo;
+
+function rotr64_hi(ah, al, num) {
+  var r = (al << (32 - num)) | (ah >>> num);
+  return r >>> 0;
+}
+exports.rotr64_hi = rotr64_hi;
+
+function rotr64_lo(ah, al, num) {
+  var r = (ah << (32 - num)) | (al >>> num);
+  return r >>> 0;
+}
+exports.rotr64_lo = rotr64_lo;
+
+function shr64_hi(ah, al, num) {
+  return ah >>> num;
+}
+exports.shr64_hi = shr64_hi;
+
+function shr64_lo(ah, al, num) {
+  var r = (ah << (32 - num)) | (al >>> num);
+  return r >>> 0;
+}
+exports.shr64_lo = shr64_lo;
+
+},
+2:function(module,exports,require){
+module.exports = assert;
+
+function assert(val, msg) {
+  if (!val)
+    throw new Error(msg || 'Assertion failed');
+}
+
+assert.equal = function assertEqual(l, r, msg) {
+  if (l != r)
+    throw new Error(msg || ('Assertion failed: ' + l + ' != ' + r));
+};
+
+},
+3:function(module,exports,require){
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    if (superCtor) {
+      ctor.super_ = superCtor
+      ctor.prototype = Object.create(superCtor.prototype, {
+        constructor: {
+          value: ctor,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      })
+    }
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    if (superCtor) {
+      ctor.super_ = superCtor
+      var TempCtor = function () {}
+      TempCtor.prototype = superCtor.prototype
+      ctor.prototype = new TempCtor()
+      ctor.prototype.constructor = ctor
+    }
+  }
+}
+
+},
+4:function(module,exports,require){
+'use strict';
+
+var utils = require(1);
+var assert = require(2);
+
+function BlockHash() {
+  this.pending = null;
+  this.pendingTotal = 0;
+  this.blockSize = this.constructor.blockSize;
+  this.outSize = this.constructor.outSize;
+  this.hmacStrength = this.constructor.hmacStrength;
+  this.padLength = this.constructor.padLength / 8;
+  this.endian = 'big';
+
+  this._delta8 = this.blockSize / 8;
+  this._delta32 = this.blockSize / 32;
+}
+exports.BlockHash = BlockHash;
+
+BlockHash.prototype.update = function update(msg, enc) {
+  // Convert message to array, pad it, and join into 32bit blocks
+  msg = utils.toArray(msg, enc);
+  if (!this.pending)
+    this.pending = msg;
+  else
+    this.pending = this.pending.concat(msg);
+  this.pendingTotal += msg.length;
+
+  // Enough data, try updating
+  if (this.pending.length >= this._delta8) {
+    msg = this.pending;
+
+    // Process pending data in blocks
+    var r = msg.length % this._delta8;
+    this.pending = msg.slice(msg.length - r, msg.length);
+    if (this.pending.length === 0)
+      this.pending = null;
+
+    msg = utils.join32(msg, 0, msg.length - r, this.endian);
+    for (var i = 0; i < msg.length; i += this._delta32)
+      this._update(msg, i, i + this._delta32);
+  }
+
+  return this;
+};
+
+BlockHash.prototype.digest = function digest(enc) {
+  this.update(this._pad());
+  assert(this.pending === null);
+
+  return this._digest(enc);
+};
+
+BlockHash.prototype._pad = function pad() {
+  var len = this.pendingTotal;
+  var bytes = this._delta8;
+  var k = bytes - ((len + this.padLength) % bytes);
+  var res = new Array(k + this.padLength);
+  res[0] = 0x80;
+  for (var i = 1; i < k; i++)
+    res[i] = 0;
+
+  // Append length
+  len <<= 3;
+  if (this.endian === 'big') {
+    for (var t = 8; t < this.padLength; t++)
+      res[i++] = 0;
+
+    res[i++] = 0;
+    res[i++] = 0;
+    res[i++] = 0;
+    res[i++] = 0;
+    res[i++] = (len >>> 24) & 0xff;
+    res[i++] = (len >>> 16) & 0xff;
+    res[i++] = (len >>> 8) & 0xff;
+    res[i++] = len & 0xff;
+  } else {
+    res[i++] = len & 0xff;
+    res[i++] = (len >>> 8) & 0xff;
+    res[i++] = (len >>> 16) & 0xff;
+    res[i++] = (len >>> 24) & 0xff;
+    res[i++] = 0;
+    res[i++] = 0;
+    res[i++] = 0;
+    res[i++] = 0;
+
+    for (t = 8; t < this.padLength; t++)
+      res[i++] = 0;
+  }
+
+  return res;
+};
+
+},
+5:function(module,exports,require){
+'use strict';
+
+var utils = require(1);
+var rotr32 = utils.rotr32;
+
+function ft_1(s, x, y, z) {
+  if (s === 0)
+    return ch32(x, y, z);
+  if (s === 1 || s === 3)
+    return p32(x, y, z);
+  if (s === 2)
+    return maj32(x, y, z);
+}
+exports.ft_1 = ft_1;
+
+function ch32(x, y, z) {
+  return (x & y) ^ ((~x) & z);
+}
+exports.ch32 = ch32;
+
+function maj32(x, y, z) {
+  return (x & y) ^ (x & z) ^ (y & z);
+}
+exports.maj32 = maj32;
+
+function p32(x, y, z) {
+  return x ^ y ^ z;
+}
+exports.p32 = p32;
+
+function s0_256(x) {
+  return rotr32(x, 2) ^ rotr32(x, 13) ^ rotr32(x, 22);
+}
+exports.s0_256 = s0_256;
+
+function s1_256(x) {
+  return rotr32(x, 6) ^ rotr32(x, 11) ^ rotr32(x, 25);
+}
+exports.s1_256 = s1_256;
+
+function g0_256(x) {
+  return rotr32(x, 7) ^ rotr32(x, 18) ^ (x >>> 3);
+}
+exports.g0_256 = g0_256;
+
+function g1_256(x) {
+  return rotr32(x, 17) ^ rotr32(x, 19) ^ (x >>> 10);
+}
+exports.g1_256 = g1_256;
+
+}},cache={};function require(id){if(!cache[id]){const v=cache[id]={exports:{}};m[id](v,v.exports,require)}return cache[id].exports}return require(0)})();
+/* hash.js uses a 32-bit bit count in its default padding. Preserve SHA-256's
+ * full 64-bit length field for streamed files exceeding 512 MiB. */
+(function () {
+  function fixPadding(SHA256) {
+    SHA256.prototype._pad = function () {
+      const size = this.pendingTotal;
+      if (!Number.isSafeInteger(size) || size < 0) throw new Error('Longueur SHA-256 non représentable');
+      const count = 64 - ((size % 64 + 8) % 64), out = new Array(count + 8).fill(0);
+      out[0] = 0x80;
+      const high = Math.floor(size / 0x20000000), low = (size % 0x20000000) * 8;
+      for (let i = 0; i < 4; i++) {
+        out[count + i] = (high >>> (24 - i * 8)) & 255;
+        out[count + 4 + i] = (low >>> (24 - i * 8)) & 255;
+      }
+      return out;
+    };
+  }
+  if (typeof module !== 'undefined' && module.exports) module.exports = fixPadding;
+  else fixPadding(window.SHA256);
+})();
+</script><script>/* YMODEM-CRC streaming JavaScript adaptation of alexwoo1900/ymodem
+ * (MIT, Copyright 2018 Alex Woo) and tehmaze/xmodem (MIT).
+ * See the licenses embedded in the standalone document.
+ * CRC-only, bounded buffers, paced UART writes, duplicate recovery, exact size.
+ */
+(function (root) {
+  'use strict';
+  const SOH=1, STX=2, EOT=4, ACK=6, NAK=21, CAN=24, C=67;
+  const abortError = () => Object.assign(new Error('Opération annulée'), {name:'AbortError'});
+  function check(signal) { if(signal?.aborted) throw signal.reason || abortError(); }
+  function delay(ms,signal) {
+    check(signal);
+    return new Promise((resolve,reject) => {
+      const clean=()=>{clearTimeout(timer);signal?.removeEventListener('abort',stop);};
+      const stop=()=>{clean();reject(signal.reason||abortError());};
+      const timer=setTimeout(()=>{clean();resolve();},Math.max(0,ms));
+      signal?.addEventListener('abort',stop,{once:true});
+    });
+  }
+  class Inbox {
+    constructor(limit=4096) {this.items=[];this.limit=limit;this.waiter=null;this.error=null;}
+    push(b) {if(this.error)return;if(this.waiter)this.waiter.finish(b);else if(this.items.length<this.limit)this.items.push(b);else this.close(new Error('File RX saturée'));}
+    close(e=abortError()) {this.error=e;this.items.length=0;this.waiter?.fail(e);}
+    clear(){this.items.length=0;}
+    take(ms,signal) {
+      check(signal);if(this.error)return Promise.reject(this.error);
+      if(this.items.length)return Promise.resolve(this.items.shift());
+      if(this.waiter)return Promise.reject(new Error('Lecture concurrente interdite'));
+      return new Promise((resolve,reject)=>{
+        const clean=()=>{clearTimeout(timer);signal?.removeEventListener('abort',cancel);this.waiter=null;};
+        const cancel=()=>{clean();reject(signal.reason||abortError());};
+        const timer=setTimeout(()=>{clean();resolve(null);},Math.max(1,ms));
+        this.waiter={finish:b=>{clean();resolve(b);},fail:e=>{clean();reject(e);}};
+        signal?.addEventListener('abort',cancel,{once:true});
+      });
+    }
+  }
+  class Pacer {
+    constructor(write,{byteMs=1000/30,chunk=6,onBytes=()=>{}}={}) {
+      Object.assign(this,{write,byteMs,chunk,onBytes,queue:[],active:false,error:null,pending:0,idleWaiters:[]});
+    }
+    send(data,{signal,priority=false,onStart=()=>{}}={}) {
+      check(signal);if(this.error)return Promise.reject(this.error);
+      if(this.pending+data.length>8192)return Promise.reject(new Error('File TX pleine : émission refusée'));
+      return new Promise((resolve,reject)=>{
+        const job={data:data.slice(),signal,onStart,resolve,reject};this.pending+=data.length;
+        if(priority)this.queue.unshift(job);else this.queue.push(job);void this.pump();
+      });
+    }
+    close(e=abortError()){this.error=e;}
+    idle(){return this.active||this.queue.length?new Promise(r=>this.idleWaiters.push(r)):Promise.resolve();}
+    async pump(){
+      if(this.active)return;this.active=true;
+      while(this.queue.length){
+        const j=this.queue.shift();
+        try{
+          check(j.signal);if(this.error)throw this.error;j.onStart(performance.now());
+          for(let at=0;at<j.data.length;at+=this.chunk){
+            check(j.signal);if(this.error)throw this.error;
+            const part=j.data.subarray(at,at+this.chunk);await this.write(part);this.onBytes(part);
+            // USB completion is not UART drain. Never catch up with a burst.
+            await delay(part.length*this.byteMs);
+          }
+          j.resolve();
+        }catch(e){j.reject(e);}this.pending-=j.data.length;
+      }
+      this.active=false;this.idleWaiters.splice(0).forEach(r=>r());
+    }
+  }
+  function crc16(bytes){let crc=0;for(const b of bytes){crc^=b<<8;for(let i=0;i<8;i++)crc=((crc<<1)^((crc&32768)?0x1021:0))&65535;}return crc;}
+  function packet(seq,data,size=128,padding=26){
+    if(![128,1024].includes(size)||data.length>size)throw new Error('Bloc invalide');
+    const out=new Uint8Array(size+5);out[0]=size===128?SOH:STX;out[1]=seq&255;out[2]=255-out[1];
+    out.fill(padding,3,size+3);out.set(data,3);const crc=crc16(out.subarray(3,size+3));out[size+3]=crc>>>8;out[size+4]=crc&255;return out;
+  }
+  function validPacket(p){const n=p[0]===SOH?128:p[0]===STX?1024:0;return !!n&&p.length===n+5&&(p[1]^p[2])===255&&crc16(p.subarray(3,n+3))===((p[n+3]<<8)|p[n+4]);}
+  function header(name,size){
+    if(!name||/[\x00-\x1f]/.test(name)||!Number.isSafeInteger(size)||size<0)throw new Error('Nom ou taille de fichier invalide');
+    const bytes=new TextEncoder().encode(name+'\0'+String(size)+' 0 0 0\0');
+    if(bytes.length>1024)throw new Error('Nom de fichier trop long pour YMODEM');
+    return packet(0,bytes,bytes.length<=128?128:1024,0);
+  }
+  function parseHeader(p){
+    if(!validPacket(p)||p[1]!==0)throw new Error('En-tête YMODEM invalide');
+    const d=p.subarray(3,-2),end=d.indexOf(0);if(end<0)throw new Error('Nom non terminé');if(end===0)return null;
+    const name=new TextDecoder('utf-8',{fatal:true}).decode(d.subarray(0,end));
+    const metadata=new TextDecoder().decode(d.subarray(end+1)).split('\0')[0];
+    const sizeString=metadata.split(' ')[0];
+    if(!/^\d+$/.test(sizeString))throw new Error('Taille exacte absente de l’en-tête YMODEM');
+    const size=Number(sizeString);if(!Number.isSafeInteger(size)||size<0)throw new Error('Taille non représentable');
+    return {name,size};
+  }
+  function safeName(name){
+    let n=name.replace(/\\/g,'/').split('/').pop().replace(/[\x00-\x1f\x7f<>:"|?*]/g,'_').replace(/[. ]+$/g,'');
+    if(!n||n==='.'||n==='..')n='fichier.bin';
+    if(/^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(n))n='_'+n;
+    // Leave space for a collision suffix and avoid splitting a surrogate pair.
+    return Array.from(n).slice(0,180).join('');
+  }
+  class Endpoint {
+    constructor(send,{gapMs=1800,purgeMs=800,frameMs=80000}={}){Object.assign(this,{sendBytes:send,gapMs,purgeMs,frameMs});this.inbox=new Inbox();this.can=false;}
+    feed(data){const at=performance.now();for(const b of data)this.inbox.push({b,at});}
+    send(data,signal,onStart){return this.sendBytes(data,{signal,onStart});}
+    async next(ms,signal){
+      const item=await this.inbox.take(ms,signal);if(item===null)return null;const first=item.b;
+      if(first===CAN&&this.can)throw new Error('Transfert annulé par le correspondant');this.can=first===CAN;
+      if(first!==SOH&&first!==STX)return {control:first,at:item.at};
+      this.can=false;const n=first===SOH?133:1029,p=new Uint8Array(n);p[0]=first;const end=performance.now()+this.frameMs;
+      for(let i=1;i<n;i++){
+        if(performance.now()>=end)return {bad:true};
+        const b=await this.inbox.take(Math.min(this.gapMs,end-performance.now()),signal);if(b===null)return {bad:true};p[i]=b.b;
+      }
+      return validPacket(p)?{packet:p}:{bad:true};
+    }
+    async purge(signal){const end=performance.now()+this.frameMs;while(await this.inbox.take(this.purgeMs,signal)!==null){if(performance.now()>end)throw new Error('Ligne occupée : resynchronisation impossible');}this.can=false;}
+  }
+  async function control(ep,allowed,ms,signal){
+    const end=performance.now()+ms;
+    while(performance.now()<end){const m=await ep.next(end-performance.now(),signal);if(!m)return null;if(allowed.includes(m.control)){ep.controlAt=m.at;return m.control;}}return null;
+  }
+  const defaults={ackMs:20000,helloMs:10000,startMs:120000,idleMs:50000,lingerMs:28000,retries:20};
+  function options(o){return {...defaults,event:()=>{},...o};}
+  async function sendFile(ep,source,opts={}){
+    const o=options(opts),{signal,event}=o;let retries=0;
+    const retry=(phase,attempt)=>{retries++;event('retry',{phase,attempt,retries});};
+    event('phase',{phase:'Attente du récepteur'});
+    if(await control(ep,[C],o.startMs,signal)!==C)throw new Error('Aucun récepteur YMODEM-CRC en attente');
+    const h=header(source.name,source.size);let ready=false;
+    for(let attempt=0;attempt<=o.retries;attempt++){
+      if(attempt)retry('En-tête',attempt);
+      await ep.send(h,signal);
+      if(await control(ep,[ACK,NAK],o.ackMs,signal)===ACK&&await control(ep,[C],o.ackMs,signal)===C){ready=true;break;}
+    }
+    if(!ready)throw new Error('En-tête non acquitté');
+    event('phase',{phase:'Émission en cours'});
+    let sent=0,seq=1,block=0;
+    while(sent<source.size){
+      check(signal);const data=new Uint8Array(await source.read(sent,Math.min(128,source.size-sent)));
+      if(data.length!==Math.min(128,source.size-sent))throw new Error('Lecture du fichier source incomplète');
+      const p=packet(seq,data);let accepted=false,started=null;
+      for(let attempt=0;attempt<=o.retries;attempt++){
+        if(attempt)retry('Bloc '+(block+1),attempt);
+        await ep.send(p,signal,t=>{if(started===null)started=t;});
+        if(await control(ep,[ACK,NAK],o.ackMs,signal)===ACK){
+          event('ack',{latency:Math.max(0,ep.controlAt-started),at:ep.controlAt,attempt,block:block+1});accepted=true;break;
+        }
+      }
+      if(!accepted)throw new Error('Limite de reprises atteinte au bloc '+(block+1));
+      sent+=data.length;seq=(seq+1)&255;block++;event('progress',{done:sent,total:source.size,block,data});
+    }
+    event('phase',{phase:'Confirmation de fin'});let ended=false;
+    for(let attempt=0;attempt<=o.retries;attempt++){
+      if(attempt)retry('Fin de fichier',attempt);await ep.send(Uint8Array.of(EOT),signal);
+      let c=await control(ep,[ACK,NAK],o.ackMs,signal);
+      if(c===NAK){await ep.send(Uint8Array.of(EOT),signal);c=await control(ep,[ACK,NAK],o.ackMs,signal);}
+      if(c===ACK&&await control(ep,[C],o.ackMs,signal)===C){ended=true;break;}
+    }
+    if(!ended)throw new Error('Fin de fichier non confirmée');
+    const empty=packet(0,new Uint8Array(0),128,0);let final=false;
+    for(let attempt=0;attempt<=o.retries;attempt++){
+      if(attempt)retry('Fin de session',attempt);await ep.send(empty,signal);
+      if(await control(ep,[ACK,NAK],o.ackMs,signal)===ACK){final=true;break;}
+    }
+    if(!final)throw new Error('Accusé final absent ; vérifier le journal du récepteur');
+    event('complete',{done:sent,retries});return {size:sent,retries};
+  }
+  async function receiveBatch(ep,openFile,opts={}){
+    const o=options(opts),{signal,event}=o;
+    let sink=null,meta=null,received=0,expected=1,blocks=0,last=null,head=null,errors=0,retries=0,files=0,phase='header',eotSeen=false;
+    const reply=(...bytes)=>ep.send(Uint8Array.from(bytes),signal);
+    const failure=async(reason)=>{
+      if(++errors>o.retries)throw new Error('Limite de reprises atteinte : '+reason);
+      event('retry',{phase:reason,retries:++retries,attempt:errors});await ep.purge(signal);await reply(NAK);
+    };
+    event('phase',{phase:'ATTENTE DE RÉCEPTION DE FICHIER'});await reply(C);
+    try{
+      for(;;){
+        const m=await ep.next(phase==='header'?o.helloMs:o.idleMs,signal);
+        if(!m){
+          if(phase==='header'&&files===0){await reply(C);continue;}
+          if(++errors>o.retries)throw new Error('Émetteur silencieux : session interrompue');
+          event('retry',{phase:'Émetteur silencieux',retries:++retries,attempt:errors});
+          await reply(phase==='header'||blocks===0?C:NAK);continue;
+        }
+        if(m.bad){await failure('CRC ou trame incomplète');continue;}
+        if(m.packet){
+          const p=m.packet;
+          if(phase==='header'){
+            if(p[1]!==0)throw new Error('Perte de synchronisation : en-tête attendu');
+            const next=parseHeader(p);
+            if(!next){
+              await reply(ACK);event('complete',{files,retries});
+              // Re-ACK a lost final ACK without any shared state with the sender.
+              let end=performance.now()+o.lingerMs,finalRetries=0;
+              while(performance.now()<end){
+                const tail=await ep.next(end-performance.now(),signal);if(!tail)break;
+                if(tail.packet&&tail.packet[1]===0&&parseHeader(tail.packet)===null){
+                  await reply(ACK);event('retry',{phase:'Acquittement final répété',retries:++retries});
+                  if(++finalRetries>=o.retries)break;end=performance.now()+o.lingerMs;
+                }
+              }
+              return {files,retries};
+            }
+            meta=next;sink=await openFile(meta);head=p.slice();received=0;blocks=0;expected=1;last=null;errors=0;eotSeen=false;phase='data';
+            event('file',meta);await reply(ACK,C);continue;
+          }
+          if(blocks===0&&p[1]===0&&p.length===head.length&&p.every((b,i)=>b===head[i])){
+            event('retry',{phase:'En-tête répété',retries:++retries});await reply(ACK,C);continue;
+          }
+          if(last&&p[1]===((expected+255)&255)){
+            if(p.length!==last.length||!p.every((b,i)=>b===last[i]))throw new Error('Doublon incohérent : transfert interrompu');
+            event('retry',{phase:'Bloc répété',retries:++retries});await reply(ACK);continue;
+          }
+          if(p[1]!==expected)throw new Error('Perte de synchronisation : numéro de bloc inattendu');
+          if(received>=meta.size)throw new Error('Données au-delà de la taille annoncée');
+          const data=p.subarray(3,3+Math.min(p.length-5,meta.size-received));
+          await sink.write(data);received+=data.length;blocks++;expected=(expected+1)&255;last=p.slice();errors=0;eotSeen=false;
+          event('progress',{done:received,total:meta.size,block:blocks,data});await reply(ACK);continue;
+        }
+        if(m.control===EOT){
+          if(phase==='header'&&files>0){await reply(ACK,C);continue;}
+          if(phase!=='data'){await failure('Fin sans en-tête');continue;}
+          if(received!==meta.size)throw new Error('Fichier incomplet : '+received+' / '+meta.size+' octets');
+          if(!eotSeen){eotSeen=true;await reply(NAK);continue;}
+          await sink.close();sink=null;files++;phase='header';errors=0;
+          event('saved',{...meta,files});await reply(ACK,C);continue;
+        }
+        if(m.control===CAN)continue;
+        await failure('Début de trame invalide');
+      }
+    }catch(e){if(sink)await sink.abort(e).catch(()=>{});throw e;}
+  }
+  const api={SOH,STX,EOT,ACK,NAK,CAN,C,Inbox,Pacer,Endpoint,crc16,packet,validPacket,header,parseHeader,safeName,sendFile,receiveBatch,control,delay,check,abortError,defaults};
+  if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.AirYModem=api;
+})(typeof window!=='undefined'?window:globalThis);
+</script><script>'use strict';
+class AirInstrument {
+  constructor(el){this.el=el;this.type=el.dataset.metric;this.canvas=el.querySelector('.dial');this.chart=el.querySelector('.history');this.value=null;this.target=null;this.max=this.type==='rate'?30:this.type==='latency'?10:300;this.color=this.type==='rate'?'#087deb':this.type==='latency'?'#d9a01c':'#168252';}
+  fit(canvas){const rect=canvas.getBoundingClientRect(),dpr=Math.min(devicePixelRatio||1,3);if(canvas.width!==Math.round(rect.width*dpr)||canvas.height!==Math.round(rect.height*dpr)){canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);}const c=canvas.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,rect.width,rect.height);return [c,rect.width,rect.height];}
+  dial(){
+    const [c,w,h]=this.fit(this.canvas);if(!w||!h)return;
+    const cx=w/2,cy=h-14,r=Math.min(w*.375,cy-30),band=Math.max(8,r*.17);c.lineWidth=band;
+    const colors=this.type==='rate'?['#ff3d57','#ff7d42','#ffe253','#a9ed54','#00d793','#05a4f4']:['#00c777','#48e865','#e3ed4c','#ffd142','#ff8441','#ff3a60'];
+    for(let i=0;i<150;i++){
+      const p=i/149,seg=Math.min(colors.length-2,Math.floor(p*(colors.length-1))),f=p*(colors.length-1)-seg,a=colors[seg],b=colors[seg+1];
+      const rgb=[1,3,5].map(k=>Math.round(parseInt(a.slice(k,k+2),16)*(1-f)+parseInt(b.slice(k,k+2),16)*f));
+      c.strokeStyle=`rgb(${rgb})`;c.beginPath();c.arc(cx,cy,r,Math.PI+i*Math.PI/150,Math.PI+(i+1.3)*Math.PI/150);c.stroke();
+    }
+    c.strokeStyle='#ffffff95';c.lineWidth=1;c.beginPath();c.arc(cx,cy,r+band/2-1,Math.PI,2*Math.PI);c.stroke();
+    c.font=`${w<150?9:12}px 'Segoe UI',sans-serif`;c.fillStyle='#445266';c.textAlign='center';c.textBaseline='middle';const ticks=this.type==='latency'?25:30;
+    for(let i=0;i<=ticks;i++){
+      const a=Math.PI+i*Math.PI/ticks,major=i%5===0,outer=r+band/2+3,inner=outer+(major?6:3);
+      c.strokeStyle=major?'#8e9dae':'#c5cfd9';c.lineWidth=major?1:.8;c.beginPath();c.moveTo(cx+Math.cos(a)*outer,cy+Math.sin(a)*outer);c.lineTo(cx+Math.cos(a)*inner,cy+Math.sin(a)*inner);c.stroke();
+      if(major&&(w>=150||i===0||i===ticks||i===ticks/2)){const lr=Math.min(inner+10,w/2-10,cy-7);c.fillText(String(Math.round(i/ticks*this.max)),cx+Math.cos(a)*lr,cy+Math.sin(a)*lr);}
+    }
+    if(w<150&&this.type==='latency')c.fillText('5',cx,cy-Math.min(r+band/2+19,w/2-10,cy-7));
+    c.strokeStyle='#e0e7ef';c.lineWidth=1;
+    for(let i=1;i<10;i++){const a=Math.PI+i*Math.PI/10;c.beginPath();c.moveTo(cx+Math.cos(a)*(r-band),cy+Math.sin(a)*(r-band));c.lineTo(cx+Math.cos(a)*(r-band-7),cy+Math.sin(a)*(r-band-7));c.stroke();}
+    if(this.target!==null){
+      if(this.value===null)this.value=0;this.value+=(this.target-this.value)*(matchMedia('(prefers-reduced-motion: reduce)').matches?1:.2);
+      const a=Math.PI+Math.max(0,Math.min(1,this.value/this.max))*Math.PI,tx=cx+Math.cos(a)*(r+band*.38),ty=cy+Math.sin(a)*(r+band*.38);
+      c.shadowColor='#0003';c.shadowBlur=3;c.shadowOffsetY=2;c.fillStyle='#222c39';c.beginPath();c.moveTo(cx+Math.cos(a+Math.PI/2)*3.4,cy+Math.sin(a+Math.PI/2)*3.4);c.lineTo(tx,ty);c.lineTo(cx+Math.cos(a-Math.PI/2)*3.4,cy+Math.sin(a-Math.PI/2)*3.4);c.closePath();c.fill();
+    }else this.value=null;
+    c.shadowColor='transparent';c.shadowBlur=0;c.shadowOffsetY=0;c.beginPath();c.arc(cx,cy,8,0,Math.PI*2);const hub=c.createLinearGradient(cx-7,cy-7,cx+7,cy+7);hub.addColorStop(0,'#bbc3cb');hub.addColorStop(.4,'#626b75');hub.addColorStop(1,'#1c232c');c.fillStyle=hub;c.fill();c.strokeStyle='#c2cad4';c.lineWidth=1.5;c.stroke();c.beginPath();c.arc(cx,cy,5.5,0,Math.PI*2);c.fillStyle='#272e37';c.fill();
+  }
+  history(now,records){
+    const [c,w,h]=this.fit(this.chart),left=w<150?17:26,top=6,bottom=h-5,right=w-2;
+    const values=records.filter(d=>d.t>=now-30000&&d[this.type]!==null&&d[this.type]!==undefined),max=Math.max(this.max,...values.map(d=>d[this.type]));
+    c.font=`${w<150?8:10}px 'Segoe UI',sans-serif`;c.textAlign='right';c.textBaseline='middle';
+    for(let i=0;i<=4;i++){const y=top+(bottom-top)*i/4;c.strokeStyle='#e3eaf1';c.lineWidth=1;c.beginPath();c.moveTo(left,y);c.lineTo(right,y);c.stroke();if(i%2===0){c.fillStyle='#65758a';c.fillText(String(Math.round(max*(1-i/4))),left-4,y);}}
+    for(let i=0;i<=8;i++){const x=left+(right-left)*i/8;c.strokeStyle='#e7edf3';c.beginPath();c.moveTo(x,top);c.lineTo(x,bottom);c.stroke();}
+    c.strokeStyle='#a4b2c2';c.beginPath();c.moveTo(left,top);c.lineTo(left,bottom);c.lineTo(right,bottom);c.stroke();if(!values.length)return;
+    c.save();c.beginPath();c.rect(left,top,right-left,bottom-top);c.clip();c.strokeStyle=this.color;c.lineWidth=1.6;c.beginPath();let prev=null;
+    for(const d of values){const x=left+(d.t-now+30000)/30000*(right-left),y=bottom-d[this.type]/max*(bottom-top);if(!prev)c.moveTo(x,y);else{if(this.type!=='rate')c.lineTo(x,prev.y);c.lineTo(x,y);}prev={x,y};}c.stroke();c.fillStyle=this.color;
+    for(let i=0;i<values.length;i++){if(this.type==='rate'&&i%10)continue;const d=values[i],x=left+(d.t-now+30000)/30000*(right-left),y=bottom-d[this.type]/max*(bottom-top);c.beginPath();c.arc(x,y,2,0,Math.PI*2);c.fill();}c.restore();
+  }
+}
+</script><script>(function(){
+  'use strict';
+  const Y=AirYModem,$=id=>document.getElementById(id),fmt=(n,d=0)=>n.toLocaleString('fr-CA',{minimumFractionDigits:d,maximumFractionDigits:d});
+  const encoder=new TextEncoder(),state={port:null,reader:null,writer:null,pacer:null,readTask:null,closing:false,connecting:false,ready:false,busy:false,picking:false,mode:'send',file:null,directory:null,session:null,hex:false,segments:[],terminalBytes:0,logs:[],rx:0,tx:0,rxWindow:[],txWindow:[],history:[],latency:null,jitter:null,lastAck:null,started:null,finished:null,done:0,total:0,retries:0,keyboard:new AbortController(),wake:null};
+  let renderPending=false,lastDraw=0,lastSample=0;
+  function log(kind,message,extra={}){state.logs.push({time:new Date().toISOString(),kind,message,...extra});if(state.logs.length>2000)state.logs.shift();if($('journal-dialog').open)renderLog();}
+  function renderLog(){$('journal-log').textContent=state.logs.map(x=>`${x.time.slice(11,23)}  ${x.kind.padEnd(6)}  ${x.message}${Object.keys(x).length>3?'  '+JSON.stringify(Object.fromEntries(Object.entries(x).filter(([k])=>!['time','kind','message'].includes(k)))):''}`).join('\n');$('journal-log').scrollTop=$('journal-log').scrollHeight;}
+  function error(e){log('ERREUR',e.message||String(e));$('error-message').textContent=e.message||String(e);$('error-banner').classList.remove('hidden');}
+  function terminal(kind,data){
+    if(!data.length)return;const bytes=data.slice(-32768);state.segments.push({kind,data:bytes});state.terminalBytes+=bytes.length;
+    while(state.terminalBytes>32768&&state.segments.length>1)state.terminalBytes-=state.segments.shift().data.length;
+    if(!renderPending){renderPending=true;requestAnimationFrame(()=>{renderPending=false;renderTerminal();});}
+  }
+  function renderTerminal(){
+    const out=$('console'),nearBottom=out.scrollHeight-out.scrollTop-out.clientHeight<45,fragment=document.createDocumentFragment();
+    const decoders={RX:new TextDecoder(),TX:new TextDecoder(),SYS:new TextDecoder()};let previous=null;
+    for(const s of state.segments){
+      const span=document.createElement('span');span.className=s.kind.toLowerCase();
+      let text=state.hex?Array.from(s.data,b=>b.toString(16).padStart(2,'0').toUpperCase()).join(' ')+' ':decoders[s.kind].decode(s.data,{stream:true}).replace(/\r\n/g,'\n').replace(/\r/g,'').replace(/[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/g,c=>'⟨'+c.charCodeAt(0).toString(16).padStart(2,'0')+'⟩');
+      span.textContent=(previous!==s.kind?(previous?'\n':'')+s.kind+'  ':'')+text;fragment.append(span);previous=s.kind;
+    }
+    out.replaceChildren(fragment);if(nearBottom)out.scrollTop=out.scrollHeight;
+  }
+  function system(text){terminal('SYS',encoder.encode(text+'\n'));}
+  function status(text,kind=''){$('transfer-text').textContent=text;$('transfer-status').className='transfer-status '+kind;}
+  function integrity(text,good=false){$('integrity').textContent='Intégrité : '+text;$('integrity').classList.toggle('good',good);}
+  function progress(done,total){state.done=done;state.total=total;const pct=total?Math.min(100,done/total*100):0;$('progress-fill').style.width=pct+'%';$('progress-text').textContent=fmt(pct,1)+' %';$('progress').setAttribute('aria-valuenow',pct.toFixed(2));$('byte-progress').textContent=fmt(done)+' / '+fmt(total)+' o';}
+  function completeProgress(){ $('progress-fill').style.width='100%';$('progress-text').textContent='100 %';$('progress').setAttribute('aria-valuenow','100'); }
+  function setFile(name,size){$('file-name').textContent=name;$('file-size').textContent=fmt(size)+' octets';progress(0,size);}
+  function update(){
+    const connected=!!state.port,locked=state.busy||state.picking||state.connecting||state.closing;
+    $('connection-text').textContent=state.closing?'Déconnexion…':state.connecting?'Connexion…':connected?(state.ready?'Connecté':'Initialisation…'):'Déconnecté';
+    $('connection').className='status '+(connected&&state.ready?'online':connected?'waiting':'');
+    $('connect-label').textContent=connected?'Déconnecter':'Connecter';$('connect').disabled=state.connecting||state.closing||state.picking;
+    $('connect').classList.toggle('primary',!connected);$('connect').querySelector('use').setAttribute('href',connected?'#i-unplug':'#i-plug');
+    $('connect').title=connected?'Déconnecter le port série':'Choisir un port série';
+    for(const mode of ['send','receive']){$('mode-'+mode).disabled=locked;$('mode-'+mode).setAttribute('aria-pressed',state.mode===mode);}
+    $('choose').disabled=locked;$('start').disabled=state.picking||(!state.busy&&(!state.ready||state.connecting||state.closing||(state.mode==='send'?!state.file:!state.directory)));
+    $('start-label').textContent=state.busy?(state.session?.completed?'Terminer l’attente':state.mode==='receive'&&!state.session?.hasFile?'Annuler l’attente':'Annuler le transfert'):state.mode==='receive'?'Attendre un fichier':'Envoyer le fichier';
+    $('start-icon').setAttribute('href',state.busy?'#i-square':state.mode==='receive'?'#i-download':'#i-upload');$('start').classList.toggle('primary',!state.busy);
+    const suspended=state.busy||!state.ready||state.closing;
+    $('keyboard-state').className='keyboard-state '+(state.busy?'busy':state.ready?'active':'');$('keyboard-state').lastElementChild.textContent=state.busy?'Clavier suspendu':state.ready?'Clavier actif':'Hors ligne';
+    $('keyboard-input').disabled=suspended;$('retry-setting').disabled=state.busy;$('timeout-setting').disabled=state.busy;
+    $('rate-title').textContent=state.mode==='send'&&state.started!==null?'Débit émis':'Débit reçu';$('rate-caption').textContent=(state.mode==='send'&&state.started!==null?'TX':'RX')+' série · fenêtre 1 s';
+    $('rx-count').textContent='RX : '+fmt(state.rx)+' o';
+  }
+  async function connect(){
+    if(state.port){await disconnect();return;}
+    if(state.connecting)return;
+    if(!navigator.serial){error(new Error('Web Serial indisponible. Ouvrir ce fichier dans Chrome ou Edge sur ordinateur.'));return;}
+    state.connecting=true;update();let port;
+    try{
+      port=await navigator.serial.requestPort();await port.open({baudRate:300,dataBits:8,stopBits:1,parity:'none',flowControl:'none',bufferSize:4096});
+      state.port=port;state.writer=port.writable.getWriter();state.ready=false;state.rx=0;state.tx=0;state.keyboard=new AbortController();
+      state.pacer=new Y.Pacer(bytes=>state.writer.write(bytes),{onBytes:bytes=>{state.tx+=bytes.length;state.txWindow.push({t:performance.now(),n:bytes.length});}});
+      state.readTask=readLoop(port);log('PORT','Ouvert à 300 bauds, 8N1, sans contrôle de flux',port.getInfo());system('Port connecté · 300 bauds · 8N1');
+      $('footer-state').textContent='Initialisation du modem…';state.connecting=false;update();
+      await Y.delay(6000);
+      if(state.port===port&&!state.closing){state.ready=true;$('footer-state').textContent='Terminal prêt';update();}
+    }catch(e){if(e.name!=='NotFoundError'&&e.name!=='AbortError')error(e);if(port&&state.port!==port)await port.close().catch(()=>{});if(state.port===port)await disconnect();}
+    finally{state.connecting=false;update();}
+  }
+  async function readLoop(port){
+    try{
+      while(port.readable&&state.port===port&&!state.closing){
+        const reader=port.readable.getReader();state.reader=reader;let ended=false;
+        try{for(;;){const {value,done}=await reader.read();if(done){ended=true;break;}if(value?.length){state.rx+=value.length;state.rxWindow.push({t:performance.now(),n:value.length});if(state.session)state.session.ep.feed(value);else if(state.ready)terminal('RX',value);}}}
+        catch(e){if(!state.closing){log('SÉRIE',e.message);if(!port.readable)throw e;}}
+        finally{reader.releaseLock();if(state.reader===reader)state.reader=null;}
+        if(ended&&!state.closing)throw new Error('Flux série fermé');
+      }
+      if(!state.closing&&state.port===port)throw new Error('Port série débranché');
+    }catch(e){if(!state.closing){state.ready=false;state.session?.controller.abort(e);state.session?.ep.inbox.close(e);error(e);setTimeout(()=>void disconnect(),0);}}
+  }
+  async function disconnect(){
+    if(state.closing||!state.port)return;state.closing=true;state.ready=false;update();
+    const port=state.port;state.keyboard.abort();state.session?.controller.abort();state.pacer?.close();
+    try{await state.reader?.cancel();await state.readTask;await state.session?.task;await state.pacer?.idle();state.writer?.releaseLock();await port.close();}
+    catch(e){log('PORT','Fermeture : '+e.message);}
+    finally{state.port=null;state.writer=null;state.pacer=null;state.reader=null;state.closing=false;state.rxWindow=[];state.txWindow=[];$('footer-state').textContent='Port déconnecté';log('PORT','Déconnecté');update();}
+  }
+  async function type(text){
+    if(!state.ready||state.busy||state.closing)return;
+    const bytes=encoder.encode(text);if(bytes.length>8192){error(new Error('Collage trop long pour le terminal. Utiliser le transfert de fichier.'));return;}
+    const echo=$('echo').checked;
+    try{await state.pacer.send(bytes,{signal:state.keyboard.signal,onStart:()=>{if(echo)terminal('TX',bytes);}});}
+    catch(e){if(e.name!=='AbortError'&&!state.busy&&!state.closing)error(e);}
+  }
+  async function pick(){
+    if(state.busy||state.picking)return;
+    if(state.mode==='send'){$('file-input').click();return;}
+    if(!window.showDirectoryPicker){error(new Error('Écriture directe sur disque indisponible. Utiliser Chrome ou Edge sur ordinateur.'));return;}
+    state.picking=true;update();
+    try{state.directory=await showDirectoryPicker({mode:'readwrite',id:'airmodem-reception',startIn:'downloads'});$('picker-label').textContent='Destination : '+state.directory.name;log('DISQUE','Dossier de réception sélectionné');}
+    catch(e){if(e.name!=='AbortError')error(e);}finally{state.picking=false;update();}
+  }
+  function setMode(mode){
+    if(state.busy||state.picking)return;state.mode=mode;state.started=null;state.finished=null;state.latency=null;state.jitter=null;state.lastAck=null;state.history=[];
+    $('choose').title=$('choose').ariaLabel=mode==='send'?'Choisir le fichier à envoyer':'Choisir le dossier de réception';
+    $('picker-label').textContent=mode==='send'?(state.file?.name||'Aucun fichier sélectionné'):'Destination : '+(state.directory?.name||'Choisir un dossier');
+    if(mode==='send'&&state.file)setFile(state.file.name,state.file.size);else{$('file-name').textContent=mode==='send'?'Aucun fichier':'Aucun fichier reçu';$('file-size').textContent='—';progress(0,0);}
+    status(mode==='send'?'Prêt à envoyer':'Prêt à recevoir');integrity('—');state.retries=0;$('retries').textContent='Reprises : 0';update();
+  }
+  async function createSink(meta,session){
+    Y.check(session.controller.signal);let name=Y.safeName(meta.name),candidate=name,index=1;
+    for(;;){try{await state.directory.getFileHandle(candidate);const dot=name.lastIndexOf('.');candidate=(dot>0?name.slice(0,dot):name)+' ('+(index++)+')'+(dot>0?name.slice(dot):'');}catch(e){if(e.name==='NotFoundError')break;throw e;}if(index>10000)throw new Error('Trop de fichiers portant ce nom');}
+    // File System Access keeps writes transactional until close() succeeds.
+    const handle=await state.directory.getFileHandle(candidate,{create:true});let writable;
+    try{writable=await handle.createWritable({keepExistingData:false,mode:'exclusive'});}catch(e){await state.directory.removeEntry(candidate).catch(()=>{});throw e;}
+    session.storedName=candidate;session.hash=new SHA256();session.hasFile=true;log('FICHIER','Réception', {name:meta.name,savedAs:candidate,size:meta.size});
+    let closed=false;
+    return {
+      async write(data){Y.check(session.controller.signal);await writable.write(data);session.hash.update(data);},
+      async close(){Y.check(session.controller.signal);await writable.close();closed=true;session.saved=true;session.digest=session.hash.digest('hex');log('SHA256','Empreinte locale du fichier reçu',{name:candidate,sha256:session.digest});},
+      async abort(){if(!closed){await writable.abort().catch(()=>{});await state.directory.removeEntry(candidate).catch(()=>{});}}
+    };
+  }
+  async function wake(){try{if(navigator.wakeLock&&(!state.wake||state.wake.released))state.wake=await navigator.wakeLock.request('screen');}catch(e){log('VEILLE','Verrouillage de veille indisponible');}}
+  function event(session,kind,data){
+    if(kind==='phase'){status(data.phase,data.phase.startsWith('ATTENTE')?'waiting':'active');$('footer-state').textContent=data.phase;log('ÉTAT',data.phase);}
+    if(kind==='file'){setFile(session.storedName||data.name,data.size);status('Réception en cours','active');integrity('Vérification CRC');system('Réception : '+data.name);}
+    if(kind==='progress'){progress(data.done,data.total);if(state.mode==='send')session.hash.update(data.data);}
+    if(kind==='retry'){state.retries=data.retries;$('retries').textContent='Reprises : '+data.retries;log('REPRISE',data.phase,{attempt:data.attempt,total:data.retries});}
+    if(kind==='ack'){
+      const t=data.at;state.jitter=state.latency===null?null:Math.abs(data.latency-state.latency*1000);state.latency=data.latency/1000;state.lastAck=t;state.history.push({t,latency:state.latency,jitter:state.jitter});
+      log('ACK','Bloc '+data.block,{latencyMs:Math.round(data.latency),jitterMs:state.jitter===null?null:Math.round(state.jitter),retries:data.attempt});
+    }
+    if(kind==='saved'){integrity('CRC validé',true);completeProgress();system('Fichier enregistré : '+session.storedName);log('DISQUE','Fichier enregistré',{name:session.storedName,size:data.size});}
+    if(kind==='complete'){
+      session.completed=true;state.finished=performance.now();completeProgress();integrity('CRC validé',true);status(state.mode==='send'?'Fichier envoyé':'Fichier reçu','success');
+      if(state.mode==='receive'&&data.files===0){progress(0,0);integrity('—');status('Session terminée sans fichier','success');}
+      if(state.mode==='send'){session.digest=session.hash.digest('hex');log('SHA256','Empreinte locale du fichier envoyé',{name:state.file.name,sha256:session.digest});}
+      $('footer-state').textContent=state.mode==='receive'?'Fichier enregistré · confirmation finale en attente':'Transfert terminé';log('FIN','Session YMODEM confirmée');update();
+    }
+    update();
+  }
+  function start(){
+    if(state.busy){cancel();return;}
+    if(!state.ready||state.picking||state.closing||(state.mode==='send'?!state.file:!state.directory))return;
+    const retries=Number($('retry-setting').value),timeout=Number($('timeout-setting').value);
+    if(!Number.isInteger(retries)||retries<1||retries>99||!Number.isFinite(timeout)||timeout<10||timeout>120){error(new Error('Réglages invalides : 1 à 99 reprises, délai ACK de 10 à 120 s.'));return;}
+    state.busy=true;state.started=performance.now();state.finished=null;state.retries=0;state.latency=null;state.jitter=null;state.lastAck=null;state.history=[];state.txWindow=[];state.rxWindow=[];
+    $('error-banner').classList.add('hidden');$('retries').textContent='Reprises : 0';integrity('—');progress(0,state.mode==='send'?state.file.size:0);status('Préparation de la liaison','active');$('footer-state').textContent='Préparation de la liaison';
+    const controller=new AbortController(),ep=new Y.Endpoint((data,opts)=>state.pacer.send(data,opts));
+    const session={controller,ep,hasFile:state.mode==='send',completed:false,saved:false,hash:new SHA256(),task:null};state.session=session;
+    state.keyboard.abort();update();session.task=run(session,{retries,ackMs:timeout*1000,idleMs:timeout*2000+10000,lingerMs:timeout*1000+8000});
+  }
+  function cancel(){if(state.session){if(!state.session.completed)status('Annulation…','waiting');state.session.controller.abort(Y.abortError());update();}}
+  async function run(session,options){
+    const signal=session.controller.signal;
+    try{
+      await state.pacer.idle();await session.ep.purge(signal);await wake();Y.check(signal);
+      const opts={...options,signal,event:(kind,data)=>event(session,kind,data)};
+      if(state.mode==='send'){
+        const file=state.file;log('FICHIER','Émission',{name:file.name,size:file.size});system('Émission : '+file.name);
+        await Y.sendFile(session.ep,{name:file.name,size:file.size,read:async(at,n)=>new Uint8Array(await file.slice(at,at+n).arrayBuffer())},opts);
+      }else await Y.receiveBatch(session.ep,meta=>createSink(meta,session),opts);
+    }catch(e){
+      if(!session.completed){
+        state.finished=performance.now();status(e.name==='AbortError'?'Transfert annulé':'Transfert interrompu','error');integrity(session.saved?'Fichier déjà enregistré':'Non confirmé');
+        $('footer-state').textContent=session.saved?'Session interrompue ; fichier enregistré sur disque':e.message;
+        log(e.name==='AbortError'?'ANNULÉ':'ERREUR',e.message);system(e.message);if(e.name!=='AbortError')error(e);
+        if(!state.closing&&state.pacer)try{
+          await state.pacer.send(new Uint8Array(8).fill(Y.CAN),{priority:true});
+          // The first burst may be consumed inside an interrupted data block.
+          await Y.delay(3000);
+          if(!state.closing)await state.pacer.send(new Uint8Array(8).fill(Y.CAN),{priority:true});
+        }catch(_){}
+      }
+    }finally{
+      if(!state.closing){try{await state.pacer.idle();await session.ep.purge();}catch(e){log('LIGNE',e.message);}}
+      await state.wake?.release().catch(()=>{});state.wake=null;state.session=null;state.busy=false;state.keyboard=new AbortController();
+      if(session.completed)$('footer-state').textContent='Transfert terminé · terminal prêt';update();
+    }
+  }
+  function exportLog(){const blob=new Blob([JSON.stringify({application:'AirModem 300',version:'3.0',baudRate:300,format:'8N1',protocol:'YMODEM-CRC',measurement:'Horodatage PC/USB ; SHA-256 local uniquement',rxBytes:state.rx,txBytes:state.tx,events:state.logs},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='AirModem-journal-'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),30000);}
+  const instruments=Array.from(document.querySelectorAll('.gauge'),el=>new AirInstrument(el));
+  function animate(now){
+    if(now-lastDraw>=50){lastDraw=now;
+      for(const queue of [state.rxWindow,state.txWindow])while(queue.length&&queue[0].t<=now-1000)queue.shift();
+      const tx=state.mode==='send'&&state.started!==null,rate=state.ready?(tx?state.txWindow:state.rxWindow).reduce((n,x)=>n+x.n,0):null;
+      if(now-lastSample>=100){state.history.push({t:now,rate});lastSample=now;}while(state.history.length&&state.history[0].t<now-60000)state.history.shift();
+      for(const inst of instruments){const value=inst.type==='rate'?rate:state[inst.type];inst.target=value;const el=$(inst.type);el.textContent=value===null?'—':fmt(value,inst.type==='rate'?1:inst.type==='latency'?2:0);
+        const base=innerWidth<=500?24:innerWidth<=800?30:38,ctx=inst.canvas.getContext('2d');ctx.font=`650 ${base}px 'Segoe UI',sans-serif`;const room=el.parentElement.clientWidth-el.nextElementSibling.offsetWidth-10;el.style.fontSize=Math.max(10,Math.min(base,base*room/Math.max(1,ctx.measureText(el.textContent).width)))+'px';
+        inst.dial();inst.history(now,state.history);
+      }
+      $('last-ack').textContent='Dernier ACK : '+(state.lastAck===null?'—':fmt((now-state.lastAck)/1000,1)+' s');$('rx-count').textContent='RX : '+fmt(state.rx)+' o';
+      const sec=state.started===null?0:Math.floor(((state.finished??now)-state.started)/1000);$('elapsed').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+    }requestAnimationFrame(animate);
+  }
+  $('connect').onclick=()=>void connect();$('clear').onclick=()=>{state.segments=[];state.terminalBytes=0;renderTerminal();};$('dismiss-error').onclick=()=>$('error-banner').classList.add('hidden');
+  $('mode-send').onclick=()=>setMode('send');$('mode-receive').onclick=()=>setMode('receive');$('choose').onclick=()=>void pick();$('start').onclick=start;
+  $('file-input').onchange=()=>{if(state.busy)return;state.file=$('file-input').files[0]||null;setMode('send');};
+  $('journal').onclick=()=>{renderLog();$('journal-dialog').showModal();};$('close-journal').onclick=()=>$('journal-dialog').close();$('export').onclick=exportLog;
+  $('terminal').onclick=()=>{if(!getSelection().toString())$('keyboard-input').focus();};
+  for(const mode of ['text','hex'])$(mode).onclick=()=>{state.hex=mode==='hex';$('text').setAttribute('aria-pressed',!state.hex);$('hex').setAttribute('aria-pressed',state.hex);renderTerminal();};
+  const input=$('keyboard-input');input.addEventListener('input',e=>{if(e.isComposing)return;const text=input.value;input.value='';if(text)void type(text);});input.addEventListener('compositionend',()=>{const text=input.value;input.value='';if(text)void type(text);});
+  input.addEventListener('keydown',e=>{let text=null;if(e.key==='Enter')text=$('eol').value==='CRLF'?'\r\n':$('eol').value==='CR'?'\r':'\n';else if(e.key==='Backspace')text='\b';else if(e.key==='Tab')text='\t';else if(e.ctrlKey&&!e.altKey&&e.key.toLowerCase()==='c'&&!getSelection().toString())text='\x03';else if(e.ctrlKey&&!e.altKey&&e.key.toLowerCase()==='d')text='\x04';if(text!==null){e.preventDefault();void type(text);}});
+  navigator.serial?.addEventListener('disconnect',e=>{if(e.target===state.port||e.port===state.port){error(new Error('Modem débranché'));void disconnect();}});
+  document.addEventListener('visibilitychange',()=>{if(state.busy){if(document.hidden)log('VEILLE','Onglet masqué : les temporisations peuvent être ralenties par le navigateur');else void wake();}});
+  window.addEventListener('beforeunload',e=>{if(state.busy){e.preventDefault();e.returnValue='';}});
+  log('APP','Terminal prêt ; un port série par fenêtre');system('AirModem 300 · YMODEM-CRC');update();requestAnimationFrame(animate);
+})();
+</script>
+</body></html>
