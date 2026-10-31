@@ -1,3 +1,6 @@
+<img width="577" height="77" alt="image" src="https://github.com/user-attachments/assets/7642533f-820f-4c73-959b-ded1757753c0" />
+
+
 # MICROBURST Transparent Modem
 
 MICROBURST connects two serial hosts through an ESP8266 radio link. Each host uses a **115200 baud, 8N1 serial port**. The modem sends **XON/XOFF to throttle PC → modem input**. **Modem → PC output keeps draining and ignores host-sent XOFF/XON.** The modems packetize, protect, acknowledge and retransmit the data internally.
