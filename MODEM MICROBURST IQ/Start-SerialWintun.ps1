@@ -13,7 +13,10 @@
     Lanceur double-clic facultatif : Lancer.vbs. Script PowerShell autonome.
     Windows PowerShell 5.1, Windows 10/11 avec bureau, droits administrateur.
     Aucun changement permanent de strategie d'execution.
-    Version 2026-10-31-gui-r3. Prototype non teste sur Windows ni modem reel.
+    Version 2026-10-31-gui-r4. Prototype non teste sur Windows ni modem reel.
+    R4 : lecteur Wintun independant ; file TX bornee ; priorite petits ICMP.
+    Filtre IPv4 discret et mode de diagnostic ICMP commutables dans la fenetre.
+    Mesures COM/XOFF, deltas d'octets, traces ICMP et export de diagnostic.
 .PARAMETER GuiChild
     Parametre interne de relancement : ne pas le saisir.
 #>
@@ -228,30 +231,92 @@ function Initialize-BridgeInterface {
     return [string]$adapters[0].InterfaceGuid
 }
 
+function Export-BridgeDiagnostic {
+    param($Bridge, $Owner)
+    $picker = [System.Windows.Forms.SaveFileDialog]::new()
+    $picker.Title = 'Enregistrer le diagnostic SerialIP'
+    $picker.Filter = 'Rapport texte (*.txt)|*.txt'
+    $picker.FileName = 'SerialIP-diagnostic-' + (Get-Date -Format 'yyyyMMdd-HHmmss') + '.txt'
+    $picker.OverwritePrompt = $true
+    try {
+        if ($picker.ShowDialog($Owner) -ne [System.Windows.Forms.DialogResult]::OK) { return }
+        $report = $Bridge.DiagnosticReport()
+        $index = [uint32]$Bridge.InterfaceIndex
+        $report += "`r`n=== CONFIGURATION SerialIP ===`r`n"
+        $report += (Get-NetIPAddress -InterfaceIndex $index -ErrorAction Stop |
+            Select-Object IPAddress,PrefixLength,AddressFamily,AddressState,SkipAsSource |
+            Format-Table -AutoSize | Out-String -Width 160)
+        $report += "`r`n=== ROUTES ACTIVES IPv4 (y compris autres interfaces, pour voir les conflits) ===`r`n"
+        $report += (Get-NetRoute -AddressFamily IPv4 -PolicyStore ActiveStore -ErrorAction Stop |
+            Select-Object InterfaceIndex,InterfaceAlias,DestinationPrefix,NextHop,RouteMetric |
+            Sort-Object DestinationPrefix,InterfaceIndex | Format-Table -AutoSize | Out-String -Width 180)
+        $report += "`r`n=== INTERFACE ===`r`n"
+        $report += (Get-NetIPInterface -InterfaceIndex $index -ErrorAction Stop |
+            Select-Object InterfaceIndex,AddressFamily,NlMtuBytes,InterfaceMetric,Dhcp,ConnectionState |
+            Format-Table -AutoSize | Out-String -Width 160)
+        [IO.File]::WriteAllText($picker.FileName, $report, [Text.UTF8Encoding]::new($true))
+        Show-AppMessage -Text "Diagnostic enregistré.`r`nLe rapport contient des adresses IP et des routes locales ; vérifie-le avant de le partager."
+    }
+    finally { $picker.Dispose() }
+}
+
 function Show-ActiveBridge {
     param($Bridge, [string]$Port, [string]$DllPath)
-    $form = New-AppForm -Title 'Liaison série / Wintun — SerialIP' -Width 740 -Height 450
-    $title = Add-AppLabel $form 'Démarrage de la liaison…' 20 18 700 36
+    $form = New-AppForm -Title 'Liaison série / Wintun — SerialIP — R4' -Width 980 -Height 620
+    $title = Add-AppLabel $form 'Démarrage de la liaison…' 20 18 940 36
     $title.Font = [Drawing.Font]::new('Segoe UI', 15, [Drawing.FontStyle]::Bold)
-    $stateLabel = Add-AppLabel $form 'Création de la carte et ouverture du port série.' 20 61 700 52
+    $stateLabel = Add-AppLabel $form 'Création de la carte et ouverture du port série.' 20 61 940 52
     $details = [System.Windows.Forms.TextBox]::new()
-    $details.SetBounds(20, 122, 700, 120)
+    $details.SetBounds(20, 122, 940, 110)
     $details.Multiline = $true
     $details.ReadOnly = $true
     $details.ScrollBars = [System.Windows.Forms.ScrollBars]::Vertical
-    $details.Text = "Port : $Port — 115200 / 8N1 / XON-XOFF`r`nCarte : $($script:AdapterName) — MTU $($script:Mtu)`r`nDLL : $DllPath`r`nTransport IP personnalisé, sans PPP standard ni authentification."
+    $details.Text = "Port : $Port — 115200 / 8N1 / XON-XOFF`r`nCarte : $($script:AdapterName) — MTU $($script:Mtu)`r`nDLL : $DllPath`r`nTransport IP personnalisé, sans PPP standard ni authentification. R4 : file TX bornée, diagnostic XOFF."
     $form.Controls.Add($details)
-    $stats = Add-AppLabel $form 'Compteurs en attente…' 20 256 700 62
-    $null = Add-AppLabel $form 'La liaison reste active tant que tu ne confirmes pas sa fermeture.' 20 326 700 28
+    $stats = [System.Windows.Forms.TextBox]::new()
+    $stats.SetBounds(20, 245, 940, 194)
+    $stats.Multiline = $true
+    $stats.ReadOnly = $true
+    $stats.ScrollBars = [System.Windows.Forms.ScrollBars]::Both
+    $stats.WordWrap = $false
+    $stats.Font = [Drawing.Font]::new('Consolas', 9)
+    $stats.Text = 'Compteurs en attente…'
+    $form.Controls.Add($stats)
+    $quietBox = [System.Windows.Forms.CheckBox]::new()
+    $quietBox.SetBounds(20, 450, 570, 28)
+    $quietBox.Text = 'IPv4 discret : filtrer IPv6, multicast et diffusion avant le COM'
+    $quietBox.Checked = $true
+    $form.Controls.Add($quietBox)
+    $pingBox = [System.Windows.Forms.CheckBox]::new()
+    $pingBox.SetBounds(620, 450, 340, 28)
+    $pingBox.Text = 'Diagnostic : ICMP (ping) uniquement'
+    $form.Controls.Add($pingBox)
+    $null = Add-AppLabel $form 'Le mode ICMP bloque TCP/UDP ; décoche-le après le test. Aucun changement global de Windows.' 20 483 940 26
+    $null = Add-AppLabel $form 'Les compteurs COM ne prouvent pas la livraison distante. Quitter supprime la carte créée.' 20 513 940 26
     $network = [System.Windows.Forms.Button]::new()
-    $network.SetBounds(20, 382, 270, 42)
+    $network.SetBounds(20, 560, 270, 42)
     $network.Text = 'Ouvrir les connexions réseau'
     $network.Enabled = $false
     $form.Controls.Add($network)
     $quit = [System.Windows.Forms.Button]::new()
-    $quit.SetBounds(540, 382, 180, 42)
+    $quit.SetBounds(780, 560, 180, 42)
     $quit.Text = 'Quitter…'
     $form.Controls.Add($quit)
+    $export = [System.Windows.Forms.Button]::new()
+    $export.SetBounds(305, 560, 250, 42)
+    $export.Text = 'Enregistrer le diagnostic…'
+    $export.Enabled = $false
+    $form.Controls.Add($export)
+    $applyFilter = {
+        try { $Bridge.SetFilter($quietBox.Checked, $pingBox.Checked) }
+        catch { Show-AppMessage -Text $_.Exception.Message -Title 'Filtre' -Icon Error }
+    }
+    $quietBox.Add_CheckedChanged($applyFilter)
+    $pingBox.Add_CheckedChanged($applyFilter)
+    $export.Add_Click({
+        try { Export-BridgeDiagnostic -Bridge $Bridge -Owner $form }
+        catch { Show-AppMessage -Text $_.Exception.Message -Title 'Diagnostic impossible' -Icon Error }
+    })
     $timer = [System.Windows.Forms.Timer]::new()
     $timer.Interval = 500
     $state = [pscustomobject]@{
@@ -265,6 +330,9 @@ function Show-ActiveBridge {
         $state.StopStarted = [DateTime]::UtcNow
         $Bridge.RequestStop()
         $network.Enabled = $false
+        $export.Enabled = $false
+        $quietBox.Enabled = $false
+        $pingBox.Enabled = $false
         $quit.Enabled = $false
         $title.Text = 'Arrêt et nettoyage…'
         $stateLabel.Text = 'Arrêt des transferts, libération du port COM, puis suppression de la carte.'
@@ -312,10 +380,11 @@ function Show-ActiveBridge {
                     $Bridge.Start()
                     $state.InterfaceGuid = Initialize-BridgeInterface -Bridge $Bridge
                     if ($Bridge.LastError) { throw $Bridge.LastError }
-                    $title.Text = 'Liaison locale active'
+                    $title.Text = 'Liaison locale active — R4'
                     $title.ForeColor = [Drawing.Color]::DarkGreen
                     $stateLabel.Text = 'DLL chargée. Port ouvert. Carte créée. Le correspondant distant n''est pas vérifié.'
                     $network.Enabled = $true
+                    $export.Enabled = $true
                     $form.UseWaitCursor = $false
                     $state.Phase = 'Run'
                 }
@@ -412,6 +481,11 @@ function Show-ActiveBridge {
 $source = @'
 using System;
 using System.ComponentModel;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -554,6 +628,148 @@ namespace SerialWintunV1
         }
     }
 
+    // Classification only; this is NOT a firewall and provides no authentication.
+    public static class PacketPolicy
+    {
+        public static uint Address(byte[] p, int offset)
+        {
+            return ((uint)p[offset] << 24) | ((uint)p[offset + 1] << 16) |
+                   ((uint)p[offset + 2] << 8) | p[offset + 3];
+        }
+        public static string AddressText(byte[] p, int offset)
+        {
+            return p[offset] + "." + p[offset + 1] + "." + p[offset + 2] + "." + p[offset + 3];
+        }
+        // Return a short reason, or null when the packet is allowed.
+        public static string Reject(byte[] p, int count, bool quiet, bool pingOnly, uint[] broadcasts)
+        {
+            int version = p[0] >> 4;
+            if (!quiet && !pingOnly) return null;
+            if (version != 4) return "IPv6";
+            uint dst = Address(p, 16);
+            if ((dst & 0xF0000000u) == 0xE0000000u) return "multicast";
+            if (dst == UInt32.MaxValue) return "diffusion";
+            if (broadcasts != null)
+                foreach (uint value in broadcasts) if (value == dst) return "diffusion";
+            if (pingOnly) return p[9] == 1 ? null : "hors-ICMP";
+            if (p[9] == 2) return "IGMP";
+            // No UDP-port blacklist: normal unicast services are preserved.
+            return null;
+        }
+        public static bool Priority(byte[] p, int count)
+        {
+            // Keep normal FIFO order within each class. No preemption of a frame already on COM.
+            return count <= 512 && (p[0] >> 4) == 4 && p[9] == 1;
+        }
+        public static string Icmp(byte[] p, int count)
+        {
+            if (count < 28 || (p[0] >> 4) != 4 || p[9] != 1) return null;
+            int h = (p[0] & 15) * 4;
+            if (h < 20 || count < h + 8 || ((p[6] & 0x1F) != 0) || p[7] != 0) return null;
+            int type = p[h];
+            return AddressText(p,12) + " -> " + AddressText(p,16) + " type=" + type +
+                " id=" + ((p[h+4] << 8) | p[h+5]) + " seq=" + ((p[h+6] << 8) | p[h+7]);
+        }
+        public static int EchoType(byte[] p, int count)
+        {
+            if (count < 28 || (p[0] >> 4) != 4 || p[9] != 1) return -1;
+            int h = (p[0] & 15) * 4;
+            if (h < 20 || count < h + 8 || (p[6] & 0x1F) != 0 || p[7] != 0) return -1;
+            return p[h] == 8 ? 8 : p[h] == 0 ? 0 : -1;
+        }
+    }
+
+    internal sealed class QueuedPacket
+    {
+        internal byte[] Ip, Wire;
+        internal long Created;
+        internal bool High;
+    }
+
+    // Bounded *escaped wire bytes*, not just number of packets.
+    // Drops are whole packets, never fragments of a serial frame.
+    internal sealed class PacketQueue
+    {
+        private readonly Queue<QueuedPacket> high = new Queue<QueuedPacket>();
+        private readonly Queue<QueuedPacket> normal = new Queue<QueuedPacket>();
+        private readonly object gate = new object();
+        private readonly int maximum;
+        private readonly long lifetime;
+        private int bytes, highBurst;
+        private long dropped, expired;
+        internal PacketQueue(int maximumBytes, long lifetimeTicks)
+        {
+            maximum = maximumBytes;
+            lifetime = lifetimeTicks;
+        }
+        private void Expire(Queue<QueuedPacket> q, long now)
+        {
+            while (q.Count > 0 && now - q.Peek().Created > lifetime)
+            {
+                bytes -= q.Dequeue().Wire.Length;
+                expired++;
+            }
+        }
+        private void Prune(long now) { Expire(high, now); Expire(normal, now); }
+        internal bool Put(QueuedPacket packet, long now)
+        {
+            lock (gate)
+            {
+                Prune(now);
+                if (packet.Wire.Length > maximum) { dropped++; return false; }
+                // High-priority packets may replace older NORMAL packets, never an in-flight frame.
+                while (bytes + packet.Wire.Length > maximum && packet.High && normal.Count > 0)
+                {
+                    bytes -= normal.Dequeue().Wire.Length;
+                    dropped++;
+                }
+                if (bytes + packet.Wire.Length > maximum) { dropped++; return false; }
+                (packet.High ? high : normal).Enqueue(packet);
+                bytes += packet.Wire.Length;
+                return true;
+            }
+        }
+        internal QueuedPacket Take(long now)
+        {
+            lock (gate)
+            {
+                Prune(now);
+                QueuedPacket packet;
+                // At most 8 consecutive priority packets when normal traffic is also waiting.
+                if (high.Count > 0 && (highBurst < 8 || normal.Count == 0))
+                { packet = high.Dequeue(); highBurst++; }
+                else if (normal.Count > 0) { packet = normal.Dequeue(); highBurst = 0; }
+                else return null;
+                bytes -= packet.Wire.Length;
+                return packet;
+            }
+        }
+        internal void Clear()
+        {
+            lock (gate)
+            {
+                dropped += high.Count + normal.Count;
+                high.Clear(); normal.Clear(); bytes = 0; highBurst = 0;
+            }
+        }
+        internal string Snapshot(long now)
+        {
+            lock (gate)
+            {
+                Prune(now);
+                long oldest = now;
+                if (high.Count > 0) oldest = Math.Min(oldest, high.Peek().Created);
+                if (normal.Count > 0) oldest = Math.Min(oldest, normal.Peek().Created);
+                return String.Format("File logiciel : {0} p / {1}/{2} o echappes ; age max {3:F1} s ; debord. {4}, perimes {5}",
+                    high.Count + normal.Count, bytes, maximum,
+                    (now - oldest) / (double)Stopwatch.Frequency, dropped, expired);
+            }
+        }
+        internal int Bytes { get { lock (gate) return bytes; } }
+        internal long Dropped { get { lock (gate) return dropped; } }
+        internal long Expired { get { lock (gate) return expired; } }
+    }
+
     // Some structure fields are populated by the Win32 marshaller.
 #pragma warning disable 0649
     internal static class Native
@@ -573,6 +789,15 @@ namespace SerialWintunV1
             internal byte ByteSize, Parity, StopBits, XonChar, XoffChar, ErrorChar, EofChar, EvtChar;
             internal ushort Reserved1;
         }
+        [StructLayout(LayoutKind.Sequential)]
+        internal struct ComStat
+        {
+            internal uint Flags, InQueue, OutQueue;
+        }
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        internal static extern bool ClearCommError(IntPtr handle, out uint errors, out ComStat status);
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct Timeouts
         {
@@ -875,7 +1100,7 @@ namespace SerialWintunV1
 
     public sealed class Bridge : IDisposable
     {
-        public const string BuildId = "2026-10-31-gui-r3";
+        public const string BuildId = "2026-10-31-gui-r4";
         public bool IsDisposed { get { return disposed; } }
         public bool AdapterWasCreated { get; private set; }
         private readonly string dllPath, port, adapterName;
@@ -887,11 +1112,28 @@ namespace SerialWintunV1
         private WintunApi api;
         private SerialDevice serial;
         private IntPtr adapter, session, readEvent;
-        private Thread serialReader, serialWriter;
+        private Thread serialReader, serialWriter, wintunReader;
         private Decoder decoder;
         private Mutex ownerMutex;
         private bool ownMutex, started, disposed;
         private long txPackets, rxPackets, txBytes, rxBytes, txDropped, rxDropped;
+        private long txWire, rxWire, seenPackets, txFiltered, rxFiltered;
+        private long seenIpv6, seenIcmp, seenTcp, seenUdp;
+        private long seenEchoRequest, seenEchoReply, txEchoRequest, txEchoReply;
+        private long rxEchoRequest, rxEchoReply, injectEchoRequest, injectEchoReply;
+        private long writingSince, lastAddressPoll;
+        private readonly PacketQueue pendingPackets = new PacketQueue(8192, 3 * Stopwatch.Frequency);
+        private readonly AutoResetEvent queueReady = new AutoResetEvent(false);
+        private readonly object traceLock = new object();
+        private readonly Queue<string> traces = new Queue<string>();
+        private volatile bool quiet = true, pingOnly;
+        private volatile uint[] broadcasts = new uint[0];
+        private string addressText = "aucune IPv4 detectee";
+        private uint lastComFlags, comIn, comOut, cumulativeErrors;
+        private bool comStatusOk, xoffHeld;
+        private int comStatusError;
+        private long xoffStart, lastRateTick, previousTxWire, previousRxWire;
+        private double txRate, rxRate;
         public uint InterfaceIndex { get; private set; }
         public bool StopRequested { get { return stop.WaitOne(0); } }
         public string LastError { get { lock (errorLock) return error == null ? null : error.ToString(); } }
@@ -951,13 +1193,18 @@ namespace SerialWintunV1
                 readEvent = api.GetReadEvent(session); // Borrowed handle: do not close it.
                 if (readEvent == IntPtr.Zero) throw new IOException("Wintun returned no read event.");
                 decoder = new Decoder(mtu, InjectIpPacket);
+                wintunReader = new Thread(ReadWintun);
+                wintunReader.IsBackground = true;
+                wintunReader.Name = "SerialWintun Wintun-pump";
                 serialReader = new Thread(ReadSerial);
                 serialWriter = new Thread(WriteSerial);
                 serialReader.IsBackground = serialWriter.IsBackground = true;
                 serialReader.Name = "SerialWintun RX";
                 serialWriter.Name = "SerialWintun TX";
                 serialReader.Start();
+                wintunReader.Start();
                 serialWriter.Start();
+                Note("Demarrage R4 : file TX 8192 octets echappes, expiration 3 s, filtre IPv4 discret actif.");
             }
             catch { RequestStop(); throw; }
         }
@@ -971,6 +1218,9 @@ namespace SerialWintunV1
         {
             if (StopRequested) return;
             if (!Framing.IsIpPacket(packet, count, mtu)) { Interlocked.Increment(ref rxDropped); return; }
+            CountEcho(packet, count, ref rxEchoRequest, ref rxEchoReply);
+            TraceIcmp("RX-DECODE-COM", packet, count);
+            if (Filter(packet, count) != null) { Interlocked.Increment(ref rxFiltered); return; }
             IntPtr target = api.Allocate(session, (uint)count);
             if (target == IntPtr.Zero)
             {
@@ -980,6 +1230,8 @@ namespace SerialWintunV1
             }
             Marshal.Copy(packet, 0, target, count);
             api.Send(session, target); // Inject received IP into the Windows network stack.
+            CountEcho(packet, count, ref injectEchoRequest, ref injectEchoReply);
+            TraceIcmp("RX-INJECTE-WINTUN", packet, count);
             Interlocked.Increment(ref rxPackets);
             Interlocked.Add(ref rxBytes, count);
         }
@@ -995,6 +1247,7 @@ namespace SerialWintunV1
                         int count = io.Transfer(false, 0, bytes.Length);
                         if (count == 0) continue;
                         Marshal.Copy(io.Buffer, bytes, 0, count);
+                        Interlocked.Add(ref rxWire, count);
                         decoder.Push(bytes, count);
                     }
                 }
@@ -1007,70 +1260,239 @@ namespace SerialWintunV1
             try
             {
                 IntPtr stopHandle = stop.SafeWaitHandle.DangerousGetHandle();
+                IntPtr readyHandle = queueReady.SafeWaitHandle.DangerousGetHandle();
                 using (SerialIo io = new SerialIo(serial.Handle, stopHandle, 2 * (mtu + 2) + 2))
                 {
                     while (!StopRequested)
                     {
-                        uint size;
-                        IntPtr source = api.Receive(session, out size); // Windows outbound IP.
-                        if (source == IntPtr.Zero)
+                        QueuedPacket next = pendingPackets.Take(Stopwatch.GetTimestamp());
+                        if (next == null)
                         {
-                            int code = Marshal.GetLastWin32Error();
-                            if (code != Native.ErrorNoMoreItems) throw Native.Error("WintunReceivePacket", code);
-                            uint wait = Native.WaitForMultipleObjects(2, new IntPtr[] { stopHandle, readEvent }, false, Native.Infinite);
+                            uint wait = Native.WaitForMultipleObjects(2, new IntPtr[] { stopHandle, readyHandle }, false, 250);
                             if (wait == 0) return;
-                            if (wait != 1) throw Native.Error("Wait for Wintun packet");
+                            if (wait != 1 && wait != 258) throw Native.Error("Wait for software queue");
                             continue;
                         }
-                        byte[] packet = null;
+                        if (Filter(next.Ip, next.Ip.Length) != null)
+                        { Interlocked.Increment(ref txFiltered); continue; }
+                        if (StopRequested) return;
+                        Marshal.Copy(next.Wire, 0, io.Buffer, next.Wire.Length);
+                        int offset = 0;
+                        Interlocked.Exchange(ref writingSince, Stopwatch.GetTimestamp());
+                        TraceIcmp("TX-DEBUT-COM", next.Ip, next.Ip.Length);
                         try
                         {
-                            if (size <= (uint)mtu && size >= 20)
+                            while (offset < next.Wire.Length && !StopRequested)
                             {
-                                packet = new byte[(int)size];
-                                Marshal.Copy(source, packet, 0, (int)size);
+                                int count = io.Transfer(true, offset, next.Wire.Length - offset);
+                                if (count <= 0) throw new IOException("Serial write made no progress.");
+                                offset += count;
+                                Interlocked.Add(ref txWire, count);
+                            }
+                            if (offset == next.Wire.Length)
+                            {
+                                Interlocked.Increment(ref txPackets);
+                                Interlocked.Add(ref txBytes, next.Ip.Length);
+                                CountEcho(next.Ip, next.Ip.Length, ref txEchoRequest, ref txEchoReply);
+                                TraceIcmp("TX-ECRIT-COM", next.Ip, next.Ip.Length);
                             }
                         }
-                        finally { api.Release(session, source); }
-                        // Release the ring slot BEFORE potentially waiting for XON on the serial port.
-                        if (packet == null || !Framing.IsIpPacket(packet, packet.Length, mtu))
-                        {
-                            Interlocked.Increment(ref txDropped);
-                            continue;
-                        }
-                        if (StopRequested) return;
-                        byte[] encoded = Framing.Encode(packet, packet.Length);
-                        Marshal.Copy(encoded, 0, io.Buffer, encoded.Length);
-                        int offset = 0;
-                        while (offset < encoded.Length && !StopRequested)
-                        {
-                            int count = io.Transfer(true, offset, encoded.Length - offset);
-                            if (count <= 0) throw new IOException("Serial write made no progress.");
-                            offset += count;
-                        }
-                        if (offset == encoded.Length)
-                        {
-                            Interlocked.Increment(ref txPackets);
-                            Interlocked.Add(ref txBytes, packet.Length);
-                        }
+                        finally { Interlocked.Exchange(ref writingSince, 0); }
                     }
                 }
             }
             catch (OperationCanceledException ex) { if (!StopRequested) Fail(ex); }
             catch (Exception ex) { Fail(ex); }
         }
+        public void SetFilter(bool quietIpv4, bool onlyPing)
+        {
+            quiet = quietIpv4;
+            pingOnly = onlyPing;
+            pendingPackets.Clear(); // Only whole packets not yet handed to COM.
+            Note("MODE IPv4-discret=" + quiet + " ICMP-seul=" + pingOnly +
+                 "; file logicielle videe, trame COM en cours preservee.");
+        }
+        private void Note(string text)
+        {
+            lock (traceLock)
+            {
+                if (traces.Count == 100) traces.Dequeue();
+                traces.Enqueue(DateTime.Now.ToString("HH:mm:ss.fff") + " " + text);
+            }
+        }
+        private void TraceIcmp(string stage, byte[] packet, int count)
+        {
+            string text = PacketPolicy.Icmp(packet, count);
+            if (text != null) Note(stage + " ICMP " + text);
+        }
+        private void CountEcho(byte[] packet, int count, ref long requests, ref long replies)
+        {
+            int type = PacketPolicy.EchoType(packet, count);
+            if (type == 8) Interlocked.Increment(ref requests);
+            if (type == 0) Interlocked.Increment(ref replies);
+        }
+        private string Filter(byte[] packet, int count)
+        {
+            return PacketPolicy.Reject(packet, count, quiet, pingOnly, broadcasts);
+        }
+        private void ReadWintun()
+        {
+            try
+            {
+                IntPtr stopHandle = stop.SafeWaitHandle.DangerousGetHandle();
+                while (!StopRequested)
+                {
+                    uint size;
+                    IntPtr source = api.Receive(session, out size);
+                    if (source == IntPtr.Zero)
+                    {
+                        int code = Marshal.GetLastWin32Error();
+                        if (code != Native.ErrorNoMoreItems) throw Native.Error("WintunReceivePacket", code);
+                        uint wait = Native.WaitForMultipleObjects(2, new IntPtr[] { stopHandle, readEvent }, false, Native.Infinite);
+                        if (wait == 0) return;
+                        if (wait != 1) throw Native.Error("Wait for Wintun packet");
+                        continue;
+                    }
+                    byte[] packet = null;
+                    try
+                    {
+                        if (size <= (uint)mtu && size >= 20)
+                        { packet = new byte[(int)size]; Marshal.Copy(source, packet, 0, (int)size); }
+                    }
+                    finally { api.Release(session, source); }
+                    Interlocked.Increment(ref seenPackets);
+                    if (packet == null || !Framing.IsIpPacket(packet, packet.Length, mtu))
+                    { Interlocked.Increment(ref txDropped); continue; }
+                    CountEcho(packet, packet.Length, ref seenEchoRequest, ref seenEchoReply);
+                    TraceIcmp("TX-VU-WINTUN", packet, packet.Length);
+                    if ((packet[0] >> 4) == 6) Interlocked.Increment(ref seenIpv6);
+                    else if (packet[9] == 1) Interlocked.Increment(ref seenIcmp);
+                    else if (packet[9] == 6) Interlocked.Increment(ref seenTcp);
+                    else if (packet[9] == 17) Interlocked.Increment(ref seenUdp);
+                    string reason = Filter(packet, packet.Length);
+                    if (reason != null) { Interlocked.Increment(ref txFiltered); continue; }
+                    QueuedPacket next = new QueuedPacket();
+                    next.Ip = packet;
+                    next.Wire = Framing.Encode(packet, packet.Length);
+                    next.High = PacketPolicy.Priority(packet, packet.Length);
+                    next.Created = Stopwatch.GetTimestamp();
+                    if (pendingPackets.Put(next, next.Created)) queueReady.Set();
+                    else TraceIcmp("TX-REJET-FILE", packet, packet.Length);
+                }
+            }
+            catch (OperationCanceledException ex) { if (!StopRequested) Fail(ex); }
+            catch (Exception ex) { Fail(ex); }
+        }
+        private void RefreshAddresses()
+        {
+            long now = Stopwatch.GetTimestamp();
+            if (lastAddressPoll != 0 && now - lastAddressPoll < 3 * Stopwatch.Frequency) return;
+            lastAddressPoll = now;
+            try
+            {
+                List<uint> values = new List<uint>();
+                List<string> text = new List<string>();
+                foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+                {
+                    IPInterfaceProperties props = ni.GetIPProperties();
+                    IPv4InterfaceProperties v4;
+                    try { v4 = props.GetIPv4Properties(); }
+                    catch (NetworkInformationException) { continue; }
+                    if (v4 == null || (uint)v4.Index != InterfaceIndex) continue;
+                    foreach (UnicastIPAddressInformation item in props.UnicastAddresses)
+                    {
+                        if (item.Address.AddressFamily != AddressFamily.InterNetwork) continue;
+                        byte[] ip = item.Address.GetAddressBytes();
+                        byte[] mask = item.IPv4Mask.GetAddressBytes();
+                        uint address = PacketPolicy.Address(ip, 0), m = PacketPolicy.Address(mask, 0);
+                        text.Add(item.Address.ToString() + " masque " + item.IPv4Mask.ToString());
+                        // /31 and /32 do not use directed subnet broadcast.
+                        if (m != UInt32.MaxValue && m != 0xFFFFFFFEu && m != 0)
+                            values.Add((address & m) | ~m);
+                    }
+                }
+                broadcasts = values.ToArray(); // Immutable snapshot; atomic reference replacement.
+                addressText = text.Count == 0 ? "aucune IPv4 sur SerialIP" : String.Join(" ; ", text.ToArray());
+            }
+            catch (Exception ex) { addressText = "lecture IP impossible : " + ex.Message; }
+        }
+        private void PollSerial()
+        {
+            if (serial == null || disposed) return;
+            Native.ComStat status;
+            uint errors;
+            if (Native.ClearCommError(serial.Handle, out errors, out status))
+            {
+                lastComFlags = status.Flags;
+                comIn = status.InQueue; comOut = status.OutQueue;
+                cumulativeErrors |= errors;
+                bool held = (status.Flags & 8) != 0;
+                if (held && !xoffHeld) { xoffStart = Stopwatch.GetTimestamp(); Note("COM : XOFF recu, emission suspendue."); }
+                if (!held && xoffHeld) Note("COM : pause XOFF terminee.");
+                xoffHeld = held;
+                if (errors != 0) Note("COM : erreurs masque 0x" + errors.ToString("X"));
+                comStatusOk = true;
+            }
+            else { comStatusOk = false; comStatusError = Marshal.GetLastWin32Error(); }
+        }
+        public string DiagnosticReport()
+        {
+            string snapshot = Statistics();
+            StringBuilder text = new StringBuilder();
+            text.AppendLine("SerialWintun " + BuildId);
+            text.AppendLine(DateTime.Now.ToString("O"));
+            text.AppendLine("Port " + port + " ; 115200/8N1/XON-XOFF ; MTU " + mtu);
+            text.AppendLine("InterfaceIndex=" + InterfaceIndex + "; IPv4 discret=" + quiet + "; ICMP seul=" + pingOnly);
+            text.AppendLine(snapshot);
+            text.AppendLine("\r\nDernieres traces (metadonnees ICMP, pas de contenu applicatif) :");
+            lock (traceLock) foreach (string line in traces) text.AppendLine(line);
+            text.AppendLine("\r\nTX COM = octets acceptes par WriteFile, PAS confirmation de livraison distante.");
+            text.AppendLine("COMSTAT ne mesure pas les tampons internes des modems. CRC valide ne prouve pas une reponse au ping.");
+            return text.ToString();
+        }
         public void RequestStop() { if (!disposed) stop.Set(); }
         public string Statistics()
         {
-            return String.Format("TX {0} paquets / {1} octets IP | RX {2} / {3} | rejets TX {4}, RX {5}, CRC/trame {6}",
-                Interlocked.Read(ref txPackets), Interlocked.Read(ref txBytes),
+            RefreshAddresses();
+            PollSerial();
+            long now = Stopwatch.GetTimestamp();
+            long tx = Interlocked.Read(ref txWire), rx = Interlocked.Read(ref rxWire);
+            if (lastRateTick == 0) { lastRateTick = now; previousTxWire = tx; previousRxWire = rx; }
+            double seconds = (now - lastRateTick) / (double)Stopwatch.Frequency;
+            if (seconds >= 0.5)
+            {
+                txRate = (tx - previousTxWire) / seconds;
+                rxRate = (rx - previousRxWire) / seconds;
+                lastRateTick = now; previousTxWire = tx; previousRxWire = rx;
+            }
+            long writing = Interlocked.Read(ref writingSince);
+            double writeSeconds = writing == 0 ? 0 : (now - writing) / (double)Stopwatch.Frequency;
+            string flow = comStatusOk ? String.Format(
+                "COM : XOFF recu={0} ({1:F1}s) ; XOFF emis={2} ; RX {3} o / TX {4} o en attente ; erreurs=0x{5:X}",
+                xoffHeld ? "OUI" : "non", xoffHeld ? (now-xoffStart)/(double)Stopwatch.Frequency : 0,
+                (lastComFlags & 16) != 0 ? "OUI" : "non", comIn, comOut, cumulativeErrors)
+                : "COMSTAT indisponible (pilote), erreur " + comStatusError;
+            return String.Format(
+                "IPv4 : {0}\r\n" +
+                "IP : TX {1} p / {2} o ; RX injectes {3} p / {4} o ; rejets invalides TX {5}, RX {6}, CRC {7}\r\n" +
+                "COM application : TX {8:F0} o/s, RX {9:F0} o/s ; total {10}/{11} o ; ecriture en cours {12:F1} s\r\n" +
+                "{13}\r\n{14}\r\n" +
+                "Filtres TX/RX : {15}/{16} ; vus Wintun IPv6 {17}, ICMP {18}, TCP {19}, UDP {20}\r\n" +
+                "Echo REQ/REP : vus TX {21}/{22} ; ecrits COM {23}/{24} ; recus COM {25}/{26} ; injectes {27}/{28}",
+                addressText, Interlocked.Read(ref txPackets), Interlocked.Read(ref txBytes),
                 Interlocked.Read(ref rxPackets), Interlocked.Read(ref rxBytes),
-                Interlocked.Read(ref txDropped), Interlocked.Read(ref rxDropped),
-                decoder == null ? 0 : decoder.BadFrames);
+                Interlocked.Read(ref txDropped), Interlocked.Read(ref rxDropped), decoder == null ? 0 : decoder.BadFrames,
+                txRate, rxRate, tx, rx, writeSeconds, flow, pendingPackets.Snapshot(now),
+                Interlocked.Read(ref txFiltered), Interlocked.Read(ref rxFiltered),
+                Interlocked.Read(ref seenIpv6), Interlocked.Read(ref seenIcmp), Interlocked.Read(ref seenTcp), Interlocked.Read(ref seenUdp),
+                Interlocked.Read(ref seenEchoRequest), Interlocked.Read(ref seenEchoReply),
+                Interlocked.Read(ref txEchoRequest), Interlocked.Read(ref txEchoReply),
+                Interlocked.Read(ref rxEchoRequest), Interlocked.Read(ref rxEchoReply),
+                Interlocked.Read(ref injectEchoRequest), Interlocked.Read(ref injectEchoReply));
         }
         private static bool JoinWorker(Thread worker)
         {
-            if (worker == null || (worker.ThreadState & ThreadState.Unstarted) != 0) return true;
+            if (worker == null || (worker.ThreadState & System.Threading.ThreadState.Unstarted) != 0) return true;
             return worker.Join(5000);
         }
         // Called by the WinForms timer, on the SAME thread that called Start.
@@ -1080,7 +1502,8 @@ namespace SerialWintunV1
             if (disposed) return true;
             stop.Set();
             if ((serialReader != null && serialReader.IsAlive) ||
-                (serialWriter != null && serialWriter.IsAlive)) return false;
+                (serialWriter != null && serialWriter.IsAlive) ||
+                (wintunReader != null && wintunReader.IsAlive)) return false;
             if (serial != null) { serial.Dispose(); serial = null; }
             if (session != IntPtr.Zero) { api.End(session); session = IntPtr.Zero; }
             if (adapter != IntPtr.Zero) { api.Close(adapter); adapter = IntPtr.Zero; }
@@ -1091,6 +1514,8 @@ namespace SerialWintunV1
                 ownerMutex.Dispose();
                 ownerMutex = null;
             }
+            pendingPackets.Clear();
+            queueReady.Dispose();
             stop.Dispose();
             disposed = true;
             return true;
@@ -1102,7 +1527,8 @@ namespace SerialWintunV1
             stop.Set();
             bool readerDone = JoinWorker(serialReader);
             bool writerDone = JoinWorker(serialWriter);
-            if (!readerDone || !writerDone || !TryCompleteStop())
+            bool pumpDone = JoinWorker(wintunReader);
+            if (!readerDone || !writerDone || !pumpDone || !TryCompleteStop())
             {
                 // A faulty driver may refuse to finish an outstanding I/O request.
                 throw new IOException("Le pilote serie ne termine pas les entrees/sorties. " +
@@ -1164,7 +1590,33 @@ namespace SerialWintunV1
                 throw new Exception("IP validation failed.");
             ipv4[3] = 21;
             if (Framing.IsIpPacket(ipv4, 20, 1500)) throw new Exception("Invalid IP length accepted.");
-            return "SelfTest OK: ABI layouts, CRC-16, " + cases + " framing round-trips, control escaping, " +
+            if (Marshal.SizeOf(typeof(Native.ComStat)) != 12) throw new Exception("COMSTAT ABI mismatch.");
+            byte[] p = new byte[60]; p[0] = 0x45; p[3] = 60; p[9] = 1;
+            p[16] = 10; p[17] = 200; p[18] = 200; p[19] = 1; p[20] = 8;
+            if (PacketPolicy.Reject(p, p.Length, true, true, null) != null ||
+                !PacketPolicy.Priority(p, p.Length) || PacketPolicy.EchoType(p, p.Length) != 8)
+                throw new Exception("ICMP classification failed.");
+            p[9] = 6;
+            if (PacketPolicy.Reject(p, p.Length, true, false, null) != null ||
+                PacketPolicy.Reject(p, p.Length, true, true, null) == null)
+                throw new Exception("TCP policy failed.");
+            p[16] = 224;
+            if (PacketPolicy.Reject(p, p.Length, true, false, null) == null)
+                throw new Exception("Multicast policy failed.");
+            p[16] = 10; p[19] = 255;
+            if (PacketPolicy.Reject(p, p.Length, true, false, new uint[] { 0x0AC8C8FF }) == null)
+                throw new Exception("Directed broadcast policy failed.");
+            if (PacketPolicy.Reject(ipv6, 40, true, false, null) == null ||
+                PacketPolicy.Reject(ipv6, 40, false, false, null) != null)
+                throw new Exception("IPv6 policy failed.");
+            PacketQueue q = new PacketQueue(10, 100);
+            QueuedPacket a = new QueuedPacket(); a.Wire = new byte[6]; a.Created = 0;
+            QueuedPacket b = new QueuedPacket(); b.Wire = new byte[6]; b.Created = 1; b.High = true;
+            if (!q.Put(a, 0) || !q.Put(b, 1) || q.Bytes != 6 || q.Dropped != 1 || q.Take(1) != b)
+                throw new Exception("Bounded queue priority failed.");
+            if (!q.Put(a, 1) || q.Take(101) != null || q.Expired != 1 || q.Bytes != 0)
+                throw new Exception("Queue expiry failed.");
+            return "SelfTest OK: filter/priority/queue-expiry, COMSTAT, ABI layouts, CRC-16, " + cases + " framing round-trips, control escaping, " +
                    "corruption/oversize recovery and IPv4/IPv6 lengths. No Windows driver or modem test performed.";
         }
     }
@@ -1242,7 +1694,7 @@ try {
     if ($null -eq ('SerialWintunV1.Bridge' -as [type])) {
         Add-Type -TypeDefinition $source -Language CSharp -ErrorAction Stop
     }
-    elseif ([SerialWintunV1.Bridge]::BuildId -ne '2026-10-31-gui-r3') {
+    elseif ([SerialWintunV1.Bridge]::BuildId -ne '2026-10-31-gui-r4') {
         throw 'Une autre version du moteur est déjà chargée dans ce processus. Relance le script depuis l''Explorateur.'
     }
     # Autotests du codec, silencieux, avant la création de la carte.
